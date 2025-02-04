@@ -1,0 +1,56 @@
+<div class="main-container">
+    <h4>Category</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="category-">
+            Category
+          </th>
+          <th class="version">
+            Version
+          </th>
+          <th class="start-date">
+            Start Date
+          </th>
+          <th class="end-date">
+            End Date
+          </th>
+<!--          <th class="buttons">-->
+<!--            <button class="btn btn-sm btn-success" (click)="onNewCategory()">-->
+<!--              New Category-->
+<!--            </button>-->
+<!--          </th>-->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of (category$ | async)">
+          <td class="category-">
+            {{category.name}}
+          </td>
+          <td class="version">
+            {{category.current_version.name}}
+          </td>
+          <td class="start-date">
+            {{category.current_version.start_date}}
+          </td>
+          <td class="end-date">
+            {{category.current_version.end_date}}
+          </td>
+          <td class="buttons" fxLayoutGap="1em">
+            <button class="btn btn-primary btn-sm" (click)="onUpgradeCategory(category.id)">
+              Upgrade
+            </button>
+            <button class="btn btn-success btn-sm" (click)="onExtendCategory(category.id)">
+              Extend
+            </button>
+            <button class="btn btn-info btn-sm" (click)="onViewCategory(category.id)">
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+</div>
+

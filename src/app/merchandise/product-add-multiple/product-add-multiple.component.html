@@ -1,0 +1,74 @@
+<div class="main-content">
+    <form [formGroup]="productForm" (ngSubmmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="5em">
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between" fxFlex="100%">
+            <h5>Add Stock in Bulk</h5>
+            <div>
+                <button type="submit" class="btn btn-success" (click)="onSubmit()">
+                    Add
+                </button>
+                <a [routerLink]="['../../']" [queryParams]="{branch_id: branch_id}">
+                    <button class="btn btn-secondary">
+                        Cancel
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="count">#</th>
+                    <th class="name">Name</th>
+                    <th class="quantity">Quantity</th>
+                    <th class="buttons"></th>
+                </tr>
+            </thead>
+            <tbody formArrayName="items">
+                <tr *ngFor="let item of itemArray.controls; let i = index;"
+                [formGroupName]="i">
+                    <td class="count">
+                        {{i + 1}}
+                    </td>
+                    <td class="name">
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="product_name"
+                            list="product-list" (change)="onChangeProduct($event, i)"
+                            [class.is-invalid]="!itemArray.at(i).get('product_id').valid && (itemArray.at(i).get('product_name').touched || submitted)">
+                            <div class="invalid-feedback">
+                                <span *ngIf="!itemArray.at(i).get('product_id').valid && itemArray.at(i).get('product_name').valid">
+                                    Product Not Valid
+                                </span>
+                                <span *ngIf="!itemArray.at(i).get('product_name').valid">
+                                    Product Required
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </td>
+                    <td class="quantity">
+                        <div class="form-group">
+                            <input type="number" class="form-control" id="quantity" min="0"
+                            formControlName="quantity"
+                            [class.is-invalid]="!itemArray.at(i).get('quantity').valid && (itemArray.at(i).get('quantity').touched || submitted)">
+                            <div class="invalid-feedback">
+                                Quantity Required
+                            </div>
+                        </div>
+                    </td>
+                    <td class="buttons" fxLayout fxLayoutGap="0.5em">
+                        <i class="nc-icon nc-simple-add" (click)="addItem()"></i>
+                        <i class="nc-icon nc-simple-delete"
+                        (click)="removeItem(i)"
+                        [class.disabled]="productForm.get('items').value?.length < 2"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <datalist id="product-list">
+            <option *ngFor="let product of (productList$ | async)" [value]="product.name">
+        </datalist>
+
+    </form>
+</div>

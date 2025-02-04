@@ -1,0 +1,192 @@
+<div class="card" fxFlex="50%">
+    <div class="card-body">
+        <form [formGroup]="managerTeacherForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>{{userType}}</legend>
+
+                <div class="form-group">
+                    <label>Branches*</label>
+                    <div class="form-check mt-3" *ngFor="let branch of branches">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="branches"
+                            [value]="branch.branch_id"
+                            [checked]="branch.checked"
+                            (change)="onChangeBranch($event)">
+                                {{branch.name}}
+                            <span class="form-check-sign"></span>
+                          </label>
+                        </div>
+                    </div>
+                    <!-- <select id="branch" class="form-control" formControlName="branch_id"
+                    [class.is-invalid]="!managerTeacherForm.get('branch_id').valid && (managerTeacherForm.get('branch_id').touched || submitted)">
+                        <option *ngFor="let branch of (selectBranchData | async)" [value]="branch.id">{{branch.name}}</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        You need to specify a branch this {{userType}} works in.
+                    </div> -->
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email*</label>
+                    <input type="email" id="email" class="form-control" formControlName="email"
+                    [class.is-invalid]="!managerTeacherForm.get('email').valid && (managerTeacherForm.get('email').touched || submitted)">
+                    <div class="invalid-feedback">
+                        Valid Email Required
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">Name*</label>
+                    <input type="text" class="form-control" id="first_name" formControlName="first_name"
+                    [class.is-invalid]="!managerTeacherForm.get('first_name').valid && (managerTeacherForm.get('first_name').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Name is required</span>
+                    </div>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="last_name">Last Name*</label>-->
+<!--                    <input type="text" class="form-control" id="last_name" formControlName="last_name"-->
+<!--                    [class.is-invalid]="!managerTeacherForm.get('last_name').valid && (managerTeacherForm.get('last_name').touched || submitted)">-->
+<!--                    <div class="invalid-feedback">-->
+<!--                        <span>Last Name Required</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="form-group">
+                    <label for="dob">DOB*</label>
+                    <div class="input-group">
+                        <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="dob"
+                               ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="!managerTeacherForm.get('dob').valid && (managerTeacherForm.get('dob').touched || submitted)">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                <i class="nc-icon nc-calendar-60"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">
+                        <span>DOB Name Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ic-number">IC*</label>
+                    <input type="text" class="form-control" id="ic-number" formControlName="ic_number"
+                    [class.is-invalid]="!managerTeacherForm.get('ic_number').valid && (managerTeacherForm.get('ic_number').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Valid IC Number Required eg 791212104569</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone*</label>
+                    <input type="tel" class="form-control" id="phone" formControlName="phone"
+                    [class.is-invalid]="!managerTeacherForm.get('phone').valid && (managerTeacherForm.get('phone').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Phone Number Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="grade_id">Status*</label>
+                    <!-- only admin and superadmin can change this -->
+                    <select id="grade_id" class="form-control" formControlName="grade_id"
+                    [class.is-invalid]="(role === 'admin' || role === 'superadmin') && !managerTeacherForm.get('grade_id').valid && (managerTeacherForm.get('grade_id').touched || submitted)">
+                        <option></option>
+                        <option *ngFor="let grade of (grades$ | async)" [value]="grade.id">
+                            {{grade.name}}
+                        </option>
+                    </select>
+                    <div *ngIf="role === 'admin' || role === 'superadmin'" class="invalid-feedback">
+                        <span>Status Required</span>
+                    </div>
+                </div>
+
+            </fieldset>
+            <fieldset disabled>
+                <legend>Bank Info</legend>
+                <div class="form-group">
+                    <label for="bank_name">Bank Name</label>
+                    <input type="text" class="form-control" id="bank_name" formControlName="bank_name">
+                </div>
+                <div class="form-group">
+                    <label for="bank_account_name">Name On Bank Account</label>
+                    <input type="text" class="form-control" id="bank_account_name" formControlName="bank_account_name">
+                </div>
+                <div class="form-group">
+                    <label for="bank_account_number">Bank Account Number</label>
+                    <input type="text" class="form-control" id="bank_account_number" formControlName="bank_account_number">
+                </div>
+            </fieldset>
+
+            <fieldset formGroupName="address">
+
+                <legend>Address</legend>
+
+                <div class="form-group">
+                    <label for="address_line_1">Address Line 1*</label>
+                    <input type="text" class="form-control" id="address_line_1" formControlName="address_line_1"
+                    [class.is-invalid]="!managerTeacherForm.get('address.address_line_1').valid && (managerTeacherForm.get('address.address_line_1').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Address Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_line_2">Address Line 2</label>
+                    <input type="text" class="form-control" id="address_line_2" formControlName="address_line_2">
+                </div>
+
+                <div class="form-group">
+                    <label for="address_line_1">Address Line 3</label>
+                    <input type="text" class="form-control" id="address_line_3" formControlName="address_line_3">
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City*</label>
+                    <input type="text" class="form-control" id="city" formControlName="city"
+                    [class.is-invalid]="!managerTeacherForm.get('address.city').valid && (managerTeacherForm.get('address.city').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>City Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postcode">Postcode*</label>
+                    <input type="text" class="form-control" id="postcode" formControlName="postcode"
+                    [class.is-invalid]="!managerTeacherForm.get('address.postcode').valid && (managerTeacherForm.get('address.postcode').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Postcode Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State*</label>
+                    <select id="state" class="form-control" formControlName="state"
+                    [class.is-invalid]="!managerTeacherForm.get('address.state').valid && (managerTeacherForm.get('address.state').touched || submitted)">
+                        <option></option>
+                        <option *ngFor="let state of states" [value]="state.id">{{state.name}}</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <span>State Required</span>
+                    </div>
+                </div>
+
+
+            </fieldset>
+
+
+            <div class="button-container" fxLayoutAlign="center">
+                <button class="btn btn-success" type="submit">
+                    <span *ngIf="!isLoading">{{action}}</span>
+                    <div *ngIf="isLoading" class="spinner-border text-secondary my-4" style="color: white; padding: 0; margin: 0;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

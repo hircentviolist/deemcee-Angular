@@ -1,0 +1,64 @@
+<div class="main-container">
+    <div *ngIf="showAddBtn" class="button-container" fxLayoutAlign="end">
+        <a [queryParams]="{active: active}" [routerLink]="['./event', 'new']">
+            <button class="btn btn-success">Add</button>
+        </a>
+    </div>
+
+    <div fxLayout fxLayoutGap="3em">
+
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title & Description</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events; let i = index;">
+
+            <th scope="row">{{i + 1}}</th>
+            <td>
+                <h6>{{event?.title}}</h6>
+                <span class="event-description">{{event?.description}}</span>
+            </td>
+            <td>
+                <span>{{event?.venue}}</span>
+            </td>
+            <td>
+                <span>{{event?.branch.name}}</span>
+            </td>
+            <td>
+                <span>{{event?.start.date}}</span>
+                <br>
+                <span>{{event?.start.time}}</span>
+            </td>
+            <td>
+                <span>{{event?.end.date}}</span>
+                <br>
+                <span>{{event?.end.time}}</span>
+            </td>
+            <td>
+                <span>{{event?.status || 'some status'}}</span>
+            </td>
+            <td fxLayOutGap="1em" fxLayoutAlign="end center">
+                <button *ngIf="['superadmin', 'admin'].includes(cred.role) && +branch_id !== 1 && event?.status === 'Pending Review'" class="btn btn-primary mr-1" (click)="approve(event)">Approve</button>
+                <a class="mr-1" [queryParams]="{active: active}" [routerLink]="['./event', event?.id]">
+                    <button class="btn btn-success">Show</button>
+                </a>
+                <button class="btn btn-danger" (click)="onDelete(event.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+</div>
+

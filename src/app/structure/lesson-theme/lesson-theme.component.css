@@ -1,0 +1,17 @@
+.main-container {
+    min-width: 60%;
+}
+
+.button-container {
+    width: 60%;
+}
+
+
+tr {
+    width: 100%
+}
+
+
+.form-group {
+    margin-bottom: 0 !important;
+}

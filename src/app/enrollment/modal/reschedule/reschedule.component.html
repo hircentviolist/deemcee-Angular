@@ -1,0 +1,44 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close(true)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Reschedule Class</h5>
+    </div>
+    <div class="modal-body" style="padding-bottom: 0; margin-bottom: 0;">
+        <form [formGroup]="rescheduleForm" (ngSubmit)="reschedule()">
+            <fieldset>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label>Program Theme</label>
+                        <p style="background-color: #f8f8f8; border-radius: 5px; padding: 10px;">{{capitalise(program_theme_name)}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Lesson</label>
+                        <p style="background-color: #f8f8f8; border-radius: 5px; padding: 10px;">{{lesson_name}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="from_class_lesson_id">From Class</label>
+                        <select id="from_class_lesson_id" #fromClass class="form-control" formControlName="from_class_lesson_id" (change)="onFromClassChange(fromClass.value)">
+                            <option *ngFor="let classSlot of data.enrolment.class_lesson" [value]="classSlot.class_lesson_id">
+                                {{classSlot.start_datetime}}
+                            </option>
+                        </select>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="to_class_lesson_id">Replace To</label>
+                        <select id="to_class_lesson_id" #toClass class="form-control" formControlName="to_class_lesson_id" (change)="onToClassChange(toClass.value)">
+                            <option *ngFor="let session of (session$ | async)" [value]="session.id">
+                                {{session.date}} {{session.de_class.start_time}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="button-container" fxLayoutAlign="center">
+                <button type="submit" class="btn">Reschedule</button>
+            </div>
+        </form>
+
+    </div>
+</div>

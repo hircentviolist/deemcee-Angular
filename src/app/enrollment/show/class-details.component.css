@@ -1,0 +1,55 @@
+.no, .theme, .lesson, .attendance {
+    /*text-align: center;*/
+}
+
+.arrow {
+    text-align: right;
+}
+
+.header1 {
+    border-bottom: 1px solid black;
+    padding: 1em 0;
+}
+
+.body1 {
+    padding: 1em 0;
+}
+
+.body1.no, .body1.theme, .body1.lesson, .body1.attendance {
+        padding: 1em 0;
+        color: #00aeef;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+
+.lesson-details-title {
+    padding: 1em 10%;
+    font-weight: bold;
+
+}
+
+.lesson-detail {
+    padding: 1em 0;
+}
+.card {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 1em 0;
+}
+
+.absent {
+    color: red;
+}
+
+.attended {
+    color: green;
+}
+
+.pending {
+    color: black;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}

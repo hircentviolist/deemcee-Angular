@@ -1,0 +1,68 @@
+<div class="main-content">
+	<div class="button-container" fxLayoutAlign="space-between center">
+		<div class="back">
+			<a routerLink="../../list"> < Back </a>
+		</div>
+
+		<a *ngIf="role !== 'teacher'" (click)="reschedule()">
+			<button class="btn btn-success">Reschedule Class</button>
+		</a>
+	</div>
+
+	<div style="display: flex; flex: 1; flex-direction: row; padding: 20px 0">
+		<div style="display: flex; flex-direction: column; padding-right: 50px; width: 30%">
+			<p *ngIf="studentName">
+				Name: <strong>{{ studentName }}</strong>
+			</p>
+			<p *ngIf="studentGrade">
+				Grade: <strong>{{ studentGrade }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Total class: <strong>{{ classDetailsCount?.total_class_count }}</strong>
+			</p>
+		</div>
+		<div style="display: flex; flex-direction: column; padding-right: 50px; width: 30%">
+			<p *ngIf="classDetailsCount">
+				Attended: <strong>{{ classDetailsCount?.total_attended_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Rescheduled: <strong>{{ classDetailsCount?.total_rescheduled_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Absent: <strong>{{ classDetailsCount?.total_absent_count }}</strong>
+			</p>
+		</div>
+		<div style="display: flex; flex-direction: column; width: 30%">
+			<p *ngIf="classDetailsCount">
+				Remaining class: <strong>{{ classDetailsCount?.remaining_class_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Freezed class: <strong>{{ classDetailsCount?.freezed_class_count }}</strong>
+			</p>
+		</div>
+	</div>
+	<ngb-tabset>
+		<ngb-tab title="Details">
+			<ng-template ngbTabContent>
+				<app-details></app-details>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Class Details">
+			<ng-template ngbTabContent>
+				<app-class-details></app-class-details>
+			</ng-template>
+		</ngb-tab>
+		<ng-container *ngIf="role !== 'teacher'">
+			<ngb-tab title="Payment History">
+				<ng-template ngbTabContent>
+					<app-payment-history></app-payment-history>
+				</ng-template>
+			</ngb-tab>
+		</ng-container>
+		<ngb-tab title="Past Enrollments">
+			<ng-template ngbTabContent>
+				<app-past-enrollment></app-past-enrollment>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

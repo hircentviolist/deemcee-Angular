@@ -1,0 +1,28 @@
+legend {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.39;
+    text-align: left;
+    color: #3b3b3b
+}
+
+label {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: left;
+    color: #3b3b3b;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.39;
+    text-align: left;
+    color: #3b3b3b
+}
+
+button {
+    background-color: #00aeef;
+    color: white;
+}

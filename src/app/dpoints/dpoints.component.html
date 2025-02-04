@@ -1,0 +1,33 @@
+<div class="main-content">
+
+    <ul style="position: relative" ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="active" class="nav-tabs">
+
+        <li *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" [ngbNavItem]="1">
+            <a ngbNavLink>D-Points Management</a>
+            <ng-template ngbNavContent>
+                <app-dpoints-management></app-dpoints-management>
+            </ng-template>
+        </li>
+
+        <li [ngbNavItem]="2">
+            <a ngbNavLink>Branch Transaction</a>
+            <ng-template ngbNavContent>
+                <app-branch-transaction></app-branch-transaction>
+            </ng-template>
+        </li>
+
+        <li *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')"  [ngbNavItem]="3">
+            <a ngbNavLink>Parents Transaction</a>
+            <ng-template ngbNavContent>
+                <app-parents-transaction></app-parents-transaction>
+            </ng-template>
+        </li>
+
+
+        <div style="position: absolute; right: 5px; bottom: 0;">
+            <a (click)="updatePointValue()" href="javascript:;">{{pointLabel}}</a>
+        </div>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

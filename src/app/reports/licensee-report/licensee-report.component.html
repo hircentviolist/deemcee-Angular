@@ -1,0 +1,210 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">
+            <ng-container *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')">
+                <p *ngIf="isOverall" style="font-weight: bold; font-size: 20px">All Branch</p>
+                <p *ngIf="!isOverall && branch?.name" style="font-weight: bold; font-size: 20px">
+                    {{
+                        branch?.name?.includes('branch') || branch?.name?.includes('Branch') ?
+                        branch?.name :
+                        branch?.name + ' Branch'
+                    }}
+                </p>
+            </ng-container>
+            <ng-container *ngIf="(cred.role !== 'superadmin' && cred.role !== 'admin')">
+                <p *ngIf="branch?.name" style="font-weight: bold; font-size: 20px">
+                    {{
+                        branch?.name?.includes('branch') || branch?.name?.includes('Branch') ?
+                        branch?.name :
+                        branch?.name + ' Branch'
+                    }}
+                </p>
+            </ng-container>
+            <div class="row">
+                <div class="col-6" style="display: flex; flex-direction: row;">
+                    <div style="width: 150px; margin-right: 10px;">
+                        <select (change)="onFilterChange()" [(ngModel)]="filters.year" id="year" class="form-control">
+                            <option *ngFor="let year of years" [value]="year.value">
+                                {{year.name}}
+                            </option>
+                        </select>
+
+                        <!-- <select (change)="onYearChange()" [(ngModel)]="selectedMonthYearId" id="monthYear" class="form-control">
+                            <option *ngFor="let monthYear of monthYearList" [value]="monthYear.id">
+                                {{monthYear.string}}
+                            </option>
+                        </select> -->
+                    </div>
+                    <div style="width: 150px;">
+                        <select (change)="onFilterChange()" [(ngModel)]="filters.month" id="month" class="form-control">
+                            <option *ngFor="let month of months" [value]="month.value">
+                                {{month.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+
+                    <ng-container *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')">
+                        <button *ngIf="!isLoading && !isOverall && !invoice" (click)="generateInvoice()" type="button" class="btn btn-generate-invoice">Generate Invoice</button>
+                        <button *ngIf="!isLoading && !isOverall && invoice" (click)="viewInvoice(invoice)" type="button" class="btn btn-primary" style="margin: 0; float: right;" >View Invoice</button>
+                    </ng-container>
+                    <ng-container *ngIf="(cred.role !== 'superadmin' && cred.role !== 'admin')">
+                        <button *ngIf="!isLoading && invoice" (click)="viewInvoice(invoice)" type="button" class="btn btn-primary" style="margin: 0; float: right;" >View Invoice</button>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="report-details">
+                <div class="left">
+                    <div *ngFor="let leftItem of leftItems" class="item">
+                        <div class="key">
+                            {{leftItem.name}}
+                        </div>
+                        <div class="value">
+                            : {{leftItem.value | number:'1.0'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div *ngFor="let rightItem of rightItems; let i = index" class="item">
+                        <div>
+                            <div class="value">
+                                {{rightItem.value | number:'1.0'}}
+                            </div>
+                            <div class="key">
+                                {{rightItem.name}}
+                            </div>
+                        </div>
+                        <div *ngIf="i !== (rightItems.length - 1)" class="vertical-divider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')">
+                <div *ngIf="isOverall">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th>Branch</th>
+                                <th>Total Active Students</th>
+                                <th>Total Fees (RM)</th>
+                                <th>Royalty (RM)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td class="text-center" colspan="6">
+                                    <div class="spinner-border text-secondary my-4" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="!isLoading && (!branches || !branches.length)">
+                                <td class="text-center py-4" colspan="6">
+                                    No Data
+                                </td>
+                            </tr>
+                            <tr *ngFor="let b of branches; let i = index">
+                                <td class="text-center">{{i + 1}}</td>
+                                <td>{{b?.branch?.name}}</td>
+                                <td>{{b?.total_active_students}}</td>
+                                <td>{{b?.total_fees_collected}}</td>
+                                <td>{{b?.total_royalty_fees}}</td>
+                                <td class="td-actions text-right">
+                                    <a [routerLink]="['../', b.branch.id]" [queryParams]="queryParams">
+                                        Show 
+                                    </a>
+                                    <span *ngIf="b?.invoice && b?.invoice.file_path" style="margin: 0 5px; font-weight: 100;">|</span>
+                                    <a *ngIf="b?.invoice && b?.invoice.file_path" [href]="b?.invoice.file_path" target="_blank">
+                                        View Invoice
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="!isOverall">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th>Student</th>
+                                <th>Grade</th>
+                                <th>Action</th>
+                                <th>Fees Collected Date</th>
+                                <th>Fees (RM)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td class="text-center" colspan="6">
+                                    <div class="spinner-border text-secondary my-4" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="!isLoading && (!students || !students.length)">
+                                <td class="text-center py-4" colspan="6">
+                                    No Data
+                                </td>
+                            </tr>
+                            <tr *ngFor="let s of students; let i = index">
+                                <td class="text-center">{{i + 1}}</td>
+                                <td>{{s?.first_name}} {{s?.last_name}}</td>
+                                <td>{{s?.enrolment?.grade?.display_name}}</td>
+                                <td>{{s?.action | titlecase}}</td>
+                                <td>{{s?.main_report?.payment && s?.main_report?.payment.status === 'paid' ? s?.main_report?.payment.date : '-' }}</td>
+                                <td>
+                                    <span>RM {{s?.main_report?.payment?.amount_to_pay | number:'1.0'}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="(cred.role !== 'superadmin' && cred.role !== 'admin')">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th>Student</th>
+                            <th>Grade</th>
+                            <th>Action</th>
+                            <th>Fees Collected Date</th>
+                            <th>Fees (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                            <td class="text-center" colspan="6">
+                                <div class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!isLoading && (!students || !students.length)">
+                            <td class="text-center py-4" colspan="6">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let s of students; let i = index;">
+                            <td class="text-center">{{i + 1}}</td>
+                            <td>{{s?.first_name}} {{s?.last_name}}</td>
+                            <td>{{s?.grade?.display_name}}</td>
+                            <td>{{s?.action | titlecase}}</td>
+                            <td>{{s?.main_report?.payment && s?.main_report?.payment.status === 'paid' ? s?.main_report?.payment.date : '-' }}</td>
+                            <td>
+                                <span>RM {{s?.main_report?.payment?.amount_to_pay | number:'1.0'}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+        </div>
+    </div>
+</div>

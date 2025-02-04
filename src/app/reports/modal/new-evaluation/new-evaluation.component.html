@@ -1,0 +1,69 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>New Evaluation Report</h5>
+    </div>
+    <div class="modal-body">
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="row">
+                <div style="float: left">
+                    <label for="rating" style="margin: 0">Star Rating</label>
+                    <ngx-star-rating formControlName="rating" [id]="'rating'" [disabled]="false"></ngx-star-rating>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding" style="padding-right: 5px">
+                    <label for="year">Year</label>
+                    <select (change)="onYearChange($event)" formControlName="year" id="year" class="form-control" required>
+                        <option *ngFor="let year of years" [value]="year.value">
+                            {{year.label}}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding" style="padding-left: 5px">
+                    <label for="month">Month</label>
+                    <select formControlName="month" id="month" class="form-control" required>
+                        <option *ngFor="let month of months" [value]="month.value">
+                            {{month.label}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <label for="branch_id">Branch</label>
+                <select formControlName="branch_id" id="branch_id" class="form-control" required>
+                    <option *ngFor="let branch of branches" [value]="branch.id">
+                        {{branch.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div>
+                    <label class="upload-btn" for="file">Upload Files</label>
+                    <span style="margin-left: 5px">
+                        {{file ? file.name : 'No file selected'}}
+                        <span *ngIf="file" (click)="removeFile()" class="remove-file-btn">&times;</span>
+                    </span>
+                </div>
+                <input accept=".doc, .docx" #uploader (change)="onFileChange($event)" id="file" type="file" />
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary my-4" (click)="submit()">
+            <span *ngIf="!isLoading">Submit</span>
+            <div *ngIf="isLoading" style="width: 1rem; height: 1rem;" class="spinner-border text-light mx-4" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </button>
+    </div>
+</div>

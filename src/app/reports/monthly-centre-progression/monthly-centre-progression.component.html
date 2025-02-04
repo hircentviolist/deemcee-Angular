@@ -1,0 +1,195 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">
+            <div class="row">
+                <div class="col-9">
+                    <div style="display: flex; flex-direction: row">
+                        <div>
+                            <select [disabled]='isLoading' (change)="onYearChange()" [(ngModel)]="selectedYearOption" id="yearOption" class="form-control">
+                                <option *ngFor="let yearOption of yearOptions" [value]="yearOption.value">
+                                    {{yearOption.label}}
+                                </option>
+                            </select>
+                        </div>
+                        
+                        <!-- <ng-container *ngIf="mode === 'total'">
+                            <div *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" style="margin-left: 10px;">
+                                <ng-multiselect-dropdown
+                                    [disabled]='isLoading'
+                                    class="custom-multi-select"
+                                    [settings]="branchDropdownSettings"
+                                    id="branches"
+                                    [placeholder]="'Branches'"
+                                    [data]="branchOptions"
+                                    [(ngModel)]="selectedTotalBranch"
+                                    (onSelect)="changeMode($event, 'branch')"
+                                    (onSelectAll)="changeMode($event, 'branch')"
+                                    (onDeSelect)="changeMode($event, 'branch')"
+                                    (onDeSelectAll)="changeMode($event, 'branch')"
+                                >
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <ng-multiselect-dropdown
+                                    [disabled]='isLoading'
+                                    class="custom-multi-select"
+                                    [settings]="getStatusDropdownSettings(false)"
+                                    id="statusOption"
+                                    [placeholder]="'Status'"
+                                    [data]="statusOptions"
+                                    [(ngModel)]="selectedTotalStatus"
+                                    (onSelect)="changeMode($event, 'status')"
+                                    (onSelectAll)="changeMode($event, 'status')"
+                                    (onDeSelect)="changeMode($event, 'status')"
+                                    (onDeSelectAll)="changeMode($event, 'status')"
+                                >
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </ng-container> -->
+
+                        <ng-container>
+                            <div *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" style="margin-left: 10px;">
+                                <ng-multiselect-dropdown
+                                    [disabled]='isLoading'
+                                    class="custom-multi-select"
+                                    [settings]="branchDropdownSettings"
+                                    id="branches"
+                                    [placeholder]="'Branches'"
+                                    [data]="branchOptions"
+                                    [(ngModel)]="selectedBranchOption"
+                                    (onDropDownClose)="checkBranchDropdownValue()"
+                                    (onSelect)="onBranchSelect()"
+                                    (onSelectAll)="onBranchSelect('select_all')"
+                                    (onDeSelect)="onBranchSelect()"
+                                    (onDeSelectAll)="onBranchSelect('deselect_all')"
+                                >
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <!-- <div *ngIf="!isMultipleAction" style="margin-left: 10px;">
+                                <ng-multiselect-dropdown
+                                    [disabled]='isLoading'
+                                    class="custom-multi-select"
+                                    [settings]="getStatusDropdownSettings(true)"
+                                    id="statusOption"
+                                    [placeholder]="'Status'"
+                                    [data]="statusOptions"
+                                    [(ngModel)]="selectedStatusOption"
+                                    (onSelect)="onStatusSelect()"
+                                    (onSelectAll)="onStatusSelect('select_all')"
+                                    (onDeSelect)="onStatusSelect()"
+                                    (onDeSelectAll)="onStatusSelect('deselect_all')"
+                                >
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div *ngIf="isMultipleAction" style="margin-left: 10px;">
+                                <ng-multiselect-dropdown
+                                    [disabled]='isLoading'
+                                    class="custom-multi-select"
+                                    [settings]="getStatusDropdownSettings(false)"
+                                    id="statusOption"
+                                    [placeholder]="'Status'"
+                                    [data]="statusOptions"
+                                    [(ngModel)]="selectedStatusOption"
+                                    (onSelect)="onStatusSelect()"
+                                    (onSelectAll)="onStatusSelect('select_all')"
+                                    (onDeSelect)="onStatusSelect()"
+                                    (onDeSelectAll)="onStatusSelect('deselect_all')"
+                                >
+                                </ng-multiselect-dropdown>
+                            </div> -->
+                        </ng-container>
+                    </div>
+                </div>
+                <div *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" class="col-3">
+                    <button (click)="resetFilter()" type="button" [disabled]="!hasFilter" [ngClass]="mode === 'filter' ? 'btn-reset-filter-active' : 'btn-reset-filter-disabled'" class="btn">Reset Filter</button>
+                </div>
+                <div *ngIf="(cred.role !== 'superadmin' && cred.role !== 'admin')" class="col-3">
+                    <button (click)="resetFilter()" type="button" [disabled]="!nonAdminHasFilter" [ngClass]="nonAdminHasFilter ? 'btn-reset-filter-active' : 'btn-reset-filter-disabled'" class="btn">Reset Filter</button>
+                </div>
+            </div>
+            
+            <div class="card card-chart">
+                <ng-container>
+                    <div class="card-header">
+                        <h5 class="card-title">All Status</h5>
+                        <!-- <p class="card-category">Line Chart</p> -->
+                    </div>
+                    <div class="card-body">
+                        <div *ngIf="isLoading" style="padding-top: 6rem;">
+                            <div style="display: block; margin: 0 auto;" class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div id="mixGraphContainer">
+                            <canvas id="mixGraph"></canvas>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- <ng-container *ngIf="mode === 'filter'">
+                    <div class="card-header">
+                        <h5 class="card-title">{{!isMultipleAction ? selectedStatusOption[0].name : 'All Status' }}</h5>
+                        <p class="card-category">Line Chart</p>
+                    </div>
+                    <div class="card-body">
+                        <div *ngIf="isLoading" style="padding-top: 6rem;">
+                            <div style="display: block; margin: 0 auto;" class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div id="filteredGraphContainer">
+                        </div>
+                    </div>
+                </ng-container> -->
+            </div>
+
+            
+            <div id="table-scroll" class="table-scroll">     
+                <div id="tableContainer" class="table-wrap">
+                    <!-- <table *ngIf="mode === 'total'" class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Total Active Student</th>
+                                <th>New Enrolment</th>
+                                <th>Dropped Out</th>
+                                <th>Transfer In</th>
+                                <th>Transfer Out</th>
+                                <th>Freezed</th>
+                                <th>Advanced</th>
+                                <th>Extended</th>
+                                <th>Graduated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td class="text-center" colspan="10">
+                                    <div class="spinner-border text-secondary my-4" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let data of tableData">
+                                <td>{{data?.date}}</td>
+                                <td>{{data?.total_active_students}}</td>
+                                <td>{{data?.total_new_enrolment}}</td>
+                                <td>{{data?.total_drop_out}}</td>
+                                <td>{{data?.total_transfer_in}}</td>
+                                <td>{{data?.total_transfer_out}}</td>
+                                <td>{{data?.total_freezed}}</td>
+                                <td>{{data?.total_advance}}</td>
+                                <td>{{data?.total_extended}}</td>
+                                <td>{{data?.total_graduated}}</td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+
+                    <table id="table" class="table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

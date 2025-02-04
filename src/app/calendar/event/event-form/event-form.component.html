@@ -1,0 +1,250 @@
+
+<div class="main-content">
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="card-title" *ngIf="!isUpdate()">Add Event</div>
+        <div class="card-title"
+            *ngIf="isUpdate()">Update Event
+            <div *ngIf="event" style="float: right;padding-right: 3.5%;">
+                <span [ngClass]="{
+                    'badge-info': event?.status === 'Draft',
+                    'badge-danger': event?.status === 'Pending Review',
+                    'badge-success': event?.status === 'Published'}"
+                    class="badge badge-pill">
+                    {{event?.status}}
+                </span>
+            </div>
+        </div>
+      <form [formGroup] = "eventForm" (ngSubmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="2em">
+        <div class="left-container" fxFlex="calc((100% - 4em) / 2)">
+            <div style="display: flex; flex-direction: column; align-items: center">
+                <div class="form-group image-upload" fxLayout="column">
+                    <img *ngIf="eventForm.get('image_url').value" [src]="eventForm.get('image_url').value" alt="" class="event-image">
+                    <span *ngIf="!eventForm.get('image_url').value" style="text-align: center">+ Upload</span>
+                    <input *ngIf="!eventForm.get('image_url').value" type="file" id="event-image" (change)="onUpload($event)">
+                </div>
+                <a *ngIf="eventForm.get('image_url').value" href="javascript:;" (click)="removeImage()">
+                    Remove
+                </a>
+            </div>
+
+            <div class="form-group" *ngIf="!branch_id">
+                <label for="branch">Branch</label>
+                <select id="branch" class="form-control" formControlName="branch_id">
+                    <option *ngFor="let branch of (branch$ | async)" [value]="branch.id">{{branch.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">Event Title</label>
+                <input type="text" id="title" class="form-control" formControlName="title"
+                [class.is-invalid]="!eventForm.get('title').valid && (eventForm.get('title').touched || submitted)">
+                <div class="invalid-feedback">
+                    Event Title Required
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" id="description" class="form-control" formControlName="description"
+                rows="6" cols="10"
+                [class.is-invalid]="!eventForm.get('description').valid && (eventForm.get('description').touched || submitted)">
+                </textarea>
+                <div class="invalid-feedback">
+                    Event Description Required
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="start">Start Date</label>
+                <div class="input-group">
+                    <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="start_date"
+                    ngbDatepicker #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                            <i class="nc-icon nc-calendar-60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="start-time">Start Time</label>
+                <ngb-timepicker [(ngModel)]="start_time" id="start_time" formControlName="start_time"></ngb-timepicker>
+            </div>
+
+
+            <div class="form-group">
+                <label for="start">End Date</label>
+                <div class="input-group">
+                    <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="end_date"
+                    ngbDatepicker #e="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="e.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                            <i class="nc-icon nc-calendar-60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="end-time">End Time</label>
+                <ngb-timepicker [(ngModel)]="end_time" formControlName="end_time" id="end-time"></ngb-timepicker>
+            </div>
+
+
+
+        </div>
+        <div class="right-container" fxFlex="calc((100% - 4em) / 2)">
+            <div class="form-group">
+                <label for="venue">Venue</label>
+                <input type="text" class="form-control" formControlName="venue"
+                [class.is-invalid]="!eventForm.get('venue').valid && (eventForm.get('venue').touched || submitted)">
+                <div class="invalid-feedback">
+                    Venue Required
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pax">Maximum PAX</label>
+                <input type="number" id="pax" class="form-control" formControlName="maximum_pax"  min="0"
+                [class.is-invalid]="!eventForm.get('maximum_pax').valid && (eventForm.get('maximum_pax').touched || submitted)">
+                <div class="invalid-feedback">
+                    Max Pax Required
+                </div>
+            </div>
+
+            <div *ngIf="(cred?.role === 'superadmin' || cred?.role === 'admin')" class="form-group">
+                <label for="status">Status</label>
+                <select id="status" class="form-control" formControlName="status"
+                    [disabled]="cred?.role !== 'superadmin' && cred?.role !== 'admin'"
+                    [class.is-invalid]="!eventForm.get('status').valid && (eventForm.get('status').touched || submitted)">
+                    <option value="Draft">Draft</option>
+                    <option value="Pending Review">Pending Review</option>
+                    <option value="Approved">Approved</option>
+                </select>
+                <div class="invalid-feedback">
+                    Status Required
+                </div>
+            </div>
+
+            <div *ngIf="cred.role === 'superadmin' || cred.role === 'admin'" class="form-group">
+                <label for="points_reward">D-Points Rewarded</label>
+                <input type="number" id="points_reward" class="form-control" formControlName="points_reward" min="0"
+                [class.is-invalid]="!eventForm.get('points_reward').valid && (eventForm.get('points_reward').touched || submitted)">
+                <div class="invalid-feedback">
+                    D-Points Rewarded Required
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <label for="branches-invited">
+                Branches Invited
+            </label>
+            <ng-multiselect-dropdown
+                id="branches-invited"
+                [placeholder]="'Branches'"
+                [data]="branchDropdownList"
+                formControlName="branches"
+                [settings]="branchDropdownSettings"
+                (onSelect)="onSelectBranch($event)"
+                (onSelectAll)="onSelectAllBranches($event)"
+                (onDeSelect)="onDeSelectBranch($event)"
+                (onDeSelectAll)="onDeselectAllBranches($event)"
+            >
+            </ng-multiselect-dropdown>
+
+            <br>
+            <label for="parents-invited">Invite Parents</label>
+            <ng-multiselect-dropdown
+                id="parents-invited"
+                name="parents"
+                [placeholder]="'Parents'"
+                [data]="parentDropdownList"
+                formControlName="parents"
+                [settings]="parentDropdownSettings"
+                (onSelect)="onSelectParents($event)"
+                (onSelectAll)="onSelectAllParents($event)"
+                (onDeSelect)="onDeselectParents($event)"
+                (onDeSelectAll)="onDeselectAllParents($event)"
+            >
+            </ng-multiselect-dropdown>
+
+            <br>
+            <label for="managers-invited">Invite Managers</label>
+            <ng-multiselect-dropdown
+                id="managers-invited"
+                name="Managers"
+                [placeholder]="'Managers'"
+                [data]="managersDropdownList"
+                formControlName="managers"
+                [settings]="managersDropdownSettings"
+                (onSelect)="onSelectManagers($event)"
+                (onSelectAll)="onSelectAllManagers($event)"
+                (onDeSelect)="onDeselectManagers($event)"
+                (onDeSelectAll)="onDeselectAllManagers($event)"
+            >
+            </ng-multiselect-dropdown>
+
+            <br>
+            <label for="teachers-invited">Invite Teachers</label>
+            <ng-multiselect-dropdown
+                id="teachers-invited"
+                name="Teachers"
+                [placeholder]="'Teachers'"
+                [data]="teachersDropdownList"
+                formControlName="teachers"
+                [settings]="teachersDropdownSettings"
+                (onSelect)="onSelectTeachers($event)"
+                (onSelectAll)="onSelectAllTeachers($event)"
+                (onDeSelect)="onDeselectTeachers($event)"
+                (onDeSelectAll)="onDeselectAllTeachers($event)"
+            >
+            </ng-multiselect-dropdown>
+
+            <br>
+            <label for="principals-invited">Invite Principals</label>
+            <ng-multiselect-dropdown
+                id="principals-invited"
+                name="principals"
+                [placeholder]="'Principals'"
+                [data]="principalsDropdownList"
+                formControlName="principals"
+                [settings]="principalsDropdownSettings"
+                (onSelect)="onSelectPrincipals($event)"
+                (onSelectAll)="onSelectAllPrincipals($event)"
+                (onDeSelect)="onDeselectPrincipals($event)"
+                (onDeSelectAll)="onDeselectAllPrincipals($event)"
+            >
+            </ng-multiselect-dropdown>
+<!--            <div class="form-check mt-3">-->
+<!--                <div class="form-check">-->
+<!--                  <label class="form-check-label">-->
+<!--                    <input class="form-check-input" type="checkbox" value="" formControlName="invite_hq"> Invite HQ-->
+<!--                    <span class="form-check-sign"></span>-->
+<!--                  </label>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+
+        <div class="button-container" fxFlex="100%" fxLayoutAlign="center center">
+          <button *ngIf="!isUpdate()" type="submit" class="btn btn-success">
+            <span>Add</span>
+          </button>
+          <button [disabled]="(cred.role !== 'admin' && cred.role !== 'superadmin') && event?.status === 'Published'"
+            *ngIf="isUpdate()" type="submit" class="btn btn-success">
+            <span>Update</span>
+          </button>
+          <a [routerLink]="['../../']">
+            <button type="button" class="btn btn-primary">
+                Cancel
+            </button>
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  </div>

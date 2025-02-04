@@ -1,0 +1,133 @@
+<div class="main-content">
+    <form [formGroup]="salesForm" (ngSubmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="5em">
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between" fxFlex="100%">
+            <h5>Create Sales</h5>
+            <button type="submit" class="btn btn-success">
+                Create
+            </button>
+        </div>
+
+        <div class="form-group" fxFill fxLayout="column">
+            <label for="parent-email">
+                Parent Email
+            </label>
+            <input type="email" class="form-control" id="parent-email"
+            formControlName="email" style="width: 40%;">
+        </div>
+        <div class="form-group" fxFlex="40%">
+            <label for="parent-name">Parent Name</label>
+            <input type="text" class="form-control" id="parent-name" formControlName="name" list="parents">
+        </div>
+        <div class="form-group" fxFlex="40%">
+            <label for="parent-contact-number">Parent Contact Number</label>
+            <input type="tel" class="form-control" id="parent-contact-number" formControlName="phone" [attr.disabled]="true">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="count">#</th>
+                    <th class="name">Name</th>
+                    <th class="quantity">Quantity</th>
+                    <th class="price">Price</th>
+                    <th class="subtotal">Subtotal</th>
+                    <th class="buttons"></th>
+                </tr>
+            </thead>
+            <tbody formArrayName="items" [fxHide]="!salesForm.get('phone').value">
+                <tr *ngFor="let item of itemArray.controls; let i = index;"
+                [formGroupName]="i">
+                    <td class="count">
+                        {{i + 1}}
+                    </td>
+                    <td class="name">
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="product_name"
+                            list="product-list" (change)="onChangeProduct($event, i)">
+                        </div>
+                    </td>
+                    <td class="quantity">
+                        <div class="form-group">
+                            <select class="form-control" formControlName="quantity"
+                            *ngIf="productsState"
+                            (change)="onChangeQuantity($event, i)">
+                                <option value="">{{ productsState[i]?.is_out_of_stock ? 'Out of Stock' : 'Qty'}}</option>
+                                <option
+                                *ngFor="let q of productsState[i]?.stock; let i = index"
+                                [value]="i + 1">{{i + 1}}</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="price">
+                        <span *ngIf="productsState">
+                            {{productsState[i]?.price | currency:'MYR'}}
+                        </span>
+                    </td>
+                    <td class="sub-total">
+                        <span *ngIf="productsState">
+                            {{productsState[i]?.subtotal | currency:'MYR'}}
+                        </span>
+                    </td>
+                    <td class="buttons" fxLayout fxLayoutGap="0.5em">
+                        <i class="nc-icon nc-simple-add" (click)="addItem()"></i>
+                        <i class="nc-icon nc-simple-delete"
+                        (click)="removeItem(i)"
+                        [class.disabled]="salesForm.get('items').value?.length < 2"></i>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+
+                    </td>
+                    <td>
+                        Promo Code
+                    </td>
+                    <td>
+                        <div class="form-group" fxLayout="row" style="margin-bottom: 0;align-items: center;">
+                            <input type="text" class="form-control" list="promo-code-list" formControlName="promo_code">
+                        </div>
+                        <small *ngIf="promoCodeErrorMessage" class="text-danger text-right my-1">
+                            {{promoCodeErrorMessage}}
+                        </small>
+                    </td>
+                </tr>
+                <tr *ngIf="selectedPromoCode && discountAmount">
+                    <td colspan="3">
+
+                    </td>
+                    <td>
+                        Discount
+                    </td>
+                    <td>
+                        {{ discountAmount | currency:'MYR'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+
+                    </td>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        {{ total | currency:'MYR'}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <datalist id="product-list">
+            <option *ngFor="let product of (productList$ | async)" [value]="product.name">
+        </datalist>
+
+        <datalist id="parents">
+            <option *ngFor="let parent of (parent$ | async)" [value]="parent.name">
+        </datalist>
+
+        <datalist id="promo-code-list">
+            <option *ngFor="let promoCode of promoCodes" [value]="promoCode.code">
+        </datalist>
+
+    </form>
+</div>

@@ -1,0 +1,47 @@
+<div class="main-content">
+  <div class="button-container" fxLayoutAlign="space-between center">
+    <div class="back">
+      <a href="javascript:;" (click)="location.back()">
+        < Back
+      </a>
+    </div>
+    <div>
+      <a (click)="update()">
+        <button class="btn btn-success">
+          Edit
+        </button>
+      </a>
+      <a (click)="delete()">
+        <button class="btn btn-danger">
+          Delete
+        </button>
+      </a>
+
+    </div>
+  </div>
+
+  <div>
+    <h4>View Video Assignment</h4>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="48%">
+        <label>Student</label>
+        <p>{{(student$ | async)?.name}}</p>
+      </div>
+      <div fxFlex="48%"></div>
+      <div fxFlex="48%">
+        <label>Role</label>
+        <p>{{(theme$ | async)?.name}}</p>
+      </div>
+      <div fxFlex="48%">
+        <label>Submission Date</label>
+        <p>{{(video$ | async)?.submission_date}}</p>
+      </div>
+      <div fxFlex="100%" fxLayout="column">
+        <label>Video (Suggested Video Aspect Ratio: 16:9)</label>
+        <iframe *ngIf="videoType === 'facebook'" [src]="videoUrl" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+        <iframe *ngIf="videoType === 'youtube'" style="width: 100%; height: 350px;" [src]="videoUrl" frameborder="0" allow="accelerometer; autoplay=0; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>

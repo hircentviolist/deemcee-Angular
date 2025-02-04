@@ -1,0 +1,98 @@
+<div class="main-container">
+	<div class="button-container" fxLayoutAlign="end">
+		<!-- <button class="btn btn-success" (click)="onChangeMain('add')">Add</button> -->
+	</div>
+
+	<div>
+		<div style="flex-direction: row; margin-top: 30px" fxLayoutAlign="start">
+			<div>
+				<label for="sortDate">Sort by Request Date:</label>
+				<div style="width: 150px; align-items: center">
+					<select
+						style="height: 40px"
+						(change)="populateList()"
+						id="sortDate"
+						class="form-control"
+						[(ngModel)]="sortDate"
+					>
+						<option value="asc">Ascending</option>
+						<option value="desc">Descending</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div id="table-scroll" class="table-scroll">
+			<div class="table-wrap">
+				<table class="table table-hover" fxFlex="100%">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Branch</th>
+							<th scope="col">Request Date</th>
+							<th scope="col">Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let order of orders?.data; let i = index">
+							<tr
+								[style.background-color]="
+									state?.rows[i].state === 'update' && state?.main === 'show' ? 'lightgrey' : 'unset'
+								"
+							>
+								<th scope="row">{{ order?.number }}</th>
+								<td>
+									<span>{{ order?.branch.name }}</span>
+								</td>
+								<td>
+									<span>{{ order?.request_date }}</span>
+								</td>
+								<td>
+									<span>{{ order?.status }}</span>
+								</td>
+								<td fxLayOutGap="1em" fxLayoutAlign="end center">
+									<a [routerLink]="['request', order.id]">
+										<button class="btn btn-success">Show</button>
+									</a>
+								</td>
+							</tr>
+							<tr *ngIf="state?.rows[i].state === 'update'">
+								<td colspan="5">
+									<ng-container *ngTemplateOutlet="order2"></ng-container>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div
+			*ngIf="pages.length && (role === 'superadmin' || role === 'admin')"
+			style="display: flex; justify-content: flex-end; margin-top: 20px"
+		>
+			<nav>
+				<ul class="pagination">
+					<li (click)="paginationClicked('prev')" class="page-item">
+						<a class="page-link" href="javascript:;">Previous</a>
+					</li>
+
+					<li
+						*ngFor="let page of pages"
+						(click)="paginationClicked(page)"
+						class="page-item"
+						[class.active]="page.is_active"
+					>
+						<a class="page-link" href="javascript:;">{{ page.number }}</a>
+					</li>
+
+					<li (click)="paginationClicked('next')" class="page-item">
+						<a class="page-link" href="javascript:;">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<ng-template #order2> </ng-template>

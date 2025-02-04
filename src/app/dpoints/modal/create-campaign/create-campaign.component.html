@@ -1,0 +1,113 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h6>{{title}}</h6>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <fieldset>
+                <div>
+                    <div style="margin-bottom: 35px;" fxFlex="48%" class="form-group">
+                        <ng-container *ngIf="accumulations && accumulations.length">
+                            <label class="title" for="accumulation">Accumulation</label>
+                            <select id="accumulation" class="form-control" formControlName="accumulation"
+                            [class.is-invalid]="!form.get('accumulation').valid &&
+                            (form.get('accumulation').touched || submitted)" required>
+                                <option *ngFor="let accumulation of accumulations" [value]="accumulation.value">
+                                    {{accumulation.label}}
+                                </option>
+                            </select>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="margin-bottom: 35px;" fxFlex="50%" class="form-group">
+                        <label class="title" for="title">Subject</label>
+                        <input placeholder="Subject" type="text" id="title" class="form-control" formControlName="title"
+                        [class.is-invalid]="!form.get('title').valid &&
+                        (form.get('title').touched || submitted)" required />
+                    </div>
+
+                    <div style="margin-bottom: 35px; margin-right: 2%; margin-left: 5%;" fxFlex="22.6%" class="form-group">
+                        <label class="title" for="points">Points Given</label>
+                        <input placeholder="Amount of Points" type="number" id="points" class="form-control" formControlName="points" min="0"
+                        [class.is-invalid]="!form.get('points').valid &&
+                        (form.get('points').touched || submitted)" required />
+                    </div>
+
+                    <div style="margin-bottom: 35px;" fxFlex="22.6%" class="form-group">
+                        <label class="title" for="bonus_multiply">Bonus Given</label>
+                        <select id="bonus_multiply" class="form-control" formControlName="bonus_multiply"
+                        [class.is-invalid]="!form.get('bonus_multiply').valid &&
+                        (form.get('bonus_multiply').touched || submitted)" required>
+                            <option *ngFor="let multiply of bonusMultiplyOptions" [value]="multiply.value">
+                                {{multiply.label}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="margin-bottom: 35px; margin-right: 5%;" fxFlex="48%" class="form-group">
+                        <label class="title" for="start_date">Start Date</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="startDate" class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                                   ngbDatepicker #d1="ngbDatepicker"  [class.is-invalid]="!form.get('start_date').valid &&
+                               (form.get('start_date').touched || submitted)">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d1.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label class="title" for="end_date">End Date</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="endDate" class="form-control datepicker" id="end_date" placeholder="yyyy-mm-dd" formControlName="end_date"
+                                   ngbDatepicker #d2="ngbDatepicker"  [class.is-invalid]="!form.get('end_date').valid &&
+                               (form.get('end_date').touched || submitted)">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d2.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div fxFlex="30%" class="form-group">
+                        <label class="title" for="start_time">Start Time</label>
+                        <ngb-timepicker [(ngModel)]="startTime" id="start_time" formControlName="start_time"
+                        [class.is-invalid]="!form.get('start_time').valid &&
+                        (form.get('start_time').touched || submitted)"></ngb-timepicker>
+                    </div>
+                    <div fxFlex="30%" class="form-group">
+                        <label class="title" for="end-time">End Time</label>
+                        <ngb-timepicker [(ngModel)]="endTime" id="end-time" formControlName="end_time"
+                        [class.is-invalid]="!form.get('end_time').valid &&
+                        (form.get('end_time').touched || submitted)"></ngb-timepicker>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary my-4" (click)="submit()">
+            <span *ngIf="!submitted">{{data?.id ? 'Update' : 'Create'}}</span>
+            <div *ngIf="submitted" style="width: 1rem; height: 1rem;" class="spinner-border text-light mx-4" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </button>
+    </div>
+</div>

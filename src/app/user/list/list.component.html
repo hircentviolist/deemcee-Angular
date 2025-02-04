@@ -1,0 +1,16 @@
+<div class="main-content">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (activeIdChange)="onChangeTable($event)">
+    <li *ngFor="let user of authorization; let i = index;" [ngbNavItem]="i"
+    [id]="user.value.replace(' ', '_').toLowerCase() + '_tab'">
+      <a ngbNavLink>{{user.display}}</a>
+      <ng-template ngbNavContent>
+
+        <app-list-table (valueChange)="onValueChange($event)" (searchChange)="this.search=$event" [search]="search" [user]="user" [data]="data" *ngIf="data"></app-list-table>
+        
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+</div>

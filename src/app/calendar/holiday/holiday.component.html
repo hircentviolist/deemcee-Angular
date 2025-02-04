@@ -1,0 +1,155 @@
+
+<br>
+<div class="super-menu" fxLayout fxLayoutAlign="space-between center">
+
+
+    <div class="select-year" fxLayout>
+        <div class="form-group" [fxHide]="state?.status === 'New'">
+            <select [(ngModel)]="id" id="year" class="form-control" (change)="onChangeYear($event)">
+                <option value="0" selected>Select Year</option>
+                <option *ngFor="let year of years" [value]="year.id">
+                    {{year.year}} | {{year.status}}
+                </option>
+            </select>
+        </div>
+        <h4 [fxHide]="state?.status !== 'New'">
+          Draft Calendar for {{newCalendarYear}}
+        </h4>
+    </div>
+
+    <div class="button-container" fxLayout fxLayoutGap="2em">
+        <button class="btn btn-success" type="button" (click)="onChangeStatus('New')"
+        [fxHide]="state?.status === 'New'">
+            Add New Calendar Year
+        </button>
+        <button class="btn btn-light"
+        (click)="onChangeStatus(holidays.status)"
+        [fxHide]="state?.status !== 'New'">
+          Cancel
+        </button>
+        
+        <button class="btn btn-warning" type="button"
+        (click)="onPublish()"
+        [fxShow]="state?.status === 'Draft'">
+          <div *ngIf="submitted" class="spinner-border text-light" style="height: 1rem; width: 1rem" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span *ngIf="!submitted">Publish</span>
+        </button>
+    </div>
+</div>
+
+<!-- {{state | json}} -->
+
+<div fxLayout fxLayoutGap="3em">
+    <table class="table table-hover" fxFlex="60%">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Holiday Name</th>
+            <th scope="col" fxLayoutAlign="end">
+              <button class="btn btn-success"
+              (click)="onChangeMain('add')"
+              [fxShow]="holidays?.status === 'Draft' || state?.status === 'New' || (isAdmin && holidays?.status === 'Published')">
+                Add Holiday
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="holidays && state?.status !== 'New'">
+          <tr *ngIf="state?.rows?.length !== holidays?.dates?.length">
+            <td class="text-center" colspan="5">
+              <div class="spinner-border text-secondary my-4" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </td>
+          </tr>
+          <ng-container *ngIf="state?.rows?.length === holidays?.dates?.length">
+            <tr *ngFor="let holiday of holidays?.dates; let i = index;"
+            [style.background-color]="(state?.rows[i].state === 'update' && state?.main === 'show') ? 'lightgrey' : 'unset'">
+  
+              <th scope="row">{{i + 1}}</th>
+              <td>
+                  <span>{{holiday?.start}}</span>
+              </td>
+              <td>
+                  <span>{{holiday?.end}}</span>
+              </td>
+              <td>
+                  <span>{{holiday?.title}}</span>
+              </td>
+              <td fxLayOutGap="1em" fxLayoutAlign="end center">
+                  <button class="btn btn-success" [fxHide]="state?.status === 'Published' && !isAdmin"
+                  (click)="onChangeRows(i, 'update')">Show</button>
+                  <button class="btn btn-danger" [fxHide]="state?.status === 'Published' && !isAdmin"
+                  (click)="onChangeRows(i, 'delete')">Delete</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="card" fxFlex="calc(40% - 3em)" [fxHide]="!isUpdate() && state?.main !== 'add'">
+        <div class="card-body">
+          <div class="card-title"
+          *ngIf="!isUpdate()">Add Holiday</div>
+          <div class="card-title"
+          *ngIf="isUpdate()">Update Holiday</div>
+          <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
+
+            <br>
+            <div class="form-group">
+              <label for="start_date">Holiday Name</label>
+              <input type="text" id="start_date" class="form-control" formControlName="title"
+              [class.is-invalid]="!holidayForm.get('start').valid && (holidayForm.get('start').touched || submitted)">
+              <div class="invalid-feedback">
+                  <!-- Start Date Required -->
+              </div>
+          </div>
+          <br>
+            <div class="form-group">
+              <label for="start">Start Date</label>
+              <div class="input-group">
+                  <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="start"  [minDate]="minDate" [maxDate]="maxDate"
+                  ngbDatepicker #d="ngbDatepicker" (dateSelect)="onSelectDate('start-date', $event)">
+                  <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"
+                      fxLayoutAlign="center center">
+                          <i class="nc-icon nc-calendar-60"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+            <br>
+            <div class="form-group">
+              <label for="start">End Date</label>
+              <div class="input-group">
+                  <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="end" [minDate]="minDate" [maxDate]="maxDate"
+                  ngbDatepicker #e="ngbDatepicker" (dateSelect)="onSelectDate('end-date', $event)">
+                  <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="e.toggle()" type="button"
+                      fxLayoutAlign="center center">
+                          <i class="nc-icon nc-calendar-60"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+            <br>
+            <div class="button-container">
+              <button type="submit" class="btn btn-success">
+                <div *ngIf="submitted" class="spinner-border text-light" style="height: 1rem; width: 1rem" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <span *ngIf="!submitted && !isUpdate()">Add</span>
+                <span *ngIf="!submitted && isUpdate()">Update</span>
+              </button>
+              <button *ngIf="!submitted" type="button" class="btn btn-primary" (click)="initializeState()">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>

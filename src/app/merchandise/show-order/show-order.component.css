@@ -1,0 +1,7 @@
+.quantity {
+    text-align: center;
+}
+
+input#delivery-fee {
+    width: 6em;
+}

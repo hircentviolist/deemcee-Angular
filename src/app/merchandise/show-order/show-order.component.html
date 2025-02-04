@@ -1,0 +1,163 @@
+<div class="main-content">
+    <div class="back">
+        <a href="javascript:;" (click)="location.back()">
+            < Back
+        </a>
+    </div>
+    <div class="order-form">
+        <div class="header" fxLayout fxLayoutAlign="space-between">
+            <div class="logo" fxLayoutAlign="center center">
+                <img src="assets/img/logo.png" alt="logo" width="200px">
+            </div>
+            <div class="order-info" fxLayout="column">
+                <h5>Merchandise Request</h5>
+                <h6>Request Date</h6>
+                <span>{{order?.request_date}}</span>
+                <br>
+                <h6>Status</h6>
+                <span>{{order?.status}}</span>
+
+                <div fxLayout *ngIf="order?.status === 'Pending' && (role === 'admin' || role === 'superadmin')">
+                    <button class="btn btn-small btn-success" (click)="updateRequestStatus('Approved')">
+                        Accept
+                    </button>
+                    <button class="btn btn-small btn-danger" (click)="updateRequestStatus('Rejected')">
+                        Reject
+                    </button>
+                </div>
+
+                <div fxLayout *ngIf="order?.status === 'Approved' && (role === 'admin' || role === 'superadmin')">
+                    <button class="btn btn-small btn-success" (click)="updateRequestStatus('Delivering')">
+                        Delivering
+                    </button>
+                </div>
+
+                <div fxLayout *ngIf="order?.status === 'Delivering' && (role === 'principal' || role === 'manager')">
+                    <button class="btn btn-small btn-success" (click)="updateRequestStatus('Received')">
+                        Received
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="address-container" fxLayout fxLayoutAlign="space-between">
+            <div class="billing" fxLayout="column" fxFlex=20%>
+            <h6>Delivery Method:</h6>
+            {{order?.delivery_type}}
+
+            </div>
+            <div class="shipping" fxLayout="column" fxFlex="20%" [fxHide]="order?.delivery_type === 'Self Pickup'">
+                <h6>Shipping Address:</h6>
+                <blockquote>
+                    {{order?.delivery_address}}
+                </blockquote>
+            </div>
+            <div class="customer-note" fxFlex="20%" fxLayout="column">
+                <h6>Customer Note</h6>
+                {{order?.customer_notes || 'None'}}
+            </div>
+
+            <ng-container *ngIf="(role === 'admin' || role === 'superadmin')">
+                <div class="staff-note" fxFlex="20%" fxLayout="column"
+                *ngIf="order?.status !== 'Pending' || order?.staff_notes">
+                    <h6>Staff Note</h6>
+                    {{order?.staff_notes || 'None'}}
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="(role !== 'admin' && role !== 'superadmin')">
+                <div class="staff-note" fxFlex="20%" fxLayout="column">
+                    <h6>Staff Note</h6>
+                    {{order?.staff_notes || 'None'}}
+                </div>
+            </ng-container>
+
+            <div class="staff-note" fxFlex="20%" fxLayout="column"
+            *ngIf="order?.status === 'Pending' && !order?.staff_notes && (role === 'admin' || role === 'superadmin')">
+                <form [formGroup]="orderForm" (ngSubmit)="onSubmitStaffNotes()">
+                    <div class="form-group">
+                        <label for="staff-notes">Staff Notes</label>
+                        <textarea id="staff-notes" cols="30" rows="4" class="form-control"
+                        formControlName="staff_notes"></textarea>
+                    </div>
+                    <button class="btn btn-small btn-success" type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="items">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col" class="unit-price">Price Per Set</th>
+                      <th scope="col" class="quantity">No Of Sets <span style="text-transform: lowercase;">x</span> Qty</th>
+                      <th scope="col" class="subtotal">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of order?.items; let i = index;">
+                          <td>
+                            <span>
+                                {{i + 1}}
+                            </span>
+                          </td>
+                          <td>
+                            <span>
+                                {{item.product.name}}
+                            </span>
+                          </td>
+                          <td class="unit-price">
+                              <span>
+                                  {{item.price_per_set | currency:'MYR'}}
+                              </span>
+                          </td>
+                          <td class="quantity">
+                                {{item.no_of_sets}} x {{item.quantity_per_set}}
+                          </td>
+                          <td class="subtotal">
+                            <span>
+                                {{item.subtotal | currency: 'MYR'}}
+                            </span>
+                          </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="total-label">Delivery Fees</td>
+                        <td class="total-value">
+                            <div class="delivery-fee"
+                            *ngIf="order?.status !== 'Pending' || order?.delivery_fee">
+                                {{item?.delivery_fee | currency: 'MYR'}}
+                            </div>
+                            <div class="delivery-fee"
+                            *ngIf="order?.status === 'Pending' && !order?.delivery_fee && (role === 'admin' || role === 'superadmin')">
+                                <form [formGroup]="deliveryFeesForm" (ngSubmit)="onSubmitDeliveryFees()">
+                                    <div class="form-group">
+                                        <input id="delivery-fee" type="number" class="form-control" formControlName="delivery_fee"
+                                        placeholder="Delivery Fees" min="0">
+                                    </div>
+                                    <button class="btn btn-small btn-success" type="submit">Add</button>
+                                </form>
+                            </div>
+                            <div class="delivery_fee"
+                            *ngIf="order?.delivery_fee">
+                                {{order?.delivery_fee | currency:'MYR'}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="total-label">Total</td>
+                        <td class="total-value">{{total | currency: 'MYR'}}</td>
+                    </tr>
+                  </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

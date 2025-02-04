@@ -1,0 +1,44 @@
+<!-- {{(sale$ | async) | json}} -->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Category Details
+        </h5>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="name">
+                        Versions
+                    </th>
+                    <th class="start-date">
+                        Start Date
+                    </th>
+                    <th class="end-date">
+                        End Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let version of (categoryDetail$ | async)?.versions">
+                    <td class="name">
+                        {{version.name}}
+                    </td>
+                    <td class="start-date">
+                        {{version.start_date}}
+                    </td>
+                    <td class="end-date">
+                        {{version.end_date}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <button class="btn btn-primary" (click)="activeModal.dismiss(false)">
+            Close
+        </button>
+    </div>
+</div>

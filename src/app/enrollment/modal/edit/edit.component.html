@@ -1,0 +1,114 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>{{data.mode === 'student' ? 'Edit Student Info' : 'Edit Term'}}</h5>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+      <fieldset *ngIf="data.mode === 'student'; else enrolment">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div fxFlex="48%" class="form-group">
+            <label for="first_name">Name</label>
+            <input type="text" class="form-control" id="first_name" formControlName="first_name"
+                   [class.is-invalid]="!editForm.get('first_name').valid &&
+                        (editForm.get('first_name').touched || submitted)">
+            <div class="invalid-feedback">
+              Name is Required
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" class="form-control" formControlName="gender"
+                    [class.is-invalid]="!editForm.get('gender').valid &&
+                        (editForm.get('gender').touched || submitted)">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <div class="invalid-feedback">
+              Gender Required
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="dob">Date of Birth</label>
+            <div class="input-group">
+              <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="dob"
+                     ngbDatepicker #d="ngbDatepicker"  [class.is-invalid]="!editForm.get('dob').valid &&
+                               (editForm.get('dob').touched || submitted)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                  <i class="nc-icon nc-calendar-60"></i>
+                </button>
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              Date of Birth Required
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="school">School</label>
+            <input type="text" class="form-control" id="school" formControlName="school"
+                   [class.is-invalid]="!editForm.get('school').valid &&
+                               (editForm.get('school').touched || submitted)">
+            <div class="invalid-feedback">
+              School Required
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="referral_channel_id">Refer Channel</label>
+            <select id="referral_channel_id" class="form-control" formControlName="referral_channel_id">
+              <option value="">Select Referral Channel</option>
+              <option *ngFor="let channel of referralChannels" [value]="channel.id">{{channel.name}}</option>
+            </select>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="referral">Referred By</label>
+            <input name="" type="text" id="referral" class="form-control" formControlName="referral">
+          </div>
+        </div>
+      </fieldset>
+      <ng-template #enrolment>
+        <fieldset>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+            <div fxFlex="48%" class="form-group">
+              <label for="grade_id">Grade</label>
+              <select id="grade_id" #grade class="form-control" formControlName="grade_id" (change)="onGradeChanged(grade.value)">
+                <option value="">Select Grade</option>
+                <option *ngFor="let grade of (grade$ | async)" [value]="grade.id">{{grade.name}}</option>
+              </select>
+            </div>
+            <div fxFlex="48%" class="form-group">
+              <label for="start_date">Commencement Date</label>
+              <div class="input-group">
+                <input class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                       ngbDatepicker #d="ngbDatepicker"  [class.is-invalid]="!editForm.get('start_date').valid &&
+                               (editForm.get('start_date').touched || submitted)">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                          fxLayoutAlign="center center">
+                    <i class="nc-icon nc-calendar-60"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="invalid-feedback">
+                Commencement Date is Required
+              </div>
+            </div>
+            <div fxFlex="48%" class="form-group">
+              <label for="class_id">Class</label>
+              <select id="class_id" class="form-control" formControlName="class_id">
+                <option value="">Select Class</option>
+                <option *ngFor="let slot of (classes$ | async)" [value]="slot.id">{{slot.name}}</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+      </ng-template>
+      <div class="button-container" fxLayoutAlign="center">
+        <button type="submit" class="btn">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

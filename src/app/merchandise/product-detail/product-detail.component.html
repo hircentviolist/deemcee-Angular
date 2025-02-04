@@ -1,0 +1,102 @@
+<div class="main-content" fxLayoutAlign="center">
+    <div class="card">
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Product Update
+                </h5>
+                <img [src]="product?.thumbnail?.url">
+
+                <div class="name-container">
+                    <label for="name">Name</label>
+                    <p id="name">
+                        {{product?.name}}
+                    </p>
+                </div>
+                <div *ngIf="product?.short_description" class="short-description-container">
+                    <label for="short-description">Short Description</label>
+                    <p id="short-description">
+                        {{product?.short_description}}
+                    </p>
+                </div>
+                <br>
+                <br>
+                <div class="clearfix"></div>
+                <!-- <div class="long-description-container">
+                    <label for="long-description">Long Description</label>
+                    <p id="short-description">
+                        {{product?.long_description || 'N/A'}}
+                    </p>
+                </div> -->
+                <div class="price-container" fxLayout="row wrap" fxLayoutGap="5%">
+                    <div class="retail-price-container form-group" fxFlex="45%">
+                        <label for="retail-price">Retail Price (MYR)</label>
+                        <p id="retail-price">
+                            {{product?.regular_price | currency:'MYR'}}
+                        </p>
+                    </div>
+                    <div class="form-group" fxFlex="45%">
+                        <label for="sales-price">Sales Price</label>
+                        <input type="number" class="form-control" id="sales-price" min="0"
+                        [attr.disabled]="(cred.role === 'manager' || cred.role === 'principal') ? 'true' : null"
+                        formControlName="sale_price"
+                        [class.is-invalid]="!productForm.get('sale_price').valid && (submitted || productForm.get('sale_price').touched)">
+                        <div class="invalid-feedback">
+                            Sale Price Required
+                        </div>
+                        <!-- <p id="sales-price">
+                            {{(product?.sale_price | currency:'MYR') || 'N/A'}}
+                        </p> -->
+                    </div>
+                    <div class="form-group" fxFlex="45%">
+                        <label for="retail-price">Quantity Per Set</label>
+                        <input type="number" class="form-control" id="retail-price" min="0"
+                        [attr.disabled]="(cred.role === 'manager' || cred.role === 'principal') ? 'true' : null"
+                        formControlName="quantity_per_set"
+                        [class.is-invalid]="!productForm.get('quantity_per_set').valid && (submitted || productForm.get('quantity_per_set').touched)">
+                        <div class="invalid-feedback">
+                            Quantity Per Set Required
+                        </div>
+                        <!-- <p id="retail-price">
+                            {{product?.regular_price | currency:'MYR'}}
+                        </p> -->
+                    </div>
+                    <div class="form-group" fxFlex="45%">
+                        <label for="sales-price">Price Per Set (MYR)</label>
+                        <input type="number" class="form-control" id="sales-price" min="0"
+                        [attr.disabled]="(cred.role === 'manager' || cred.role === 'principal') ? 'true' : null"
+                        formControlName="price_per_set"
+                        [class.is-invalid]="!productForm.get('price_per_set').valid && (submitted || productForm.get('price_per_set').touched)">
+                        <div class="invalid-feedback">
+                            Price Per Set Required
+                        </div>
+                        <!-- <p id="sales-price">
+                            {{(product?.sale_price | currency:'MYR') || 'N/A'}}
+                        </p> -->
+                    </div>
+                    <div class="retail-price-container form-group" fxFlex="45%"
+                    *ngIf="cred.role === 'principal' || cred.role === 'manager'">
+                    </div>
+                    <div class="button-container" fxFlex="95%" fxLayoutAlign="center" fxLayoutGap="1em">
+                        <button class="btn btn-primary" (click)="onViewInventory($event)">
+                            View Inventory
+                        </button>
+                        <div fxLayout fxLayoutGap="2em">
+                            <a [routerLink]="['../../']" [queryParams]="{branch_id: branch_id}">
+                                <button class="btn btn-secondary">
+                                    Cancel
+                                </button>
+                            </a>
+                            <button class="btn btn-success" type="submit"
+                            *ngIf="cred.role === 'admin' || cred.role === 'superadmin'">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

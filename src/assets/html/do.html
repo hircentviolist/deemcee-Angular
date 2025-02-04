@@ -1,0 +1,300 @@
+<style>
+    .page {
+        padding: 3em 4em 5em 4em;
+        line-height: 1.2em;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .company-details {
+        float: left;
+    }
+    .logo {
+        float: right;
+    }
+    .header, .below-title {
+        display: inline-block;
+        width: 100%;
+    }
+    .document-title {
+        color:blue;
+    }
+    .deliver-to {
+        float: left;
+    }
+    .doc-details {
+        float: right;
+    }
+    .doc-detail table {
+        width: 100%;
+    }
+    .doc-details .title {
+        font-weight: bolder;
+    }
+    th {
+        font-weight: bolder;
+        color: blue;
+    }
+    td.total-title {
+        text-align: right;
+    }
+    td.total-amount {
+        text-align: center;
+        font-weight: bolder;
+    }
+    table.item {
+        width: 100%;
+    }
+    table.item td, table.item th {
+        padding: 1em 2em;
+    }
+    table.item th {
+        background-color: lightblue;
+    }
+    table.item td {
+        border-bottom: 1px solid lightgray;
+    }
+    td.no, th.no, td.qty, th.qty {
+        text-align: center;
+    }
+    td.item, th.item, td.description, th.description {
+        text-align: left;
+    }
+    .below-item {
+        margin-top: 4em;
+    }
+    .remark-box {
+        margin-top: 0.6em;
+        width: 40%;
+        height: 8em;
+        border: 1px solid lightblue;
+    }
+    .signatures {
+        display: inline-block;
+        margin-top: 4em;
+        width: 100%;
+    }
+    .issuer {
+        float: left;
+        width: 25%;
+    }
+    .receiver {
+        float: right;
+        width: 25%;
+    }
+    .signature-line {
+        margin-top: 6em;
+        border-bottom: 2px dotted lightgray;
+    }
+    .name, .date {
+        margin-top: 0.8em;
+    }
+
+</style>
+<div class="page">
+    <div class="header">
+        <div class="company-details">
+            <div class="deemcee-address">
+                <span class="company-name">
+                    <strong>DEEMCEE SDN BHD</strong> 
+                </span>
+                <br>
+                B-2-16, Jalan PJU 1/43, Alam Suria, <br>
+                Petaling Jaya, Selangor. 47301 <br>
+                <br>
+                <span class="email">
+                    www.deemcee.com
+                </span>
+                <br>
+                <span class="ssm">
+                    SSM: 1265543-P
+                </span>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="" alt="Logo Here">
+        </div>
+    </div>
+
+    <div class="document-title">
+        <h1>DELIVERY ORDER</h1>
+    </div>
+
+    <div class="below-title">
+        <div class="deliver-to">
+            <strong>Deliver To</strong>
+            <br>
+            <span class="branch-name">
+                {{Branch Name}}
+            </span>
+            <br>
+            <span class="branch-address">
+                {{Branch Address 1}}
+            </span>
+            <br>
+            <span class="branch-address">
+                {{Branch Address 2}}
+            </span>
+            <br>
+            <span class="branch-address">
+                {{Branch Address 2}}
+            </span>
+            <br>
+            <span class="branch-postcode">
+                {{Branch Zipcode}}
+            </span>
+            <span class="branch-city">
+                {{Branch City}}
+            </span>
+            <br>
+            <span class="branch-state">
+                {{Branch state}}
+            </span>
+
+        </div>
+        <div class="doc-details">
+            <table>
+                <tr>
+                    <td class="title">
+                        INVOICE NO:
+                    </td>
+                    <td class="content">
+                        {{Invoice Number}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">
+                        DO NO:
+                    </td>
+                    <td class="content">
+                        {{DO Number}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">
+                        DELIVERY METHOD:
+                    </td>
+                    <td class="content">
+                        {{Pickup / Delivery}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">
+                        Date:
+                    </td>
+                    <td class="content">
+                        {{Some Date}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <table class="item">
+        <thead>
+            <tr>
+                <th class="no">NO.</th>
+                <th class="item">ITEM</th>
+                <th class="description">DESCRIPTION</th>
+                <th class="qty">QTY</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="no">
+                    1
+                </td>
+                <td class="item">
+                    TEACHER UNIFORM
+                </td>
+                <td class="description">
+                    S Size
+                </td>
+                <td class="qty">
+                    5
+                </td>
+            </tr>
+            <tr>
+                <td class="no">
+                    2
+                </td>
+                <td class="item">
+                    TEACHER UNIFORM
+                </td>
+                <td class="description">
+                    S Size
+                </td>
+                <td class="qty">
+                    5
+                </td>
+            </tr>
+            <tr>
+                <td class="no">
+                    3
+                </td>
+                <td class="item">
+                    TEACHER UNIFORM
+                </td>
+                <td class="description">
+                    S Size
+                </td>
+                <td class="qty">
+                    5
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+                <td class="total-title">
+                    TOTAL
+                </td>
+                <td class="total-amount">
+                    15
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="below-item">
+        <div class="remark-title">
+            Remark
+        </div>
+        <div class="remark-box"></div>
+
+    </div>
+
+    <div class="signatures">
+        <div class="issuer">
+            <span class="issued-title">
+                Issued By,
+            </span>
+            <div class="signature-line">
+            </div>
+            <div class="name">
+                Name:
+            </div>
+            <div class="date">
+                Date:
+            </div>
+        </div>
+        <div class="receiver">
+            <span class="issued-title">
+                Received By,
+            </span>
+            <div class="signature-line">
+            </div>
+            <div class="name">
+                Name:
+            </div>
+            <div class="date">
+                Date:
+            </div>
+
+        </div>
+    </div>
+    
+</div>

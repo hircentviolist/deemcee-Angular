@@ -1,0 +1,79 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close(false)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Enrolment Confirmation</h5>
+        <p>Do you want to make payment for {{data.name}}? Here’s the payment details.</p>
+    </div>
+    <div class="modal-body" style="padding-bottom: 0; margin-bottom: 0;">
+        <h6 style="font-weight: bold;">Summary Payment</h6>
+    </div>
+    <form [formGroup]="paymentForm">
+        <div class="modal-body" style="padding-bottom: 0; align-items: center;" fxLayout>
+            <div class="left" fxFlex="48%" fxLayout="column">
+                <p>Payment Date</p>
+            </div>
+            <div fxFlex="48%" fxLayout="column">
+                <div class="input-group">
+                    <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="date"
+                           ngbDatepicker #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                fxLayoutAlign="center center">
+                            <i class="nc-icon nc-calendar-60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0;" fxLayout>
+            <div class="left" fxFlex="48%" fxLayout="column">
+                <p>{{data.grade}} Term Payment</p>
+                <p style="margin-top: 10px;">Promo Code</p>
+                <p *ngIf="discountAmount" style="margin-top: 10px;">Discount</p>
+                <p [style.margin-top]="promoCodeErrorMessage ? '35px' : discountAmount ? '0' : '15px'">Total</p>
+                <p>Credit</p>
+                <p style="color: transparent;">_</p>
+                <p style="padding-top: 5px;">Amount to Pay</p>
+            </div>
+            <div class="right" fxFlex="48%" fxLayout="column">
+                <p style="text-align: right;">RM {{data.amount | number: '1.2-2'}}</p>
+                <div class="form-group" fxLayout="row" style="margin-bottom: 0;justify-content: flex-end; align-items: center;">
+                    <input type="text" class="form-control" list="promo-code-list"
+                        formControlName="promo_code" style="margin-left: 15px; text-align: right;">
+                </div>
+                <small *ngIf="promoCodeErrorMessage" class="text-danger text-right my-1">
+                    {{promoCodeErrorMessage}}
+                </small>
+                <p *ngIf="discountAmount" style="text-align: right; margin-top: 20px;">RM {{discountAmount | number: '1.2-2'}}</p>
+                <p [style.margin-top]="discountAmount ? '0' : '20px'" style="text-align: right;">RM {{amountToPay | number: '1.2-2'}}</p>
+                <p style="text-align: right;">RM {{data.pre_outstanding | number: '1.2-2'}}</p>
+                <!-- <p style="text-align: right;">RM {{data.discount | number: '1.2-2'}}</p> -->
+                <hr style="border-top: 1px solid rgba(0,0,0,0.5) !important;border-bottom: none;width: 100%;">
+                <div class="form-group" fxLayout="row" style="justify-content: flex-end; align-items: center;">
+                    <span>RM</span>
+                    <input type="text" class="form-control" formControlName="amount" style="margin-left: 15px; text-align: right;">
+                </div>
+            </div>
+        </div>
+
+        <datalist id="promo-code-list">
+            <option *ngFor="let promoCode of promoCodes" [value]="promoCode.code">
+        </datalist>
+    </form>
+<!--    <div class="modal-body" style="padding-top: 0;">-->
+<!--        <div class="form-group" fxLayout="row" style="justify-content: flex-end; align-items: center;">-->
+<!--            <span>RM</span>-->
+<!--            <input type="text" class="form-control" style="margin-left: 15px; text-align: right; width: 50%" value="{{payment_amount | number: '1.2-2'}}">-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-light" (click)="activeModal.close(false)">Pay Later</button>
+        <a>
+            <button class="btn btn-primary" (click)="payNow()">Pay Now</button>
+        </a>
+    </div>
+</div>
+

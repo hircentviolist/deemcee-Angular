@@ -1,0 +1,64 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Advance Confirmation</h5>
+    </div>
+    <div class="modal-body">
+        Are you sure you about advancing {{data.enrolment.name}} from {{data.enrolment.grade.name}} to {{data.nextGrade.name}} ?
+        <p>Ending at: {{last_lesson_date}}</p>
+        <form [formGroup]="advanceForm" (ngSubmit)="advance()">
+            <fieldset>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-check mt-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" [value]="isEarlyAdvance" (change)="isEarlyCheck($event)"> Early Advance?
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div *ngIf="isEarlyAdvance" fxFlex="48%" class="form-group">
+                        <label for="last_lesson_id">Last Class</label>
+                        <select id="last_lesson_id" #lastClass class="form-control" formControlName="last_lesson_id" (change)="onLastClassChange(lastClass.value)">
+                            <option *ngFor="let classSlot of data.enrolment.class_lesson" [value]="classSlot.id">
+                                {{classSlot.start_datetime}}
+                            </option>
+                        </select>
+                    </div>
+                    <div fxFlex="100%" class="form-group">
+                        <label for="commencement_date">New Term Start Date</label>
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="commencement_date" placeholder="yyyy-mm-dd" formControlName="commencement_date"
+                                   ngbDatepicker #d="ngbDatepicker"  [class.is-invalid]="!advanceForm.get('commencement_date').valid &&
+                               (advanceForm.get('commencement_date').touched || submitted)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="100%" class="form-group">
+                        <label for="to_class_id">Timeslot</label>
+                        <select id="to_class_id" class="form-control" formControlName="to_class_id">
+                            <option *ngIf="!(slot$ | async); else slotAvailable" value="">Please select Start Date first</option>
+                            <ng-template #slotAvailable>
+                                <option *ngFor="let slot of (slot$ | async)" [value]="slot.id">
+                                    {{slot.name}}
+                                </option>
+                            </ng-template>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-light" (click)="activeModal.dismiss()">Cancel</button>
+        <button class="btn btn-primary" (click)="advance()">Yes</button>
+    </div>
+</div>
+

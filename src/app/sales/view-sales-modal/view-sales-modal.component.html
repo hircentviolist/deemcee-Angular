@@ -1,0 +1,50 @@
+<!-- {{(sale$ | async) | json}} -->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Order Details
+        </h5>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tbody>
+                <tr *ngFor="let item of sale.items;let i = index">
+                    <td class="name" [style.padding-bottom]="i === sale.items.length - 1 ? '15px' : '0'">
+                        {{item.product.name}}
+                        <span class="quantity">
+                            x {{item.quantity}}
+                        </span>
+                        
+                    </td>
+                    <td class="subtotal" [style.padding-bottom]="i === sale.items.length - 1 ? '15px' : '0'">
+                        {{item.subtotal | currency:'MYR'}}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr *ngIf="sale.promo_code">
+                    <td class="total-title">
+                        Discount ({{ sale.promo_code.code }})
+                    </td>
+                    <td class="total">
+                        -{{ sale.discount | currency: 'MYR'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="total-title">
+                        Total
+                    </td>
+                    <td class="total">
+                        {{ total | currency: 'MYR' }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-success" (click)="activeModal.dismiss()">
+            Close
+        </button>
+    </div>
+</div>

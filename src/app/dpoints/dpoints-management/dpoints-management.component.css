@@ -1,0 +1,13 @@
+.btn {
+    margin-right: 5px;
+}
+
+.btn-inactive, .btn-inactive:active, .btn-inactive:visited {
+    color: grey !important;
+    background-color: transparent !important;
+}
+
+.btn-inactive:hover {
+    color: #51cbce !important;
+    background-color: transparent !important;
+}

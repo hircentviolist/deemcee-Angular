@@ -1,0 +1,45 @@
+<!-- {{(sale$ | async) | json}} -->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Confirm Order
+        </h5>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tbody>
+                <tr *ngFor="let item of confirm.items">
+                    <td class="name">
+                        {{item?.product_name}}
+                        <span class="quantity">
+                            x {{item?.quantity}}
+                        </span>
+                        
+                    </td>
+                    <td class="subtotal">
+                        {{item?.subtotal | currency:'MYR'}}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="total-title">
+                        Total
+                    </td>
+                    <td class="total">
+                        {{ confirm.total | currency: 'MYR'}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <button class="btn btn-success" (click)="activeModal.dismiss(true)">
+            Yes
+        </button>
+        <button class="btn btn-primary" (click)="activeModal.dismiss(false)">
+            No
+        </button>
+    </div>
+</div>

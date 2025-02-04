@@ -1,0 +1,40 @@
+<div class="main-content">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="active"  class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Inventory</a>
+          <ng-template ngbNavContent>
+            <app-product></app-product>
+          </ng-template>
+        </li>
+        <li *ngIf="role !== 'superadmin' && role !== 'admin'" [ngbNavItem]="2">
+            <a ngbNavLink>Place Order</a>
+            <ng-template ngbNavContent>
+                <app-place-order></app-place-order>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <a ngbNavLink>Requests</a>
+          <ng-template ngbNavContent>
+              <app-order></app-order>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="4">
+          <a ngbNavLink>Invoice</a>
+          <ng-template ngbNavContent>
+              <app-invoice></app-invoice>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="5">
+          <a ngbNavLink>DO</a>
+          <ng-template ngbNavContent>
+              <app-do></app-do>
+          </ng-template>
+        </li>
+
+
+
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

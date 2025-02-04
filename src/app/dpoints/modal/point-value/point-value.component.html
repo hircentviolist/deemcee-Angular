@@ -1,0 +1,52 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h6>{{title}}</h6>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div *ngIf="key === 'point_to_RM'" class="row">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-padding">
+                    <label for="rm">RM</label>
+                    <input class="form-control" type="text" id="rm" value="1" disabled />
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label style="color: #fff">a</label>
+                    <input class="form-control"
+                        style="border: none;
+                            background-color: #fff;
+                            cursor: default;
+                            font-size: 25px;
+                            text-align: center;
+                            margin-top: -8px;"
+                        type="text"
+                        value="=" />
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-padding">
+                    <label for="point_to_RM">D-Points</label>
+                    <input class="form-control" type="number" id="point_to_RM" formControlName="point_to_RM" min="0" required />
+                </div>
+            </div>
+
+            <div *ngIf="key !== 'point_to_RM'">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-padding">
+                    <label for="{{key}}">Points Given</label>
+                    <input class="form-control" type="number" id="{{key}}" formControlName="{{key}}" min="0" required />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary my-4" (click)="submit()">
+            <span *ngIf="!isLoading">Update</span>
+            <div *ngIf="isLoading" style="width: 1rem; height: 1rem;" class="spinner-border text-light mx-4" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </button>
+    </div>
+</div>

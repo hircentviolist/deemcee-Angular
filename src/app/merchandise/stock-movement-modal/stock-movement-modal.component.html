@@ -1,0 +1,49 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Stock Movement</h5>
+    </div>
+    <div class="modal-body">
+
+        <h6>Branch</h6>
+        {{getBranchName(branch_id) | async}}
+
+        <br>
+        <br>
+
+        <h6>Product</h6>
+        {{product.name}}
+
+        <br>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="date-time">Date & Time</th>
+                    <th class="description">Description</th>
+                    <th *ngIf="branch_id === 1">Requested By</th>
+                    <th class="quantity">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let movement of (movement$ | async)?.movements">
+                    <td class="date-time">
+                        {{movement.created_at}}
+                    </td>
+                    <td class="description">
+                        {{movement.reason_text}}
+                    </td>
+                    <td *ngIf="branch_id === 1">
+                        {{movement.creator?.branch?.display_name && (movement.reason_id === 7 || movement.reason_id === 8) ? movement.creator.branch.display_name : '-'}}
+                    </td>
+                    <td class="quantity">
+                        {{movement.amount}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

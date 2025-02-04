@@ -1,0 +1,60 @@
+<!-- <div class="main-content">
+    <div class="card" fxFlex="calc(40% - 3em)" [fxHide]="!isUpdate() && state?.main !== 'add'">
+        <div class="card-body">
+            <div class="card-title" 
+            *ngIf="!isUpdate()">Add Holiday</div>
+            <div class="card-title" 
+            *ngIf="isUpdate()">Update Holiday</div>
+            <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
+                
+                <br>
+                <div class="form-group">
+                <label for="start_date">Holiday Name</label>
+                <input type="text" id="start_date" class="form-control" formControlName="title"
+                [class.is-invalid]="!holidayForm.get('start').valid && (holidayForm.get('start').touched || submitted)">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <br>
+                <div class="form-group">
+                <label for="start">Start Date</label>
+                <div class="input-group">
+                    <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="start"
+                    ngbDatepicker #d="ngbDatepicker" (dateSelect)="onSelectDate('start-date', $event)">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                            <i class="nc-icon nc-calendar-60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <div class="form-group">
+                <label for="start">End Date</label>
+                <div class="input-group">
+                    <input class="form-control datepicker" placeholder="yyyy-mm-dd" formControlName="end"
+                    ngbDatepicker #e="ngbDatepicker" (dateSelect)="onSelectDate('end-date', $event)">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="e.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                            <i class="nc-icon nc-calendar-60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <div class="button-container">
+                <button type="submit" class="btn btn-success">
+                    <span *ngIf="!isUpdate()">Add</span>
+                    <span *ngIf="isUpdate()">Update</span>
+                </button>
+                <button type="button" class="btn btn-primary" (click)="initializeState()">
+                    Cancel
+                </button>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+</div> -->

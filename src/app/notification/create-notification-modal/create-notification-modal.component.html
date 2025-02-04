@@ -1,0 +1,59 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>{{mode === 'create' ? 'Create New' : 'View'}} Notification</h5>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="notificationForm" (ngSubmit)="create()">
+      <fieldset>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div fxFlex="48%" class="form-group">
+            <label for="type_id">Type</label>
+            <select id="type_id" #typeId class="form-control" formControlName="type_id" (change)="onNotificationTypeChange(typeId.value)">
+              <option *ngFor="let type of (notificationType$ | async)" [value]="type.id">
+                {{type.name}}
+              </option>
+            </select>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="subject">Subject</label>
+            <input id="subject" class="form-control" formControlName="subject">
+          </div>
+          <div fxFlex="100%" class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" formControlName="description"></textarea>
+          </div>
+          <div *ngIf="mode === 'create'" fxFlex="100%" class="form-group">
+            <label style="padding-bottom: 10px">Send To</label>
+            <div style="display: flex; flex-wrap: wrap">
+              <div *ngFor="let audience of audienceFormArray.controls; let i = index" style="width: 50%"  formArrayName="audienceGroup">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" [formControlName]="i" checked="{{audienceGroup[i].checked}}">{{audienceGroup[i].name}}
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="mode === 'view'" fxFlex="100%" class="form-group">
+            <label style="padding-bottom: 10px">Sent To</label>
+            <div>
+              <span *ngFor="let sent of data.notificationGroup.sent_to">
+                {{sent}}<br>
+              </span>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div *ngIf="mode === 'create'" class="button-container" fxLayoutAlign="center">
+        <button type="submit" class="btn">Create Notification</button>
+      </div>
+    </form>
+    <div *ngIf="mode === 'view'" class="button-container" fxLayoutAlign="center">
+      <button class="btn" (click)="activeModal.dismiss()">Close</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Promo Code</h5>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        No
+                    </th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th class="text-center">
+                        Min Purchase Amount
+                    </th>
+                    <th class="text-center">
+                        Quantity (left / total)
+                    </th>
+                    <th class="text-center">
+                        Type
+                    </th>
+                    <th class="text-center">
+                        Expired At
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="isLoading">
+                    <td colspan="8" class="text-center pt-4">
+                        <div *ngIf="isLoading" class="spinner-border" style="width: 2rem; height: 2rem; color: grey; padding: 0; margin: 0;" role="status">
+                            <span style="color: grey" class="sr-only">Loading...</span>
+                        </div>
+                    </td>
+                </tr>
+                <ng-container *ngIf="!isLoading && !promoCodes.length">
+                    <td colspan="8" class="text-center pt-4">
+                        No promo code found
+                    </td>
+                </ng-container>
+
+                <ng-container *ngIf="!isLoading && promoCodes.length">
+                    <tr *ngFor="let promoCode of promoCodes; let i = index">
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+                        <td>
+                            {{ promoCode.code }}
+                        </td>
+                        <td>
+                            {{ promoCode.amount }}
+                        </td>
+                        <td class="text-center">
+                            {{ promoCode.min_purchase_amount }}
+                        </td>
+                        <td class="text-center">
+                            {{ promoCode.left }} / {{ promoCode.quantity }}
+                        </td>
+                        <td class="text-center">
+                            {{ promoCode.type | titlecase }}
+                        </td>
+                        <td class="text-center">
+                            {{ promoCode.expired_at }}
+                        </td>
+                        <td>
+                            {{ promoCode.status }}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-light" (click)="activeModal.close()">Close</button>
+    </div>
+</div>

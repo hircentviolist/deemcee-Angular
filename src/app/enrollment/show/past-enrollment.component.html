@@ -1,0 +1,73 @@
+<div fxLayout="column" style="padding: 0 0">
+	<!-- <div style="padding-top: 30px;">
+    <div style="display: flex; flex: 1; flex-direction: row;">
+      <div style="display: flex; flex-direction: column; padding-right: 50px;">
+        <p *ngIf="studentName">
+          Name: <strong>{{studentName}}</strong>
+        </p>
+        <p *ngIf="studentGrade">
+          Grade: <strong>{{studentGrade}}</strong>
+        </p>
+        <p *ngIf="classDetailsCount">
+            Total class: <strong>{{ classDetailsCount?.total_class_count }}</strong>
+        </p>
+        <p *ngIf="classDetailsCount">
+          Remaining class: <strong>{{ classDetailsCount?.remaining_class_count }}</strong>
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <p *ngIf="classDetailsCount">
+          Attended: <strong>{{ classDetailsCount?.total_attended_count }}</strong>
+        </p>
+        <p *ngIf="classDetailsCount">
+          Rescheduled: <strong>{{ classDetailsCount?.total_rescheduled_count }}</strong>
+        </p>
+        <p *ngIf="classDetailsCount">
+          Absent: <strong>{{ classDetailsCount?.total_absent_count }}</strong>
+        </p>
+        <p *ngIf="classDetailsCount">
+            Freezed class: <strong>{{ classDetailsCount?.freezed_class_count }}</strong>
+        </p>
+      </div>
+    </div>
+  </div> -->
+	<div id="table-scroll" class="table-scroll">
+		<div class="table-wrap">
+			<table class="table table-hover main-table">
+				<thead>
+					<tr>
+						<th scope="col">Grade</th>
+						<th scope="col">Commencement Date</th>
+						<th scope="col">End Date</th>
+						<th scope="col">Term Fees (RM)</th>
+						<th scope="col">Payment Date</th>
+						<th scope="col">Video</th>
+						<th scope="col">Status</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let enr of pastEnrollment$ | async; let i = index">
+						<td>{{ enr.grade.display_name }}</td>
+						<td>{{ enr.start_date }}</td>
+						<td>{{ enr.end_date ? enr.end_date : '-' }}</td>
+						<td>RM {{ enr.payment.amount | number: '1.2-2' }}</td>
+						<td>{{ enr.payment.updated_at }}</td>
+						<td style="text-align: start">
+							<ng-container *ngFor="let video of enr.video_array; let i = index">
+								<a href="javascript:;" (click)="onVideoClicked(enr, video)">
+									{{ video.label }}
+								</a>
+								<br />
+							</ng-container>
+						</td>
+						<td>{{ enr.status }}</td>
+						<td>
+							<a [routerLink]="['..', enr.id, 'past']"> Show </a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

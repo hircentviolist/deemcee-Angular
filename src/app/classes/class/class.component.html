@@ -1,0 +1,62 @@
+<div class="main-container">
+
+  <div style="display:flex; flex-direction: row;">
+    <div style="display: inline-flex;" fxLayoutAlign="start">
+      <a [queryParams]="{active: active}" [routerLink]="['week-view']">
+          <button class="btn btn-primary">Week View</button>
+      </a>
+    </div>
+    <div style="flex: 1; align-self: flex-end; display: inline-flex; float: right" fxLayoutAlign="end">
+        <a [queryParams]="{active: active}" [routerLink]="['.', 'new']">
+            <button class="btn btn-success">Add</button>
+        </a>
+    </div>
+  </div>
+
+    <div fxLayout fxLayoutGap="3em">
+
+
+    <table class="table table-hover" fxFlex="100%">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category</th>
+            <th scope="col">Day & time</th>
+            <th scope="col">Label</th>
+            <th scope="col">commencement</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let class_ of classes; let i = index;">
+
+            <th scope="row">{{i + 1}}</th>
+            <td>
+                <span>{{class_?.category.name}}</span>
+            </td>
+            <td>
+                <span>{{class_?.day}}</span>
+                <br>
+                <span>{{class_?.start_time}} - {{class_?.end_time}}</span>
+            </td>
+            <td>
+                <span>{{class_?.label}}</span>
+            </td>
+            <td>
+                <span>{{class_?.commencement_date}}</span>
+            </td>
+            <td fxLayOutGap="1em" fxLayoutAlign="end center">
+                <a [queryParams]="{active: active}" [routerLink]="['.', class_?.id]">
+                    <button class="btn btn-success">Show</button>
+                </a>
+
+                <button class="btn btn-danger" (click)="onDelete(class_?.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+</div>
+

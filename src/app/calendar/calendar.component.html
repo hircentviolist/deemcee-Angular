@@ -1,0 +1,31 @@
+<div class="main-content">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="active" class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Calendar</a>
+          <ng-template ngbNavContent>
+            <app-calendar></app-calendar>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Holidays</a>
+            <ng-template ngbNavContent>
+                <app-holiday></app-holiday>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <a ngbNavLink>Events</a>
+          <ng-template ngbNavContent>
+            <app-event></app-event>
+          </ng-template>
+        </li>
+        <!-- <li [ngbNavItem]="4">
+            <a ngbNavLink>Classes</a>
+            <ng-template ngbNavContent>
+              <app-class></app-class>
+            </ng-template>
+          </li> -->
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

@@ -1,0 +1,85 @@
+<div class="main-content">
+    <div class="card" fxFlex="calc(40% - 3em)">
+        <div class="card-body">
+            <div style="margin-bottom: 15px;">
+                <a href="javascript:;" (click)="goBack()" class="card-title">&lt; Back</a>
+            </div>
+
+            <div *ngIf="!isShowCalendar" style="padding-top: calc(20% - 3em); text-align: center; width: 100%">
+                <div class="spinner-border text-secondary my-4" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <div *ngIf="isShowCalendar" style="width: 100%">
+                <div class="shadow-sm" *ngIf="isLoading" style="border-radius: 5px; position: absolute;right: 45%;top: 50%;z-index: 2;width: 100px;background-color: white;border: 1px solid rgba(55,55,55,0.1);">
+                    <div style="display: block; margin: 0 auto;" class="spinner-border text-secondary my-4" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div style="margin: 25px 0 35px; display: flex; flex-direction: row;">
+                    <div style="margin-right: 20px;display: flex;flex-direction: row;" *ngFor="let hint of calendarHints">
+                        <div style="width: 20px;height: 20px;background-color: red;margin-right: 5px;border-radius: 3px;"
+                            [style.background-color]="hint.color">
+                        </div>
+                        <span>
+                            {{hint.label}}
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="width: 100%">
+                    <div class="form-group" fxFlex.gt-xs="30%">
+                        <label for="startDate">Choose Date</label>
+                        <div class="input-group">
+                            <input 
+                                data-toggle="tooltip" data-placement="bottom" title="Date will auto set to the first day (Monday) of the week upon selected" 
+                                (click)="e.toggle()" style="background-color: white;cursor: pointer;"  
+                                (ngModelChange)="onStartDateChange()" [(ngModel)]="inputStartDate" 
+                                class="form-control datepicker" id="startDate" 
+                                placeholder="yyyy-mm-dd" #e="ngbDatepicker"
+                                readonly ngbDatepicker>
+                            <div class="input-group-append">
+                                <button 
+                                    data-toggle="tooltip" data-placement="bottom" title="Date will auto set to the first day (Monday) of the week upon selected"
+                                    class="btn btn-outline-secondary" style="margin: 0" (click)="e.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="align-items: center; padding: 0 15px 0 25px;display: flex;">
+                        <span>to</span>
+                    </div>
+                    <div style="align-items: center; padding: 0 10px;display: flex;">
+                        <span style="font-size: 15px;">{{inputEndDate}}</span>
+                    </div>
+
+                    <div style="flex: 1;justify-content: flex-end;align-items: center;display: flex;">
+                        <div style="display: flex; flex-direction: row;">
+                            <div>
+                                <button (click)="handleButton('prev')" class="btn" style="margin: 0; border-bottom-right-radius: 0; border-top-right-radius: 0;">
+                                    <span class="btn-label">
+                                        <i class="nc-icon nc-minimal-left"></i>
+                                    </span>
+                                </button>
+                            </div>
+                            <div>
+                                <button (click)="handleButton('next')" class="btn" style="margin: 0; border-bottom-left-radius: 0; border-top-left-radius: 0;">
+                                    <span class="btn-label btn-label-right">
+                                        <i class="nc-icon nc-minimal-right"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 100%" *ngIf="isShowCalendar">
+                <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="main-content">
+    <div class="container-fluid" style="background-color: white; border-radius: 5px;">
+        <div class="row">
+            
+            <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;"> 
+                <a (click)="goBack()" href="javascript:;">&lt; Back</a>  
+            </div>
+
+            <div style="width: 100%;">
+                <div class="row px-3">
+                    <div class="col-10">
+                        <h4 style="font-weight: 600; font-size: 20px;">
+                            D-Points Details
+                        </h4>
+                    </div>
+                    <div class="col-2">
+                        <button *ngIf="!isLoading" style="margin-top: 30px;" (click)="edit()" type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+                
+                <div class="row p-3" style="padding-bottom: 30px !important;">
+                    <div *ngIf="isLoading" class="col-12 text-center">
+                        <div class="spinner-border text-secondary my-4" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="!isLoading">
+                        <div class="col-5">
+                            <div class="title">
+                                Subject
+                            </div>
+                            <div>
+                                {{details?.subject}}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="title">
+                                Points Given
+                            </div>
+                            <div>
+                                {{details?.points}}
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="title">
+                                Section
+                            </div>
+                            <div>
+                                {{details?.section}}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

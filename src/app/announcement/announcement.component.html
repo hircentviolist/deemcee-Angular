@@ -1,0 +1,43 @@
+<div class="main-content" fxLayout="column">
+  <div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="button-container" fxLayoutAlign="end" style="flex-direction: row;">
+      <button class="btn btn-success" (click)="createNew()">
+        + Create New Announcement
+      </button>
+    </div>
+    <div id="table-scroll" class="table-scroll">
+      <div class="table-wrap">
+        <table class="table table-hover main-table">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Type</th>
+            <th scope="col">Period</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let announcement of (allAnnouncement$ | async); let i = index;">
+            <td>{{i + 1}}</td>
+            <td>
+              <img src="{{announcement.mobile_banner_url}}" style="width: 100px; object-fit: cover;">
+            </td>
+            <td>{{announcement.title}}</td>
+            <td>{{announcement.description}}</td>
+            <td>{{announcement.type}}</td>
+            <td>{{announcement.start_date}} - {{announcement.end_date}}</td>
+            <td>
+              <a href="javascript:;" (click)="update(announcement)">
+                Show
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

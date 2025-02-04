@@ -1,0 +1,83 @@
+.report-details {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    border-radius: 5px;
+    margin: 25px 0;
+}
+    
+.report-details > div {
+    display: flex;
+    padding: 15px;
+    flex: 1;
+}
+
+.report-details > .left {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.report-details > .left > .item {
+    display: flex;
+    flex: 0 50%;
+    flex-direction: row;
+    margin: 5px 0;
+}
+
+.report-details > .left > .item > .key {
+    padding-left: 10px;
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+}
+
+.report-details > .left > .item > .value {
+    font-weight: bold;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+.report-details > .right {
+    border-left: 1px solid rgba(100, 100, 100, 0.3);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.report-details > .right > .item {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.report-details > .right > .item > div {
+    flex-direction: column;
+}
+
+.report-details > .right > .item > div > .value {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.report-details > .right > .item > .vertical-divider {
+    border-left: 1px solid rgba(100, 100, 100, 0.5);
+    margin: 0 15px;
+}
+
+.report-details > .right > .item > div > .key {
+    color: rgb(35,35,35);
+}
+
+.btn-generate-invoice, .btn-generate-invoice:active, .btn-generate-invoice:visited {
+    background-color: #1fc718 !important;
+    margin: 0;
+    float: right;
+}
+
+.btn-generate-invoice:hover {
+    opacity: 0.8 !important;
+}

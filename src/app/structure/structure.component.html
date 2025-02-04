@@ -1,0 +1,25 @@
+<div class="main-content">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="active" class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Category</a>
+          <ng-template ngbNavContent>
+            <app-category></app-category>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Grade</a>
+          <ng-template ngbNavContent>
+            <app-grade></app-grade>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <a ngbNavLink>Lesson Theme</a>
+          <ng-template ngbNavContent>
+            <app-lesson-theme></app-lesson-theme>
+          </ng-template>
+        </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

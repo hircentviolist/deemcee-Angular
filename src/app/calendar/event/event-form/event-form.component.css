@@ -1,0 +1,25 @@
+.event-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.input-group-append button {
+    width: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/*img.event-image {*/
+/*    max-width: 50%;*/
+/*    height: auto;*/
+/*}*/
+
+.image-upload {
+    width: 300px;
+    min-height: 100px;
+    height: auto;
+    border: 1px grey dashed;
+    align-items: center;
+    justify-content: center;
+}

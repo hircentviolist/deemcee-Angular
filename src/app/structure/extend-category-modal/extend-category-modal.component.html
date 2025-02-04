@@ -1,0 +1,34 @@
+<!-- {{(sale$ | async) | json}} -->
+<form [formGroup]="extendForm" (ngSubmit)="onSubmit()">
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Category {{(categoryDetail$ | async)?.name}}
+        </h5>
+    </div>
+    <div class="modal-body">
+        
+            <div class="form-group">
+                <label for="extension">Extend by:</label>
+                <select id="extension" class="form-control" formControlName="extension"
+                [class.is-invalid]="!extendForm.valid && (extendForm.touched || submitted)">
+                    <option *ngFor="let month of months; let i = index;" [value]="i + 1">
+                        {{i + 1}} month(s)
+                    </option>
+                </select>
+                <div class="invalid-feedback">
+                    Entension Time Required
+                </div>
+            </div>
+        
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <button class="btn btn-success" type="submit">
+            Extend
+        </button>
+        <button class="btn btn-primary" (click)="activeModal.dismiss(false)">
+            Cancel
+        </button>
+    </div>
+</div>
+</form>  

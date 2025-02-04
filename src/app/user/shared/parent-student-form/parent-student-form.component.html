@@ -1,0 +1,232 @@
+<div class="card" fxFlex="100%">
+    <div class="card-body">
+        <form [formGroup]="parentStudentForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>{{userType}}</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="branch">Branch*</label>
+                        <select id="branch" class="form-control" formControlName="branch_id"
+                                [class.is-invalid]="!parentStudentForm.get('branch_id').valid && (parentStudentForm.get('branch_id').touched || submitted)">
+                            <option value="">Select Branch</option>
+                            <option *ngFor="let branch of (selectBranchData | async)" [value]="branch.id">{{branch.name}}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            You need to specify a branch this Parent is registered in.
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="email">Email*</label>
+                        <input type="email" id="email" class="form-control" formControlName="email"
+                               [class.is-invalid]="!parentStudentForm.get('first_name').valid && (parentStudentForm.get('first_name').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Valid Email Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="first_name">Name*</label>
+                        <input type="text" class="form-control" id="first_name" formControlName="first_name"
+                               [class.is-invalid]="!parentStudentForm.get('first_name').valid && (parentStudentForm.get('first_name').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>First Name Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="dob">DOB</label>
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="dob"
+                                   ngbDatepicker #d="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="gender">Gender*</label>
+                        <select id="gender" class="form-control" formControlName="gender"
+                                [class.is-invalid]="!parentStudentForm.get('gender').valid && (parentStudentForm.get('gender').touched || submitted)">
+                            <option>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <span>Gender Required</span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="phone">Phone*</label>
+                        <input type="tel" class="form-control" id="phone" formControlName="phone"
+                               [class.is-invalid]="!parentStudentForm.get('phone').valid && (parentStudentForm.get('phone').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Phone Number Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="occupation">Occupation*</label>
+                        <input type="text" class="form-control" id="occupation" formControlName="occupation"
+                               [class.is-invalid]="!parentStudentForm.get('occupation').valid && (parentStudentForm.get('occupation').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Occupation Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="no_of_children">No of Children</label>
+                        <input type="text" class="form-control" id="no_of_children" formControlName="no_of_children">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+
+                <legend>Spouse</legend>
+
+                <div class="form-group">
+                    <label for="spouse_name">Spouse name</label>
+                    <input type="text" class="form-control" id="spouse_name" formControlName="spouse_name">
+                </div>
+
+                <div class="form-group">
+                    <label for="spouse_phone">Spouse Phone</label>
+                    <input type="tel" class="form-control" id="spouse_phone" formControlName="spouse_phone">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="spouse_phone">Spouse Occupation</label>
+                    <input type="text" class="form-control" id="spouse_occupation" formControlName="spouse_occupation">
+                </div>
+
+            </fieldset>
+            <fieldset formGroupName="address">
+
+                <legend>Address</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_line_1">Address Line 1*</label>
+                        <input type="text" class="form-control" id="address_line_1" formControlName="address_line_1"
+                               [class.is-invalid]="!parentStudentForm.get('address.address_line_1').valid && (parentStudentForm.get('address.address_line_1').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Address Line 1 Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_line_2">Address Line 2</label>
+                        <input type="text" class="form-control" id="address_line_2" formControlName="address_line_2">
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_line_1">Address Line 3</label>
+                        <input type="text" class="form-control" id="address_line_3" formControlName="address_line_3">
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_city">City*</label>
+                        <input type="text" class="form-control" id="address_city" formControlName="city"
+                               [class.is-invalid]="!parentStudentForm.get('address.city').valid && (parentStudentForm.get('address.city').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>City Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_postcode">Postcode*</label>
+                        <input type="text" class="form-control" id="address_postcode" formControlName="postcode"
+                               [class.is-invalid]="!parentStudentForm.get('address.postcode').valid && (parentStudentForm.get('address.postcode').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Postcode Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="address_state">State*</label>
+                        <select id="address_state" class="form-control" formControlName="state"
+                                [class.is-invalid]="!parentStudentForm.get('address.state').valid && (parentStudentForm.get('address.state').touched || submitted)">
+                            <option></option>
+                            <option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            State Required
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="button-container" fxLayoutAlign="center">
+                <button class="btn btn-success" type="submit">{{action}}</button>
+            </div>
+        </form>
+        <hr>
+        <legend>Kids</legend>
+        <table class="table" *ngIf="kids && kids.length">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Started Since</th>
+                <th>Starting Grade</th>
+                <th>Current Grade</th>
+                <th>Status</th>
+                <th>Refer Channel</th>
+                <th>Referred By</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let kid of kids">
+                <td>
+                    {{kid.first_name}} {{kid.last_name}}
+                </td>
+                <td>
+                    {{kid.commencement_date}}
+                </td>
+                <td>
+                    {{kid.starting_grade}}
+                </td>
+                <td>
+                    {{kid.current_grade}}
+                </td>
+                <td>
+                    {{kid.status}}
+                </td>
+                <td>
+                    {{kid.referral_channel}}
+                </td>
+                <td>
+                    {{kid.referral}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- first_name
+    last_name
+    email
+    phone
+    dob
+    gender: 'male' | 'female'
+    occupation: string;
+    spouse_name: string;
+    spouse_phone: string;
+    address_line_1: string;
+    address_line_2: string;
+    address_line_3: string;
+    address_city: string;
+    address_postcode: string;
+    address_state: string;
+    how_did_you_know_about_us: string;
+    : string; -->
+

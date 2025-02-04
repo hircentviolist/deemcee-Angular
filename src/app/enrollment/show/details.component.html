@@ -1,0 +1,212 @@
+<div fxLayout fxLayoutAlign="space-between center">
+
+    <h3 class="student-details-title">Student Details</h3>
+
+    <div *ngIf="role !== 'teacher'" class="btn-group" ngbDropdown placement="left-top" role="group" aria-label="Button group with nested dropdown">
+        <button class="btn btn-light" ngbDropdownToggle>
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="onAdvance()">Advance</button>
+          <button ngbDropdownItem (click)="onExtend()">Extend</button>
+          <button ngbDropdownItem (click)="onGraduate()">Graduate</button>
+          <button ngbDropdownItem (click)="onDropout()">Drop Out</button>
+          <button ngbDropdownItem (click)="onTransfer()">Transfer</button>
+          <button ngbDropdownItem (click)="onPay()">Pay</button>
+          <button ngbDropdownItem (click)="onEditStudent()">Edit Student Info</button>
+          <button ngbDropdownItem (click)="onEditEnrol()">Edit Enrolment</button>
+          <button ngbDropdownItem (click)="onDelete()">Delete</button>
+        </div>
+      </div>
+
+</div>
+
+
+<section class="enrollment-container" fxLayout>
+    <div class="left" fxFlex="48%" fxLayout="column">
+        <label>Status</label>
+        <span class="value">
+            {{(enrollment$ | async)?.status}}
+        </span>
+
+        <label>Student ID</label>
+        <span class="value">
+            {{(enrollment$ | async)?.sequence_number}}
+        </span>
+
+        <label>Name</label>
+        <span class="value">
+            {{(enrollment$ | async)?.name}}
+        </span>
+
+        <label>Date of Birth</label>
+        <span class="value">
+            {{(enrollment$ | async)?.dob}}
+        </span>
+
+        <label>Starting Grade</label>
+        <span class="value">
+            {{deemcee_starting_grade ? deemcee_starting_grade.name : '-'}}
+        </span>
+
+        <label>Day</label>
+        <span class="value">
+            {{day}}
+        </span>
+
+        <label>Commencement Date</label>
+        <span class="value">
+            {{(enrollment$ | async)?.enrolment?.start_date}}
+        </span>
+
+        <label>Last Payment Date</label>
+        <span class="value">
+            {{(enrollment$ | async)?.payment_details[0].status === 'paid' ? (enrollment$ | async)?.payment_details[0].date : '-'}}
+        </span>
+
+        <label>Next Payment Date</label>
+        <span class="value">
+            {{nextPaymentDate}}
+        </span>
+    </div>
+
+    <div class="right" fxFlex="48%" fxLayout="column">
+        <label>&nbsp;</label>
+        <span class="value">&nbsp;</span>
+
+        <label>&nbsp;</label>
+        <span class="value">&nbsp;</span>
+
+        <label>Gender</label>
+        <span class="value">{{(enrollment$ | async)?.gender}}</span>
+
+        <label>School</label>
+        <span class="value">{{(enrollment$ | async)?.school}}</span>
+
+        <label>Current Grade</label>
+        <span class="value">
+            {{(enrollment$ | async)?.grade?.name}}
+        </span>
+
+        <label>Time Slot</label>
+        <span class="value">
+            {{(enrollment$ | async)?.time_slot?.start_time}} - {{(enrollment$ | async)?.time_slot?.end_time}}
+        </span>
+
+        <label>Last Payment Amount</label>
+        <span class="value">{{(enrollment$ | async)?.payment_details[0].status === 'paid' ? 'RM ' + (((enrollment$ | async)?.payment_details[0].amount - (enrollment$ | async)?.payment_details[0].discount) | number: '1.2-2') : '-'}}</span>
+
+        <label>Next Payment Amount</label>
+        <span class="value">{{studentNextGrade ? 'RM ' + (studentNextGrade.price | number: '1.2-2') : '-'}}</span>
+    </div>
+</section>
+
+<hr>
+
+<h3 class="parents-details-title">Parent's Details</h3>
+
+<section class="parents-details-container" fxLayout>
+
+    <div class="left" fxFlex="48%" fxLayout="column">
+        <label>
+            Name
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.name}}
+        </span>
+        <label>
+            Date of Birth
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.dob ? (enrollment$ | async)?.parent?.dob : '-'}}
+        </span>
+        <label>
+            Phone
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.phone}}
+        </span>
+        <label>
+            Occupation
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.occupation}}
+        </span>
+    </div>
+
+    <div class="right" fxFlex="48%" fxLayout="column">
+        <label>
+            Gender
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.gender}}
+        </span>
+        <label>
+            Email
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.email}}
+        </span>
+        <label>
+            Address
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.address?.address_line_1}}
+            <span *ngIf="!!(enrollment$ | async)?.parent?.address?.address_line_2">
+                <br>
+                {{(enrollment$ | async)?.parent?.address?.address_line_2}}
+            </span>
+            <br>
+            {{(enrollment$ | async)?.parent?.address?.city}} {{(enrollment$ | async)?.parent?.address?.postcode}}
+            <br>
+            {{(enrollment$ | async)?.parent?.address?.state}}
+        </span>
+    </div>
+
+</section>
+
+<hr>
+
+<h3 class="additional-details-title">Additional Details</h3>
+
+<section class="additional-details-container" fxLayout>
+
+    <div class="left" fxFlex="48%" fxLayout="column">
+        <label>
+            Referral Channel
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.referral_channel?.name || '-'}}
+        </span>
+        <label>
+            Spouse Name
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.spouse_name || '-'}}
+        </span>
+        <label>
+            Spouse Occupation
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.spouse_occupation || '-'}}
+        </span>
+    </div>
+
+    <div class="right" fxFlex="48%" fxLayout="column">
+        <label>
+            Referred by
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.referral || '-'}}
+        </span>
+        <label>
+            Spouse Phone
+        </label>
+        <span class="value">
+            {{(enrollment$ | async)?.parent?.spouse_phone || '-'}}
+        </span>
+    </div>
+
+</section>
+
+

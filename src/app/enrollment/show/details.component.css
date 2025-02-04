@@ -1,0 +1,41 @@
+label {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: left;
+  color: #3b3b3b;
+  margin-bottom: 0 !important;
+}
+
+span {
+  font-size: 16px;
+  line-height: 1.56;
+  text-align: left;
+  color: #6b6b6b;
+  margin-bottom: 0.6em;
+}
+
+.student-details-title, .parents-details-title, .additional-details-title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.39;
+  color: #3b3b3b;
+}
+
+label {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #3b3b3b;
+}
+
+.value {
+  font-size: 16px;
+  line-height: 1.56;
+  color: #6b6b6b;
+  margin-bottom: 24px;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}

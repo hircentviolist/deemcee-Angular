@@ -1,0 +1,71 @@
+<div class="main-content">
+    <div class="card" fxFlex="calc(40% - 3em)">
+        <div class="card-body">
+          <div class="card-title"
+          *ngIf="!isUpdate()">Add Lesson</div>
+          <div class="card-title"
+          *ngIf="isUpdate()">Update Lesson</div>
+          <form [formGroup]="lessonForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="name">Lesson Theme Name</label>
+              <input type="text" class="form-control" id="name" formControlName="name"
+              [class.is-invalid]="!lessonForm.get('name').valid && submitted">
+              <div class="invalid-feedback">
+                  Lesson Theme Name Required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select class="form-control" formControlName="category_id" id="category"
+              (change)="onSelectCategory($event)"
+              [class.is-invalid]="!lessonForm.get('category_id').valid && submitted">
+                <option *ngFor="let category of (categorySelect$ | async)" [value]="category.id">{{category.name}}</option>
+              </select>
+              <div class="invalid-feedback">
+                Category Required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="version">Version</label>
+              <select (change)="onSelectVersion($event)" class="form-control" formControlName="version_id" id="version"
+              [class.is-invalid]="!lessonForm.get('version_id').valid && submitted">
+                <option *ngFor="let version of (versionSelect$ | async)" [value]="version.id">{{version.name}}</option>
+              </select>
+              <div class="invalid-feedback">
+                Version Required
+              </div>
+            </div>
+            <fieldset>
+              <legend>Lessons</legend>
+              <div class="form-group"
+              formArrayName="lessons"
+              *ngFor="let lesson of lessonForm.get('lessons')?.controls; let i = index;" >
+                <label for="lesson{{i}}">Lesson {{i + 1}}</label>
+                <div class="form-group" [formGroupName]="i">
+                  <input type="text" class="form-control" id="lesson{{i}}" formControlName="name"
+                  [class.is-invalid]="!lessonForm.controls.lessons.controls[i].controls.name.valid && submitted">
+                  <div class="invalid-feedback">
+                      Lesson {{i+1}} Name Required
+                  </div>
+                </div>
+              </div>
+
+            </fieldset>
+            <div class="button-container">
+              <button *ngIf="!isUpdate()" type="submit" class="btn btn-success">
+                <span >Add</span>
+<!--                <span *ngIf="isUpdate()">Update</span>-->
+              </button>
+              <a [routerLink]="['../../']" queryParamsHandling="preserve">
+                <button type="button" class="btn btn-primary">
+                    Cancel
+                </button>
+              </a>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+</div>
+

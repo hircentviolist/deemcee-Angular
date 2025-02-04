@@ -1,0 +1,54 @@
+.header{
+    position:sticky;
+    top: 0 ;
+}
+.table-scroll {
+    width: 100%;
+    position:relative;
+    overflow:hidden;
+}
+
+.table-wrap {
+    width:100%;
+    overflow:auto;
+}
+.table-scroll table {
+    width:100%;
+    margin:auto;
+    border-collapse:separate;
+    border-spacing:0;
+}
+.table-scroll th, .table-scroll td {
+    padding:5px 10px;
+    white-space:nowrap;
+    vertical-align:top;
+}
+.clone {
+    position:absolute;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+.clone th, .clone td {
+    visibility:hidden
+}
+.clone td, .clone th {
+    border-color:transparent
+}
+.clone tbody th {
+    visibility:visible;
+    color:red;
+}
+.clone .fixed-side {
+    background:#eee;
+    visibility:visible;
+}
+.clone thead, .clone tfoot{background:transparent;}
+
+label {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: left;
+    color: #3b3b3b;
+}

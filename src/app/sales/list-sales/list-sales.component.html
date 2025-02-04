@@ -1,0 +1,73 @@
+<div class="main-content">
+    <label for="title">
+        <h4>
+            Merchandise Sales
+        </h4>
+    </label>
+    <div class="form-group" [fxHide]="branch_id">
+        <label for="branch">Branch</label>
+        <select id="branch" class="form-control" (change)="onSelectBranch($event)">
+            <option value="">Select Branch</option>
+            <option *ngFor="let branch of (branch$ | async)" [value]="branch.id">
+                {{branch.name}}
+            </option>
+        </select>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="date">
+                    Date
+                </th>
+                <th class="name">
+                    Name
+                </th>
+                <th class="email">
+                    Email
+                </th>
+                <th class="total">
+                    Total
+                </th>
+                <th class="status">
+                    Status
+                </th>
+                <th class="buttons">
+                    <a [routerLink]="['../create']" [queryParams]="{branch_id: branch_id}">
+                        <button class="btn btn-primary" [disabled]="!branch_id">
+                            New
+                        </button>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sale of (sale$ | async)">
+                <td class="date">
+                    {{formatTime(sale?.invoice?.created_at)}}
+                </td>
+                <td class="name">
+                    {{sale?.customer?.full_name}}
+                </td>
+                <td class="email">
+                    {{sale?.customer?.email || 'Some Email'}}
+                </td>
+                <td class="total">
+                    {{sale?.total}}
+                </td>
+                <td class="status">
+                    {{sale?.status}}
+                </td>
+                <td class="buttons">
+                    <button class="btn btn-success mr-1" (click)="onView(sale.id)">
+                        View
+                    </button>
+                    <a *ngIf="sale?.invoice?.file_path" [href]="sale?.invoice?.file_path" target="_blank">
+                        <button class="btn btn-primary">
+                            Print
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

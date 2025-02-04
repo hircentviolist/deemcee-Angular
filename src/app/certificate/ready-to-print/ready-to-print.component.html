@@ -1,0 +1,72 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">
+            
+            <div id="table-scroll" class="table-scroll">
+                <div class="table-wrap">
+                    <table class="table table-hover main-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col" style="text-align: center;">Grade</th>
+                                <th scope="col" style="text-align: center;">End Date</th>
+                                <th scope="col" style="text-align: center;">Status</th>
+                                <th scope="col" style="text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td class="text-center" colspan="6">
+                                    <div class="spinner-border text-secondary my-4" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="!isLoading && (!certificates || !certificates.data.length)">
+                                <td class="text-center py-4" colspan="6">
+                                    No Data
+                                </td>
+                            </tr>
+                            <tr *ngFor="let cert of certificates?.data">
+                                <td scope="col">{{ cert?.number }}</td>
+                                <td scope="col">{{ cert?.student?.full_name }}</td>
+                                <td scope="col" style="text-align: center;">{{ cert?.grade.display_name }}</td>
+                                <td scope="col" style="text-align: center;">{{ cert?.end_date }}</td>
+                                <td scope="col" style="text-align: center;">{{ cert?.display_status | titlecase }}</td>
+                                <td scope="col" style="text-align: center;">
+                                    <a>
+                                        <button (click)="print(cert)" class="btn btn-primary">
+                                            Print
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+            <div *ngIf="pages.length" style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <nav>
+                    <ul class="pagination">
+                        <li (click)="paginationClicked('prev')" class="page-item">
+                        <a class="page-link" href="javascript:;">Previous</a>
+                        </li>
+                        
+                        <li *ngFor="let page of pages" (click)="paginationClicked(page)" class="page-item" [class.active]="page.is_active">
+                        <a class="page-link" href="javascript:;">{{page.number}}</a>
+                        </li>
+            
+                        <li (click)="paginationClicked('next')" class="page-item">
+                        <a class="page-link" href="javascript:;">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</div>

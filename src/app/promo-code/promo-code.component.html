@@ -1,0 +1,74 @@
+<div class="main-content">
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th class="text-center">
+                    Min Purchase Amount
+                </th>
+                <th class="text-center">
+                    Quantity (left / total)
+                </th>
+                <th class="text-center">
+                    Expired At
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    <a [routerLink]="['add']">
+                        <button class="btn btn-primary">
+                            Add Promo Code
+                        </button>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let promoCode of (promoCodes$ | async); let i = index">
+                <td>
+                    {{ i + 1 }}
+                </td>
+                <td>
+                    {{ promoCode.code }}
+                </td>
+                <td>
+                    {{ promoCode.amount }}
+                </td>
+                <td class="text-center">
+                    {{ promoCode.min_purchase_amount }}
+                </td>
+                <td class="text-center">
+                    {{ promoCode.left }} / {{ promoCode.quantity }}
+                </td>
+                <td class="text-center">
+                    {{ promoCode.expired_at }}
+                </td>
+                <td>
+                    {{ promoCode.status }}
+                </td>
+                <td class="buttons">
+                    <a [routerLink]="['edit', promoCode.id]">
+                        <button class="btn btn-success">
+                            Edit
+                        </button>
+                    </a>
+                    <a class="ml-1">
+                        <button (click)="delete(promoCode)" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,16 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>Notes for {{data.name}}</h5>
+  </div>
+  <div class="modal-body" style="padding-bottom: 0; margin-bottom: 30px">
+    <textarea class="form-control" id="student-note" cols="20" rows="30" style="padding: 20px" [(ngModel)]="notes"></textarea>
+  </div>
+  <div class="modal-footer" fxLayoutAlign="center">
+    <a>
+      <button class="btn btn-primary" (click)="save()">Save</button>
+    </a>
+  </div>
+</div>

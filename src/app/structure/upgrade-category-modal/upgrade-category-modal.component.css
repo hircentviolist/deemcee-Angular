@@ -1,0 +1,15 @@
+table {
+    width: 100%;
+}
+
+.modal-content {
+    width: 100%;
+}
+
+.form-group {
+    width: 10em;
+}
+
+select {
+    width: 10em;
+}

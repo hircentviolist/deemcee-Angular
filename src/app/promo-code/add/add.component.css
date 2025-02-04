@@ -1,0 +1,19 @@
+.form-control::-webkit-input-placeholder {
+    color: rgb(222,222,222);
+}
+
+.remove-spinner::-webkit-outer-spin-button,
+.remove-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.remove-spinner {
+    -moz-appearance: textfield !important;
+}
+
+.invalid-multiselect {
+    border: 1px solid red;
+    border-radius: 5px;
+    display: block;
+}

@@ -1,0 +1,20 @@
+<div class="main-content">
+
+    <!-- Form Display Here -->
+    <ng-template [ngIf]="userType === 'superadmin' || userType === 'admin'">
+        <app-admin-form [userType]="userType" [action]="'add'"></app-admin-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'principal'">
+        <app-principal-form [userType]="userType" [action]="'add'"></app-principal-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'manager' || userType === 'teacher'">
+        <app-manager-teacher-form [userType]="userType" [action]="'add'"></app-manager-teacher-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'parent'">
+        <app-parent-student-form [userType]="userType" [action]="'add'"></app-parent-student-form>
+    </ng-template>
+
+</div>

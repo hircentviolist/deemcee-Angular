@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "default": "deemcee-live",
+    "prod": "deemcee-live-production",
+    "staging": "hircent-test"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

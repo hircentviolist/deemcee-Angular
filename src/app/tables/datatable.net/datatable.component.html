@@ -1,0 +1,91 @@
+<div class="main-content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                  <div class="card-header" style="flex-direction: row;display: flex;justify-content: space-between;">
+                    <h4 class="card-title">{{user?.display}}</h4>
+                    <div *ngIf="user?.display === 'Parent'">
+                      <div class="input-group no-border" style="width: 200px; height: 40px; align-items: center;">
+                        <input type="text" (keyup)="onKeyUp($event)" class="form-control" placeholder="Search">
+                        <div class="input-group-append">
+                          <div class="input-group-text">
+                            <i class="nc-icon nc-zoom-split"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <div class="card-body">
+                      <div class="toolbar" fxLayoutAlign="flex-end center">
+<!--                        <div class="input-group">-->
+<!--                          <input type="search" class="form-control" fxFlex="15vw">-->
+<!--                          <div class="input-group-append">-->
+<!--                            <span class="input-group-text" id="basic-addon2">-->
+<!--                              <i class="nc-icon nc-zoom-split"></i>-->
+<!--                            </span>-->
+<!--                          </div>-->
+<!--                        </div>-->
+                        <button *ngIf="user.value !== 'parent'" class="btn btn-success" id="add-button"
+                        fxLayout fxLayoutGap="1em" (click)="onAdd()">
+                          <i class="nc-icon nc-simple-add"></i>
+                          <span style="white-space: nowrap;">Add {{user?.display}}</span>
+                        </button>
+                            <!--        Here you can write extra buttons/actions for the toolbar              -->
+                      </div>
+                          <table id="datatable" class="table" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                      <th>No.</th>
+                                      <th>{{ dataTable.headerRow[0] }}</th>
+                                      <th>{{ dataTable.headerRow[1] }}</th>
+                                      <th *ngIf="dataTable.headerRow[2]">{{ dataTable.headerRow[2] }}</th>
+                                      <th *ngIf="dataTable.headerRow[3]">{{ dataTable.headerRow[3] }}</th>
+                                      <th *ngIf="dataTable.headerRow[4]">{{ dataTable.headerRow[4] }}</th>
+                                      <th>{{ dataTable.headerRow[5] }}</th>
+                                    </tr>
+                                </thead>
+<!--                                <tfoot>-->
+<!--                                    <tr>-->
+<!--                                      <th>{{ dataTable.footerRow[0] }}</th>-->
+<!--                                      <th>{{ dataTable.footerRow[1] }}</th>-->
+<!--                                      <th *ngIf="dataTable.headerRow[2]">{{ dataTable.footerRow[2] }}</th>-->
+<!--                                      <th *ngIf="dataTable.headerRow[3]">{{ dataTable.footerRow[3] }}</th>-->
+<!--                                      <th *ngIf="dataTable.headerRow[4]">{{ dataTable.footerRow[4] }}</th>-->
+<!--                                      <th>{{ dataTable.footerRow[5] }}</th>-->
+<!--                                    </tr>-->
+<!--                                </tfoot>-->
+                                <tbody>
+                                    <tr *ngFor="let row of dataTable.dataRows; let i = index;">
+                                        <td>{{i + 1}}</td>
+                                        <td>{{row[0]}}</td>
+                                        <td>{{row[1]}}</td>
+                                        <td *ngIf="dataTable.headerRow[2]">{{row[2]}}</td>
+                                        <td *ngIf="dataTable.headerRow[3]" [innerHtml]="row[3]"></td>
+                                        <td *ngIf="dataTable.headerRow[4]">{{row[4]}}</td>
+                                        <td class="text-center">
+                                          <!-- <a href="javascript:void(0)" class="btn btn-info btn-link btn-icon btn-sm like"><i class="fa fa-heart"></i></a> -->
+                                          <span style="cursor: pointer;"
+                                          (click)="onEdit(i)">
+                                          <a [routerLink]="[]" [queryParams]="{i: 'i'}" style="color: #00aeef; text-decoration: underline;">
+                                            Edit
+                                          </a>
+                                          </span>
+                                          <!-- <a (click)="onDelete(i)"
+                                          class="btn btn-danger btn-link btn-icon btn-sm remove">
+                                            <i class="fa fa-times"></i>
+                                          </a> -->
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                    <!-- end content-->
+                </div>
+                <!--  end card  -->
+            </div>
+            <!-- end col-md-12 -->
+        </div>
+        <!-- end row -->
+</div>

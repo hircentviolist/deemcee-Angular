@@ -1,0 +1,50 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h6>Create New Transaction</h6>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <fieldset>
+
+                <div style="margin-bottom: 20px;">
+                    <div fxFlex="49%" style="margin-bottom: 20px; margin-right: 3%;" fxFlex="100%" class="form-group">
+                        <label class="title" for="email">Email</label>
+                        <input formControlName="email" placeholder="Email Address" type="text" id="email" class="form-control" required />
+                    </div>
+
+                    <div fxFlex="49%" style="margin-bottom: 20px;" fxFlex="100%" class="form-group">
+                        <label class="title" for="parent_name">Parent Name</label>
+                        <input [(ngModel)]="parentName" [ngModelOptions]="{standalone: true}" placeholder="Parent Name" type="text" id="parent_name" class="form-control" disabled required />
+                    </div>
+                </div>
+
+                <div>
+                    <div fxFlex="49%" style="margin-bottom: 20px; margin-right: 3%;" fxFlex="100%" class="form-group">
+                        <label class="title" for="description">Description</label>
+                        <input formControlName="description" placeholder="Description" type="text" id="description" class="form-control" required />
+                    </div>
+
+                    <div fxFlex="49%" style="margin-bottom: 20px;" fxFlex="100%" class="form-group">
+                        <label class="title" for="points">Points Given</label>
+                        <input formControlName="points" placeholder="Amount of Points" type="number" id="points" class="form-control" min="0" required />
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary my-4" (click)="submit()">
+            <span *ngIf="!isLoading">Create</span>
+            <div *ngIf="isLoading" style="width: 1rem; height: 1rem;" class="spinner-border text-light mx-4" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </button>
+    </div>
+</div>

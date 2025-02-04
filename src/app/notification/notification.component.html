@@ -1,0 +1,60 @@
+<div class="main-content" fxLayout="column">
+  <div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="button-container" fxLayoutAlign="end" style="flex-direction: row;">
+      <button class="btn btn-success" (click)="createNew()">
+        + Create New Notification
+      </button>
+    </div>
+    <div id="table-scroll" class="table-scroll">
+      <div class="table-wrap">
+        <table class="table table-hover main-table">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Description</th>
+            <th scope="col">Sent to</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let notification of notifications; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{notification.created_at}}</td>
+            <td>{{notification.subject}}</td>
+            <td style="width: 50%; max-width: 50%;">
+              <p style="display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;">
+                {{notification.description}}
+              </p>
+            </td>
+            <td> {{notification.sent_to.length ? notification.sent_to.join(' & ') : '-'}}<td>
+              <a href="javascript:;" (click)="view(notification)">
+                Show
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="pages.length" style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <nav>
+        <ul class="pagination">
+          <li (click)="paginationClicked('prev')" class="page-item">
+            <a class="page-link" href="javascript:;">Previous</a>
+          </li>
+          
+          <li *ngFor="let page of pages" (click)="paginationClicked(page)" class="page-item" [class.active]="page.is_active">
+            <a class="page-link" href="javascript:;">{{page.number}}</a>
+          </li>
+
+          <li (click)="paginationClicked('next')" class="page-item">
+            <a class="page-link" href="javascript:;">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    
+  </div>
+</div>

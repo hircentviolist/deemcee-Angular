@@ -1,0 +1,273 @@
+<div class="main-content" fxLayout="column">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="tabNo" class="nav-tabs mb-3">
+        <li [ngbNavItem]="1">
+            <a ngbNavLink>Active Enrolments</a>
+        </li>
+
+        <li [ngbNavItem]="2">
+            <a ngbNavLink>Inactive Enrolments</a>
+        </li>
+
+        <li [ngbNavItem]="3">
+            <a ngbNavLink>Freeze Enrolments</a>
+        </li>
+    </ul>
+
+    <div id="scrollDiv" class="button-container" fxLayoutAlign="space-between" style="flex-direction: row;">
+        <div fxLayoutAlign="start" style="flex-direction: row; align-items: center; margin: 10px 0;">
+            <form [formGroup]="filterForm">
+                <div class="input-group no-border" style="width: 200px; height: 40px; align-items: center;">
+                    <input type="text" value="" class="form-control" placeholder="Search by Name..." formControlName="search">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="nc-icon nc-zoom-split"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="flex-direction: row;">
+            <button *ngIf="(enrollment$ | async)?.data?.length" class="btn btn-default" (click)="exportStudents()">
+                Export Students
+            </button>
+
+            <button class="btn btn-default" (click)="showPromoCode()">
+                Show Promo Code
+            </button>
+
+            <button class="btn btn-default" (click)="toggleFilter()">
+                {{showFilter ? 'Hide Filter' : 'Show Filter'}}
+                <i *ngIf="showFilter" class="nc-icon nc-minimal-up" style="margin: 0 3px;"></i>
+                <i *ngIf="!showFilter" class="nc-icon nc-minimal-down" style="margin: 0 3px;"></i>
+            </button>
+            <a *ngIf="role !== 'teacher'" routerLink="../new">
+                <button class="btn btn-success">
+                    New Enrollment
+                </button>
+            </a>
+            <button *ngIf="role !== 'teacher'" class="btn btn-info" (click)="showTransferIn()">
+                Transfer In
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]="filterForm">
+        <div *ngIf="showFilter" style="margin: 0 5px 20px 5px; flex-direction: row;" fxLayoutAlign="space-between flex-end">
+            <div style="flex-direction: row;" fxLayoutAlign="start">
+                <div>
+                    <label for="sortBy">Sort By:</label>
+                    <div style="width: 150px; align-items: center;">
+                        <select style="height: 40px;" (change)="setSortBy()" id="sortBy" class="form-control" formControlName="sort_by">
+                            <option></option>
+                            <option *ngFor="let sort of sortList" [value]="sort.key">
+                                {{sort.label}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div  style="margin: 0 10px;">
+                    <label for="gradeFilter">Grade:</label>
+                    <div style="width: 150px; align-items: center;">
+                        <select style="height: 40px;" (change)="setSortBy()" id="gradeFilter" class="form-control" formControlName="grade_id">
+                            <option></option>
+                            <option *ngFor="let grade of (grade$ | async)" [value]="grade.id">
+                                {{grade.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div  style="margin: 0 10px;">
+                    <label for="feeStatus">Fee Status:</label>
+                    <div style="width: 150px; align-items: center;">
+                        <select style="height: 40px;" (change)="setFeeStatusFilter()" id="feeStatus" class="form-control" formControlName="is_paid">
+                            <option></option>
+                            <option *ngFor="let status of feeStatuses" [value]="status.key">
+                                {{status.label}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin: 0 10px;">
+                    <label>End Date:</label>
+                    <div style="flex-direction: row;" fxLayoutAlign="start">
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="range_start" placeholder="Range Start" formControlName="range_start"
+                                   ngbDatepicker #d="ngbDatepicker" >
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p style="margin: 10px;" >-</p>
+                        <div style="margin-right: 20px;" class="input-group">
+                            <input class="form-control datepicker" id="range_end" placeholder="Range End" formControlName="range_end"
+                                   ngbDatepicker #e="ngbDatepicker" >
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="e.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button style="width: 100px; height: 40px;" class="btn btn-success" (click)="applyFilter()">
+                <span style="font-size: 16px; font-weight: bold;">GO</span>
+                <i class="nc-icon nc-minimal-right" style="margin: 0 3px;"></i>
+            </button>
+            <button style="width: 100px; height: 40px;" class="btn btn-secondary" (click)="resetFilter()">
+                <span style="font-size: 16px; font-weight: bold;">RESET</span>
+            </button>
+        </div>
+    </form>
+
+    <div id="table-scroll" class="table-scroll">
+        <div class="table-wrap">
+            <table class="table table-hover main-table">
+                <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col" style="text-align: center;">Grade</th>
+                    <th scope="col" style="text-align: center;">Start Date</th>
+                    <th scope="col" style="text-align: center;">End Date</th>
+                    <th *ngIf="tabNo === 1" scope="col" style="text-align: center;">Remaining<br>Class</th>
+                    <th *ngIf="tabNo !== 2" scope="col" style="text-align: center;">Fees (RM)</th>
+                    <th *ngIf="tabNo !== 2" scope="col" style="text-align: center;">Fees<br>Status</th>
+                    <th *ngIf="tabNo !== 2" scope="col" style="text-align: center;">Fee Payment<br>Date</th>
+                    <th scope="col" style="text-align: center;">Video</th>
+                    <th *ngIf="tabNo === 2" scope="col" style="text-align: center;">Status</th>
+                    <th scope="col" style="text-align: center;">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <ng-container *ngIf="tabNo === 1">
+                    <tr *ngFor="let enr of (enrollment$ | async)?.data; let i = index;">
+                        <th scope="col" style="text-align: start;">{{enr.number}}</th>
+                        <th scope="col" style="text-align: start;">
+                            {{enr.name ? enr.name: '-'}}
+                            <a href="javascript:;" (click)="onNoteClick(enr)">
+                                <fa-icon [icon]="faStickyNote"></fa-icon>
+                            </a>
+                        </th>
+                        <td style="text-align: center;">{{enr.grade_obj?.name ? enr.grade_obj?.name : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_start_date ? enr.term_start_date : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_end_date ? enr.term_end_date : '-'}}</td>
+                        <td style="text-align: center;">{{enr.remaining_class_count}}</td>
+                        <td style="text-align: end;">{{enr.payment_made ? (enr.payment_made | number: '1.2-2') : 'N/A'}}</td>
+                        <td style="text-align: center;">
+                            <div *ngIf="enr.payment_details" style="text-align: center;">
+                                <div *ngIf="enr.payment_details?.status === 'paid'; else payLater" style="color: grey;">
+                                    Paid
+                                </div>
+                                <ng-template #payLater>
+                                    <a *ngIf="enr.payment_details?.status !== 'paid'" href="javascript:;" (click)="onPay(enr.name, enr.grade_obj?.name, enr.payment_details)">
+                                        Pay
+                                    </a>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">{{enr.payment_details?.status === 'paid' ? enr.payment_details?.paid_at : 'Due Immediately' }}</td>
+                        <td style="text-align: start;">
+                            <ng-container *ngFor="let video of enr.video_array; let i = index">
+                                <a href="javascript:;" (click)="onVideoClicked(enr, video)">
+                                    {{video.label}}
+                                </a>
+                                <br>
+                            </ng-container>
+                        </td>
+                        <td style="text-align: center;">
+                            <a [routerLink]="['../show', enr.id]">
+                                Show
+                            </a>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="tabNo === 2">
+                    <tr *ngFor="let enr of (inactiveEnrolment$ | async)?.data; let i = index;">
+                        <th scope="col" style="text-align: start;">{{enr.number}}</th>
+                        <th scope="col" style="text-align: start;">{{enr.name ? enr.name: '-'}}</th>
+                        <td style="text-align: center;">{{enr.grade_obj?.name ? enr.grade_obj?.name : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_start_date ? enr.term_start_date : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_end_date ? enr.term_end_date : '-'}}</td>
+                        <td style="text-align: start;">
+                            <ng-container *ngFor="let video of enr.video_array; let i = index">
+                                <a href="javascript:;" (click)="onVideoClicked(enr, video)">
+                                    {{video.label}}
+                                </a>
+                                <br>
+                            </ng-container>
+                        </td>
+                        <td style="text-align: center;">{{enr.enrolment ? capitalise(enr.enrolment.status?.replace('_', ' ').toLowerCase()) : '-'}}</td>
+                        <td style="text-align: center;">
+                            <a [routerLink]="['../show', enr.id]">
+                                Show
+                            </a>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="tabNo === 3">
+                    <tr *ngFor="let enr of (freezedEnrolment$ | async)?.data; let i = index;">
+                        <th scope="col" style="text-align: start;">{{enr.number}}</th>
+                        <th scope="col" style="text-align: start;">{{enr.name ? enr.name: '-'}}</th>
+                        <td style="text-align: center;">{{enr.grade_obj?.name ? enr.grade_obj?.name : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_start_date ? enr.term_start_date : '-'}}</td>
+                        <td style="text-align: center;">{{enr.term_end_date ? enr.term_end_date : '-'}}</td>
+                        <td style="text-align: end;">{{enr.payment_made ? (enr.payment_made | number: '1.2-2') : 'N/A'}}</td>
+                        <td style="text-align: center;">
+                            <div *ngIf="enr.payment_details" style="text-align: center;">
+                                <div *ngIf="enr.payment_details?.status === 'paid'; else payLater" style="color: grey;">
+                                    Paid
+                                </div>
+                                <ng-template #payLater>
+                                    <a *ngIf="enr.payment_details?.status !== 'paid'" href="javascript:;" (click)="onPay(enr.name, enr.grade_obj?.name, enr.payment_details)">
+                                        Pay
+                                    </a>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">{{enr.payment_details?.status === 'paid' ? enr.payment_details?.paid_at : 'Due Immediately' }}</td>
+                        <td style="text-align: start;">
+                            <ng-container *ngFor="let video of enr.video_array; let i = index">
+                                <a href="javascript:;" (click)="onVideoClicked(enr, video)">
+                                    {{video.label}}
+                                </a>
+                                <br>
+                            </ng-container>
+                        </td>
+                        <td style="text-align: center;">
+                            <a [routerLink]="['../show', enr.id]">
+                                Show
+                            </a>
+                        </td>
+                    </tr>
+                </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="pages.length" style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <nav>
+            <ul class="pagination">
+                <li (click)="paginationClicked('prev')" class="page-item">
+                    <a class="page-link" href="javascript:;">Previous</a>
+                </li>
+
+                <li *ngFor="let page of pages" (click)="paginationClicked(page)" class="page-item" [class.active]="page.is_active">
+                    <a class="page-link" href="javascript:;">{{page.number}}</a>
+                </li>
+
+                <li (click)="paginationClicked('next')" class="page-item">
+                    <a class="page-link" href="javascript:;">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

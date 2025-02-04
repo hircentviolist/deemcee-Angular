@@ -1,0 +1,52 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>{{ data.isUnfreeze ? 'Unfreeze' : 'Freeze' }}</h5>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="freezeForm" class="form-group">
+            <!-- <label for="freeze">
+                How Long Do You Want To Freeze ?
+            </label>
+            <select id="freeze" class="form-control" (change)="onSelect($event)">
+                <option *ngFor="let month of months; let i = index;" [value]="i + 1">
+                    {{i + 1}} Month(s)
+                </option>
+            </select> -->
+            <label for="start_date">{{ data.isUnfreeze ? 'Unfreeze from' : 'When to start?' }}</label>
+            <div class="input-group">
+                <input class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                       ngbDatepicker #d1="ngbDatepicker"  [class.is-invalid]="!freezeForm.get('start_date').valid &&
+                               (freezeForm.get('start_date').touched || submitted)">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" style="margin: 0" (click)="d1.toggle()" type="button"
+                            fxLayoutAlign="center center">
+                        <i class="nc-icon nc-calendar-60"></i>
+                    </button>
+                </div>
+            </div>
+
+            <label for="end_date"> {{ data.isUnfreeze ? 'Unfreeze until' : 'When to end?' }}</label>
+            <div class="input-group">
+                <input class="form-control datepicker" id="end_date" placeholder="yyyy-mm-dd" formControlName="end_date"
+                       ngbDatepicker #d2="ngbDatepicker"  [class.is-invalid]="!freezeForm.get('end_date').valid &&
+                               (freezeForm.get('end_date').touched || submitted)">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" style="margin: 0" (click)="d2.toggle()" type="button"
+                            fxLayoutAlign="center center">
+                        <i class="nc-icon nc-calendar-60"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-light" (click)="activeModal.dismiss()">Cancel</button>
+        <button class="btn btn-primary"
+        (click)="freeze()"
+        [disabled]="!freezeForm.get('start_date').valid || !freezeForm.get('end_date').valid">Yes</button>
+    </div>
+</div>
+

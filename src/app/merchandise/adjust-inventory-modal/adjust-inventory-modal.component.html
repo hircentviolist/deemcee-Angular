@@ -1,0 +1,94 @@
+<!-- {{(sale$ | async) | json}} -->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Adjust Inventory
+        </h5>
+    </div>
+    <form [formGroup]="adjustmentForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body" fxLayout="column">
+
+            <label for="product">
+                {{product.name}}
+            </label>
+
+<!--            <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+<!--                <label class="btn btn-secondary active" for="add">-->
+<!--                    <input type="radio" name="type" value="Add" checked id="add"-->
+<!--                    formControlName="type" (click)="onClickType('Add')"> Add-->
+<!--                </label>-->
+<!--                <label class="btn btn-secondary" for="remove">-->
+<!--                    <input type="radio" name="type" value="Remove" id="remove"-->
+<!--                    formControlName="type" (click)="onClickType('Remove')"> Remove-->
+<!--                </label>-->
+<!--            </div>-->
+
+            <ul class="nav nav-pills nav-pills-primary nav-pills-icons" role="tablist">
+                <li class="nav-item" style="width: 50%; text-align: center">
+                    <a class="nav-link active" data-toggle="tab" role="tablist" (click)="onClickType('Add')">
+                        <i class="now-ui-icons"></i> Add
+                    </a>
+                </li>
+                <li class="nav-item" style="width: 50%; text-align: center">
+                    <a class="nav-link" data-toggle="tab" role="tablist" (click)="onClickType('Remove')">
+                        <i class="now-ui-icons"></i> Remove
+                    </a>
+                </li>
+            </ul>
+
+            <br>
+
+            <div formArrayName="items">
+                <div formGroupName="0">
+                    <div fxLayout fxLayoutAlign="space-between" fxLayoutGap="1em">
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" min="0"
+                            [class.is-invalid]="!adjustmentForm.get('quantity')?.valid &&
+                            (adjustmentForm.get('quantity')?.touched || submitted)"
+                            formControlName="quantity">
+                            <div class="invalid-feedback">
+                                Quantity Required
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reason">Reason</label>
+                            <select id="reason" class="form-control" formControlName="reason_id"
+                            [class.is-invalid]="!adjustmentForm.get('reason_id')?.valid &&
+                            (adjustmentForm.get('reason_id')?.touched || submitted)">
+                                <option value="">Select Reasons</option>
+                                <option *ngFor="let reason of (reason$ | async)" [value]="reason.id">
+                                    {{reason.description}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Reason Required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="itemArray?.at(0).get('reason_id').value == 7">
+                        <label for="custom-reason">Other Reason</label>
+                        <textarea id="custom-reason" cols="30" rows="3" class="form-control"
+                        formControlName="reason_text">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+            <button class="btn btn-success" type="submit">
+                Save
+            </button>
+            <button class="btn btn-primary" (click)="activeModal.dismiss(false)">
+                Cancel
+            </button>
+        </div>
+    </form>
+
+</div>

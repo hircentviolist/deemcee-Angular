@@ -1,0 +1,125 @@
+<div class="main-content">
+    <div class="form-group" [fxHide]="branch_id">
+        <label for="branch">Branch</label>
+        <select id="branch" class="form-control" (change)="onSelectBranch($event)">
+          <option value="">Select Branch</option>
+          <option *ngFor="let branch of (branch$ | async)" [value]="branch.id">
+            {{branch.name}}
+          </option>
+        </select>
+    </div>
+    <form [formGroup]="orderForm" (ngSubmmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="5em">
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between" fxFlex="100%">
+            <h5>Place Order to HQ</h5>
+            <button type="submit" class="btn btn-success" (click)="onSubmit()">
+                Checkout
+            </button>
+        </div>
+
+        <fieldset>
+            <caption>Delivery</caption>
+            <div class="delivery-options form-check form-check-inline" fxLayoutAlign="start start" fxLayoutGap="5em">
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="self-pickup" name="delivery_method"
+                    value="Self Pickup" formControlName="delivery_method">
+                    <label for="self-pickup" class="form-check-label">
+                        Self-Pickup
+                    </label>
+                </div>
+                <div class="form-check" class="form-check-label" fxLayout="column">
+                    <div>
+                        <input type="radio" class="form-check-input" id="deliver-to" name="delivery_method"
+                        value="Deliver To" formControlName="delivery_method">
+                        <label for="deliver-to">
+                            Deliver To
+                        </label>
+                    </div>
+                    <textarea cols="25" rows="3" class="form-control" formControlName="delivery_address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="customer-note">Customer Note (optional)</label>
+                    <textarea id="customer-note" cols="25" rows="3" class="form-control" formControlName="customer_notes"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="count">#</th>
+                    <th class="name">Name</th>
+                    <th class="quantity-per-set">Qty Per Set</th>
+                    <th class="quantity">Number of Set</th>
+                    <th class="price">Price</th>
+                    <th class="subtotal">Subtotal</th>
+                    <th class="buttons"></th>
+                </tr>
+            </thead>
+            <tbody formArrayName="items" [fxHide]="!branch_id">
+                <tr *ngFor="let item of itemArray.controls; let i = index;"
+                [formGroupName]="i">
+                    <td class="count">
+                        {{i + 1}}
+                    </td>
+                    <td class="name">
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="product_name"
+                            list="product-list" (change)="onChangeProduct($event, i)">
+                        </div>
+                    </td>
+                    <td class="quantity-per-set">
+                        {{productsState[i]?.quantity_per_set}}
+                    </td>
+                    <td class="quantity">
+                        <div class="form-group">
+                            <select class="form-control" formControlName="no_of_sets"
+                            *ngIf="productsState"
+                            (change)="onChangeQuantity($event, i)">
+                                <option value="">{{ productsState[i]?.is_out_of_stock ? 'Out of Stock' : 'Qty'}}</option>
+                                <option
+                                *ngFor="let q of productsState[i]?.stock; let i = index"
+                                [value]="i + 1">{{i + 1}}</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="price">
+                        <span *ngIf="productsState">
+                            {{productsState[i]?.price_per_set | currency:'MYR'}}
+                        </span>
+                    </td>
+                    <td class="sub-total">
+                        <span *ngIf="productsState">
+                            {{productsState[i]?.subtotal | currency:'MYR'}}
+                        </span>
+                    </td>
+                    <td class="buttons" fxLayout fxLayoutGap="0.5em">
+                        <i class="nc-icon nc-simple-add" (click)="addItem()"></i>
+                        <i class="nc-icon nc-simple-delete"
+                        (click)="removeItem(i)"
+                        [class.disabled]="orderForm.get('items').value?.length < 2"></i>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+
+                    </td>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        {{ total | currency:'MYR'}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <datalist id="product-list">
+            <option *ngFor="let product of (productList$ | async)" [value]="product.name">
+        </datalist>
+
+
+    </form>
+</div>

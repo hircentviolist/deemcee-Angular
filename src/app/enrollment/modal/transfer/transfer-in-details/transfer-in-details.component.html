@@ -1,0 +1,63 @@
+<div class="modal-content" style="width: 800px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Transfer In</h5>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="transferInForm" (ngSubmit)="onSubmit()" style="margin-top: 20px; display: flex; flex-direction: column;">
+            <div fxLayout fxLayoutAlign="space-between">
+                <div fxFlex="48%" class="form-group">
+                    <label>
+                        Student Name
+                    </label>
+                    <p class="value">{{data.student.student.first_name}} {{data.student.student.last_name}}</p>
+                </div>
+                <div class="form-group" fxFlex.gt-xs="48%">
+                    <label for="grade">Student Grade</label>
+                    <select id="grade" #grade class="form-control" formControlName="grade_id" required>
+                        <option value=""></option>
+                        <option *ngFor="let grade of (grade$ | async)" [value]="grade.id">
+                            {{grade.name}} {{ +data.student.student.grade.id === +grade.id ? '(Current Grade)' : '' }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div fxLayout fxLayoutAlign="space-between">
+                <div fxFlex="48%" class="form-group">
+                    <label for="start_date">
+                        Start Date
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                               ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="!transferInForm.get('start_date').valid &&
+                               (transferInForm.get('start_date').touched || submitted)">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                <i class="nc-icon nc-calendar-60"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="48%" class="form-group">
+                    <label for="to_class_id">
+                        To Class
+                    </label>
+                    <select id="to_class_id" class="form-control" formControlName="to_class_id">
+                        <option *ngIf="!(slot$ | async); else slotAvailable" value="">Please select Grade & Start Date</option>
+                        <ng-template #slotAvailable>
+                            <option *ngFor="let slot of (slot$ | async)" [value]="slot.id">
+                                {{slot.name}}
+                            </option>
+                        </ng-template>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary" (click)="onSubmit()">Transfer In</button>
+    </div>
+</div>

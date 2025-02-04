@@ -1,0 +1,47 @@
+<div class="sales-list">
+    <div class="form-group">
+        <label for="branch">Branch</label>
+        <select id="branch" class="form-control" (change)="onSelectBranch($event)"> 
+            <option>Select Branch</option>
+            <option *ngFor="let branch of (branch$ | async)" [value]="branch.id">
+                {{branch.name}}
+            </option>
+        </select>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Order Taken By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sale of (sale$ | async)">
+                <td>
+                    {{sale?.id}}
+                </td>
+                <td>
+                    {{sale?.customer?.full_name}}
+                </td>
+                <td>
+                    {{sale?.status}}
+                </td>
+                <td>
+                    {{sale?.user?.full_name}}
+                </td>
+                <td>
+                    <a [routerLink]="['sales', sale?.id]">
+                        <button class="btn btn-success">
+                            Show
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

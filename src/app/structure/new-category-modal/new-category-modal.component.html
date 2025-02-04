@@ -1,0 +1,28 @@
+<!-- {{(sale$ | async) | json}} -->
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Create New Category
+        </h5>
+    </div>
+    <div class="modal-body">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" formControlName="name"
+                [class.is-invalid]="!createForm.get('name').valid && (createForm.get('name').touched || submitted)">
+                <div class="invalid-feedback">
+                    Category Name Required
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <button class="btn btn-success" type="submit">
+            Create
+        </button>
+        <button class="btn btn-primary" type="button" (click)="onClose($event)">
+            Cancel
+        </button>
+    </div>
+</div>
+</form>

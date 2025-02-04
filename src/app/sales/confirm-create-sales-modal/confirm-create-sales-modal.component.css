@@ -1,0 +1,11 @@
+td.subtotal, td.total {
+    padding-left: 2em;
+}
+
+.quantity {
+    font-weight: bold;
+}
+
+tfoot {
+    font-weight: bolder;
+}

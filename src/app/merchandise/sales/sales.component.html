@@ -1,0 +1,121 @@
+<div fxLayout="column">
+    <h5 class="title">Sales Order</h5>
+
+    <div class="button-container" fxLayoutAlign="end">
+        <button class="btn btn-success" [fxShow]="state?.state === 'list'" (click)="changeState('cart')">
+            Check Out
+        </button>
+        <button class="btn btn-primary" [fxShow]="state?.state === 'cart'" (click)="onSell()">
+            Sell
+        </button>
+        <button class="btn btn-danger" [fxShow]="state?.state === 'cart'" (click)="changeState('list')">
+            Cancel
+        </button>
+    </div>
+    <div fxLayout fxLayoutGap="2em">
+    <form [formGroup]="placeOrderForm"  fxFlex="70%" fxLayout="column">
+
+        <div class="form-group">
+            <label for="branch">Branch</label>
+            <select type="text" class="form-control" id="branch" formControlName="branch_id"
+            (change)="onSelectBranch($event)"
+            [class.is-invalid]="!placeOrderForm.get('branch_id').valid && (placeOrderForm.get('branch_id').touched || submitted)">
+                <option value="">Select Branch</option>
+                <option *ngFor="let branch of (branch$ | async)" [value]="branch.id">{{branch.name}}</option>
+            </select>
+            <div class="invalid-feedback">
+                <span>Please select branch that is requesting stock</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="customer">Customer</label>
+            <select type="text" class="form-control" id="customer" formControlName="customer_id"
+            [class.is-invalid]="!placeOrderForm.get('customer_id').valid && (placeOrderForm.get('customer_id').touched || submitted)">
+                <option value="">Select Customer</option>
+                <option *ngFor="let customer of (customer$ | async)" [value]="customer.id">{{customer.name}}</option>
+            </select>
+            <div class="invalid-feedback">
+                <span>Please select customer</span>
+            </div>
+        </div>
+
+        <div fxLayoutAlign="space-between">
+            <div class="form-group" [fxShow]="state?.state === 'cart'">
+                <label for="customer-note">Customer Note</label>
+                <textarea class="form-control" id="customer-note"
+                formControlName="customer_notes" cols="20" rows="4"></textarea>
+            </div>
+
+            <div class="form-group" [fxShow]="state?.state === 'cart'">
+                <label for="staff-note">Staff Note</label>
+                <textarea class="form-control" id="customer-note"
+                formControlName="staff_notes" cols="20" rows="4"></textarea>
+            </div>
+        </div>
+
+
+
+        <table class="table table-hover" formArrayName="items">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">D-Points</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of products; let i = index;" [formGroupName]="i">
+
+                <th scope="row">{{i + 1}}</th>
+                <td>
+                    <span>{{product?.name}}</span>
+                </td>
+                <td class="d-point">
+                    <span>{{product?.d_point}}</span>
+                </td>
+                <td>
+                    <span>{{product?.price | currency: 'MYR'}}</span>
+                </td>
+                <td>
+                    <div class="form-group qty">
+                        <label for="qty_{{i}}"></label>
+                        <input type="number" class="form-control" id="qty_{{i}}" min="0"
+                        [attr.disabled]="product?.inventory?.quantity < 1 ? '' : null"
+                        formControlName="quantity">
+                        <small id="emailHelp" class="form-text text-muted"
+                        [fxHide]="product?.inventory?.quantity < 1">
+                            max. {{product?.inventory?.quantity}}
+                        </small>
+                        <small id="emailHelp" class="form-text"
+                        [fxShow]="product?.inventory?.quantity < 1">
+                            Out of Stock
+                        </small>
+                        <div class="invalid-feedback">
+                            No
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <i class="nc-icon nc-simple-remove" *ngIf="state?.state === 'cart'" (click)="onRemoveItem(i)"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <div class="total" fxFlex="30%">
+        <div class="card" [style.margin-top]="state?.state === 'cart' ? '120px' : null">
+            <div class="card-body" fxLayoutAlign="center center">
+                Subtotal: {{total | currency: 'MYR'}}
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+</div>
+

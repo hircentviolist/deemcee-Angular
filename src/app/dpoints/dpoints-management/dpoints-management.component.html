@@ -1,0 +1,137 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">   
+            <button (click)="goTo(0)" type="button" [ngClass]="pageIndex === 0 ? 'btn-primary' : 'btn-inactive'" class="btn">Accumulation</button>
+            <button (click)="goTo(1)" type="button" [ngClass]="pageIndex === 1 ? 'btn-primary' : 'btn-inactive'" class="btn">Redemption</button>
+            <button (click)="goTo(2)" type="button" [ngClass]="pageIndex === 2 ? 'btn-primary' : 'btn-inactive'" class="btn">Campaign</button>
+            
+            <div style="float: right">
+                <button (click)="createRedemption()" *ngIf="pageIndex === 1" type="button" class="btn btn-success">Create New Redemption</button>
+                <button (click)="createCampaign()" *ngIf="pageIndex === 2" type="button" class="btn btn-success">Create New Campaign</button>
+            </div>
+        </div>
+
+        <ng-container *ngIf="pageIndex === 0">
+            <div style="width: 100%; padding: 15px">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Subject</th>
+                            <th>Points Given</th>
+                            <th>Section</th>
+                            <th style="width: 200px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                            <td class="text-center" colspan="6">
+                                <div class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!isLoading && (!accumulations || !accumulations.length)">
+                            <td class="text-center py-4" colspan="6">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let acc of accumulations">
+                            <td>{{acc?.no}}</td>
+                            <td>{{acc?.subject}}</td>
+                            <td>{{acc?.points}}</td>
+                            <td>{{acc?.section}}</td>
+                            <td class="td-actions text-right pr-5">
+                                <a [routerLink]="['../show/', acc.key]">
+                                    Show
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="pageIndex === 1">
+            <div style="width: 100%; padding: 15px">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>D-Points Redemption</th>
+                            <th>Points Needed</th>
+                            <th style="width: 200px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                            <td class="text-center" colspan="6">
+                                <div class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!isLoading && (!redemptions || !redemptions.length)">
+                            <td class="text-center py-4" colspan="6">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let voucher of redemptions">
+                            <td>{{voucher?.no}}</td>
+                            <td>{{voucher?.title}}</td>
+                            <td>{{voucher?.points_needed}}</td>
+                            <td class="td-actions text-right pr-5">
+                                <a href="javascript:;" (click)="editRedemption(voucher)">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="pageIndex === 2">
+            <div style="width: 100%; padding: 15px">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>D-Points Accumulation</th>
+                            <th>Points Given</th>
+                            <th>Bonus Given</th>
+                            <th>Expired Date</th>
+                            <th style="width: 200px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                            <td class="text-center" colspan="6">
+                                <div class="spinner-border text-secondary my-4" role="status">
+                                <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!isLoading && (!campaigns || !campaigns.length)">
+                            <td class="text-center py-4" colspan="6">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let campaign of campaigns">
+                            <td>{{campaign?.no}}</td>
+                            <td>{{campaign?.title}}</td>
+                            <td>{{campaign?.points_given}}</td>
+                            <td>{{campaign?.bonus_given}}x</td>
+                            <td>{{campaign?.expired_date}}</td>
+                            <td class="td-actions text-right pr-5">
+                                <a href="javascript:;" (click)="editCampaign(campaign.id)">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close(false)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Edit Payment</h5>
+    </div>
+
+    <div class="modal-body" style="padding: 20px 0;">
+        <form [formGroup]="paymentForm">
+            <div class="modal-body" style="padding-bottom: 0; align-items: center;" fxLayout>
+                <div class="left" fxFlex="48%" fxLayout="column">
+                    <p>Payment Date</p>
+                </div>
+                <div fxFlex="48%" fxLayout="column">
+                    <div class="input-group">
+                        <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="date"
+                               ngbDatepicker #d="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                <i class="nc-icon nc-calendar-60"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <a>
+            <button class="btn btn-primary" (click)="submit()">
+                <span *ngIf="!isLoading">Save</span>
+                <div *ngIf="isLoading" class="spinner-border mx-2" style="width: 1rem; height: 1rem; color: white; padding: 0; margin: 0;" role="status">
+                    <span style="color: white" class="sr-only">Save</span>
+                </div>
+            </button>
+        </a>
+    </div>
+</div>

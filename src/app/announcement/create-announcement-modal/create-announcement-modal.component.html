@@ -1,0 +1,125 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>{{mode === 'create' ? 'Create' : 'Update'}} Announcement</h5>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="announcementForm" (ngSubmit)="create()">
+      <fieldset>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div fxFlex="100%" class="form-group">
+            <label for="title">Title*</label>
+            <input id="title" class="form-control" formControlName="title">
+          </div>
+<!--          <div fxFlex="100%" class="form-group" style="margin-bottom: 50px;">-->
+<!--            <label for="title">Description</label>-->
+<!--            <input id="description" class="form-control" formControlName="description">-->
+<!--          </div>-->
+          <div fxFlex="48%" class="form-group" fxLayout="column" style="margin-bottom: 50px;">
+            <label>Desktop Banner (1120:400)*</label>
+            <div *ngIf="desktopBanner">
+              <div class="image-wrapper">
+                <img [src]="desktopBanner" />
+              </div>
+              <div style="margin-top: 10px;">
+                <a href="javascript:;" class="remove-image" (click)="removeImage('desktop_banner')" title="Click to remove this image.">
+                  <div class="remove-image-text">Remove</div>
+                </a>
+              </div>
+            </div>
+            <div *ngIf="!desktopBanner">
+              <div *ngIf="desktopBannerUrl">
+                <div class="image-wrapper">
+                  <img [src]="desktopBannerUrl" />
+                </div>
+                <div style="margin-top: 10px;">
+                  <a href="javascript:;" class="remove-image" (click)="removeImage('desktop_banner')" title="Click to remove this image.">
+                    <div class="remove-image-text">Remove</div>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="!desktopBannerUrl">
+                <label class="upload-image">+ Add</label>
+                <input #selectedPicture type="file" name="desktop_banner" id="desktop_banner" ng2FileSelect
+                       [uploader]="uploaders[1].uploader">
+              </div>
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group" fxLayout="column" style="margin-bottom: 50px;">
+            <label>Mobile Banner (375:300)*</label>
+            <div *ngIf="mobileBanner">
+              <div class="image-wrapper">
+                <img [src]="mobileBanner" />
+              </div>
+              <div style="margin-top: 10px;">
+                <a href="javascript:;" class="remove-image" (click)="removeImage('mobile_banner')" title="Click to remove this image.">
+                  <div class="remove-image-text">Remove</div>
+                </a>
+              </div>
+            </div>
+            <div *ngIf="!mobileBanner">
+              <div *ngIf="mobileBannerUrl">
+                <div class="image-wrapper">
+                  <img [src]="mobileBannerUrl" />
+                </div>
+                <div style="margin-top: 10px;">
+                  <a href="javascript:;" class="remove-image" (click)="removeImage('mobile_banner')" title="Click to remove this image.">
+                    <div class="remove-image-text">Remove</div>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="!mobileBannerUrl">
+                <label class="upload-image">+ Add</label>
+                <input #selectedPicture type="file" name="mobile_banner" id="mobile_banner" ng2FileSelect
+                       [uploader]="uploaders[0].uploader">
+              </div>
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="start_date">Start*</label>
+            <div class="input-group">
+              <input class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                     ngbDatepicker #d="ngbDatepicker"  [class.is-invalid]="!announcementForm.get('start_date').valid && submitted">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                  <i class="nc-icon nc-calendar-60"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="end_date">End*</label>
+            <div class="input-group">
+              <input class="form-control datepicker" id="end_date" placeholder="yyyy-mm-dd" formControlName="end_date"
+                     ngbDatepicker #e="ngbDatepicker"  [class.is-invalid]="!announcementForm.get('end_date').valid && submitted">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" style="margin: 0" (click)="e.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                  <i class="nc-icon nc-calendar-60"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="type">Type*</label>
+            <select id="type" #type class="form-control" formControlName="type" (change)="onTypeChange(type.value)">
+              <option *ngFor="let type of types" [value]="type.key">
+                {{type.name}}
+              </option>
+            </select>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="clickable_url">Clickable URL (Optional)</label>
+            <input id="clickable_url" class="form-control" formControlName="clickable_url">
+          </div>
+        </div>
+      </fieldset>
+      <div class="button-container" fxLayoutAlign="center">
+        <button type="submit" class="btn">{{mode === 'create' ? 'Create' : 'Update'}} Announcement</button>
+      </div>
+    </form>
+  </div>
+</div>

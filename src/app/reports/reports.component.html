@@ -1,0 +1,42 @@
+<div class="main-content">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="active" class="nav-tabs">
+        <li [ngbNavItem]="1">
+            <a *ngIf="isOverall" ngbNavLink>Licensee Report</a>
+            <p *ngIf="!isOverall" (click)="goBack()" style="cursor: pointer;">&#60; Back</p>
+            <ng-template ngbNavContent>
+                <app-licensee-report [cred]="cred" (isOverallChange)="this.isOverall=$event" [isOverall]="isOverall"></app-licensee-report>
+            </ng-template>
+        </li>
+
+        <li [ngbNavItem]="2">
+            <a *ngIf="isOverall" ngbNavLink>Finance Report</a>
+            <ng-template ngbNavContent>
+                <app-finance-report [cred]="cred"></app-finance-report>
+            </ng-template>
+        </li>
+
+        <li [ngbNavItem]="3">
+            <a *ngIf="isOverall" ngbNavLink>Monthly Centre Progression</a>
+            <ng-template ngbNavContent>
+                <app-monthly-centre-progression [cred]="cred"></app-monthly-centre-progression>
+            </ng-template>
+        </li>
+
+        <li *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" [ngbNavItem]="4">
+            <a *ngIf="isOverall" ngbNavLink>Referral Report</a>
+            <ng-template ngbNavContent>
+                <app-referral-report [cred]="cred"></app-referral-report>
+            </ng-template>
+        </li>
+
+        <li [ngbNavItem]="5">
+            <a *ngIf="isOverall" ngbNavLink>Centre Evaluation Report</a>
+            <ng-template ngbNavContent>
+                <app-centre-evaluation-report [cred]="cred"></app-centre-evaluation-report>
+            </ng-template>
+        </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

@@ -1,0 +1,51 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">
+
+            <div *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')" class="row">
+                <div class="col-12">
+                    <button (click)="createEvaluation()" type="button" class="btn btn-create-evaluation">+ Create New Evaluation Report</button>
+                </div>
+            </div>
+
+            <table style="margin-top: 15px;" class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')">Branch</th>
+                        <th>Star Rating</th>
+                        <th>Graded On</th>
+                        <th>Graded By</th>
+                        <th>File Submission</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="isLoading">
+                        <td class="text-center" colspan="10">
+                            <div class="spinner-border text-secondary my-4" role="status">
+                            <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!isLoading && (!evaluations || !evaluations.length)">
+                        <td class="text-center py-4" colspan="6">
+                            No Data
+                        </td>
+                    </tr>
+                    <tr *ngFor="let e of evaluations; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td *ngIf="(cred.role === 'superadmin' || cred.role === 'admin')">{{e?.branch.display_name}}</td>
+                        <td>{{e?.rating}} star{{e?.rating > 1 ? 's' : ''}}</td>
+                        <td>{{e?.graded_on}}</td>
+                        <td>{{e?.graded_by?.full_name}}</td>
+                        <td class="text-center">
+                            <a href="{{e.file_path}}" download>
+                                Download Feedback File
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

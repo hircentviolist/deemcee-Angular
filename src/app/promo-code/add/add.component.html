@@ -1,0 +1,123 @@
+<div class="main-content">
+	<div class="card" fxFlex.gt-xs="50%">
+		<div class="card-header">
+			<h4 class="card-title">{{isUpdate() ? 'Edit' : 'Add'}} Promo Code</h4>
+		</div>
+		<div class="card-body">
+			<form [formGroup]="promoCodeForm" (ngSubmit)="submit()">
+                
+				<fieldset>
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                        <div class="form-group has-label mb-3" fxFlex="100%">
+                            <label class="control-label">Select Branch
+                                <span class="star">*</span>
+                            </label>
+                            <ng-multiselect-dropdown
+                                [ngModelOptions]="{standalone: true}"
+                                [class.invalid-multiselect]="invalidMultiSelect"
+                                [settings]="branchDropdownSettings"
+                                id="branches"
+                                [placeholder]="'Branches'"
+                                [data]="branchOptions"
+                                [(ngModel)]="selectedBranchOption"
+                                (onSelect)="onMultiSelectChange()"
+                                (onSelectAll)="onMultiSelectChange()"
+                                (onDeSelect)="onMultiSelectChange()"
+                                (onDeSelectAll)="onMultiSelectChange()"
+                                required
+                            >
+                            </ng-multiselect-dropdown>
+                            <small *ngIf="invalidMultiSelect" class="text-danger">
+                                Branches is required
+                            </small>
+                        </div>
+
+                        <div class="form-group has-label mb-3" fxFlex="100%">
+                            <label for="type">Select Type
+                                <span class="star">*</span>
+                            </label>
+                            <select id="type" class="form-control" formControlName="type"
+                            [class.is-invalid]="!promoCodeForm.get('type').valid &&
+                            (promoCodeForm.get('type').touched)" required>
+                                <option value=""></option>
+                                <option value="enrolment">Enrolment</option>
+                                <option value="merchandise">Merchandise</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Type is Required
+                            </div>
+                        </div>
+                        
+                        <div class="form-group has-label" fxFlex="100%">
+                            <label class="control-label">Code
+                                <span class="star">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="code" name="code" required
+                                [class.is-invalid]="!promoCodeForm.get('code').valid && 
+                                (promoCodeForm.get('code').touched)">
+                            <div class="invalid-feedback">
+                                <span>
+                                    Code is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-label" fxFlex="48%">
+                            <label class="control-label">Amount (RM)
+                                <span class="star">*</span>
+                            </label>
+                            <input type="number" class="form-control" formControlName="amount" name="amount" required
+                                [class.is-invalid]="!promoCodeForm.get('amount').valid && 
+                                (promoCodeForm.get('amount').touched)">
+                            <div class="invalid-feedback">
+                                <span>
+                                    Amount is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-label" fxFlex="48%">
+                            <label class="control-label">Min Purchase Amount (RM)</label>
+                            <input type="text" class="form-control" placeholder="Optional" formControlName="min_purchase_amount" name="min_purchase_amount">
+                        </div>
+
+                        <div class="form-group has-label" fxFlex="48%">
+                            <label class="control-label">Quantity
+                                <span class="star">*</span>
+                            </label>
+                            <input type="number" class="form-control remove-spinner" formControlName="quantity" name="quantity" required
+                                [class.is-invalid]="!promoCodeForm.get('quantity').valid && 
+                                (promoCodeForm.get('quantity').touched)">
+                            <div class="invalid-feedback">
+                                <span>
+                                    Quantity is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-label" fxFlex="48%">
+                            <label class="control-label">Expired Date</label>
+                            <div class="input-group">
+                                <input class="form-control datepicker" id="expired_date" placeholder="yyyy-mm-dd" formControlName="expired_date"
+                                    ngbDatepicker #d="ngbDatepicker">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button" fxLayoutAlign="center center">
+                                        <i class="nc-icon nc-calendar-60"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="button-container mt-4" fxLayoutAlign="center">
+						<button class="btn btn-success" type="submit">
+							<span *ngIf="!isLoading">{{isUpdate() ? 'Save' : 'Add'}}</span>
+							<div *ngIf="isLoading" class="spinner-border mx-4" style="width: 1rem; height: 1rem; color: white; padding: 0; margin: 0;" role="status">
+								<span style="color: white" class="sr-only">Loading...</span>
+							</div>
+						</button>
+					</div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

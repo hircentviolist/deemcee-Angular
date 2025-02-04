@@ -1,0 +1,20 @@
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 style="margin: 0; font-weight: 600;"> {{data.notification.subject}} </h5>
+    </div>
+    
+    <div class="modal-body">
+        <p style="font-weight: bold; margin-bottom: 5px;"> Type: </p>
+        <p> {{data.notification.notification_type.name}} </p>
+        
+        <p style="white-space: pre-line;"> {{data.notification.description}} </p>
+    </div>
+
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-light" (click)="activeModal.close()">Close</button>
+    </div>
+</div>

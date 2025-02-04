@@ -1,0 +1,24 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1">
+            <div class="card card-calendar">
+                <div style="padding-left: 15px;">
+                    <div style="margin: 25px 0 35px; display: flex; flex-direction: row;">
+                        <div style="margin-right: 20px;display: flex;flex-direction: row;" *ngFor="let hint of calendarHints">
+                            <div style="width: 20px;height: 20px;background-color: red;margin-right: 5px;border-radius: 3px;"
+                                [style.background-color]="hint.color">
+                            </div>
+                            <span>
+                                {{hint.label}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

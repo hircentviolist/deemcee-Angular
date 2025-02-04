@@ -1,0 +1,116 @@
+<div class="main-content">
+
+    <div *ngIf="cred.role === 'superadmin' || cred.role === 'admin'" class="row mb-3">
+        <div class="col-8" style="display: flex; flex-direction: row;">
+            <div style="width: 150px; margin-right: 10px">
+                <label class="custom-tooltip" data-toggle="tooltip" data-placement="top" title="Default to descending" for="year">
+                    Sort Date:
+                </label>
+                <select class="custom-tooltip" data-toggle="tooltip" data-placement="top" title="Default to descending" (change)="onFilterChange()" [(ngModel)]="filters.sort_date" id="sort_date" class="form-control">
+                    <option value="asc">
+                        Ascending
+                    </option>
+                    <option value="desc">
+                        Descending
+                    </option>
+                </select>
+            </div>
+            <div style="width: 150px; margin-right: 10px">
+                <label for="year">
+                    Year:
+                </label>
+                <select (change)="onFilterChange()" [(ngModel)]="filters.year" id="year" class="form-control">
+                    <option value="0">
+                    </option>
+                    <option *ngFor="let year of yearList" [value]="year.value">
+                        {{year.name}}
+                    </option>
+                </select>
+            </div>
+            <div style="width: 150px; margin-right: 10px">
+                <label for="month">
+                    Month:
+                </label>
+                <select (change)="onFilterChange()" [(ngModel)]="filters.month" id="month" class="form-control">
+                    <option value="0">
+                    </option>
+                    <option *ngFor="let month of monthList" [value]="month.value">
+                        {{month.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-4" style="display: flex; flex-direction: row; justify-content: flex-end;">
+            <button style="width: 100px; height: 40px;" class="btn btn-secondary" (click)="resetFilter()">
+                <span style="font-size: 16px; font-weight: bold;">RESET</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="table-scroll" class="table-scroll">
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Request Date</th>
+                        <th>Invoice Number</th>
+                        <th>Branch</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let invoice of invoices?.data">
+                        <td class="request_date">
+                            {{invoice.request_date}}
+                        </td>
+                        <td class="inv-no">
+                            {{invoice.number}}
+                        </td>
+                        <td class="branch">
+                            {{invoice.branch.name}}
+                        </td>
+                        <td class="total" style="text-align: end">
+                            {{invoice.total | number: '1.2-2'}}
+                        </td>
+                        <td class="status">
+                            {{invoice.status}}
+                        </td>
+                        <td>
+                            <button class="btn btn-success" (click)="onPay(invoice.id)"
+                            *ngIf="(cred?.role === 'admin' || cred?.role === 'superadmin')"
+                            [disabled]="invoice.status === 'Paid'">
+                                Paid
+                            </button>
+                            <a [href]="invoice.pdf" target="_blank">
+                                <button class="btn btn-primary">
+                                    Print
+                                </button>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div *ngIf="pages.length && (cred.role === 'superadmin' || cred.role === 'admin') " style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <nav>
+            <ul class="pagination">
+                <li (click)="paginationClicked('prev')" class="page-item">
+                <a class="page-link" href="javascript:;">Previous</a>
+                </li>
+                
+                <li *ngFor="let page of pages" (click)="paginationClicked(page)" class="page-item" [class.active]="page.is_active">
+                <a class="page-link" href="javascript:;">{{page.number}}</a>
+                </li>
+    
+                <li (click)="paginationClicked('next')" class="page-item">
+                <a class="page-link" href="javascript:;">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

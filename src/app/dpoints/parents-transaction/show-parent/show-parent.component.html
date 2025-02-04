@@ -1,0 +1,79 @@
+<div class="main-content">
+    <div class="container-fluid" style="background-color: white; border-radius: 5px;">
+        <div class="row" style="padding: 15px 15px 30px;">
+            
+            <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;"> 
+                <a (click)="goBack()" href="javascript:;">&lt; Back</a>  
+            </div>
+            
+            <div style="width: 100%; margin-bottom: 15px;">
+                <div class="row px-3">
+                    <div class="col-10">
+                        <h4 style="font-weight: 600; font-size: 20px;">
+                            Transaction History
+                        </h4>
+                    </div>
+                </div>
+            </div>
+                
+            <div *ngIf="isLoading" class="row p-3" style="width: 100%; padding-bottom: 30px !important;">
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-secondary my-4" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="!isLoading">
+                <div class="col-5">
+                    <div class="title">
+                        Parents Name
+                    </div>
+                    <div>
+                        {{parent?.name}}
+                    </div>
+                </div>
+                <div class="col-5" style="margin-bottom: 15px;">
+                    <div class="title">
+                        Parents Email Address
+                    </div>
+                    <div>
+                        {{parent?.email}}
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="title">
+                        Point Balance
+                    </div>
+                    <div>
+                        {{parent?.balance}} D-Points
+                    </div>
+                </div>
+            </ng-container>
+            
+            <table *ngIf="!isLoading" class="table mt-5">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>D-Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="!isLoading && (!trxHistory || !trxHistory.length)">
+                        <td class="text-center py-4" colspan="6">
+                            No Data
+                        </td>
+                    </tr>
+                    <tr *ngFor="let trx of trxHistory; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{trx?.date_time}}</td>
+                        <td>{{trx?.action}}</td>
+                        <td>{{trx?.type === 'add' ? '+' : '-'}}{{trx?.points}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

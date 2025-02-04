@@ -1,0 +1,170 @@
+<div class="main-content" fxLayout="column">
+    <div class="button-container" fxLayoutAlign="end" *ngIf="action === 'Update'">
+        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    </div>
+    <div class="card" fxFlex="50%">
+        <div class="card-body">
+            <form [formGroup]="branchForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>{{action}} Branch</legend>
+
+                <div class="form-group">
+                    <label for="principal">Principal Name (required)</label>
+                    <select id="principal" class="form-control"
+                    (change)="onSelect($event)"
+                    formControlName="principal_id"
+                    [class.is-invalid]="!branchForm.get('principal_id').valid && (branchForm.get('principal_id').touched || submitted)">
+                        <option>Select Principal</option>
+                        <option value="create">Create New Principal</option>
+                        <option *ngFor="let data of principals" [value]="data.id">{{data.name}}</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <span>Branch have to be created under a principal</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Branch Name</label>
+                    <input type="text" id="name" class="form-control" formControlName="name"
+                    [class.is-invalid]="!branchForm.get('name').valid && (branchForm.get('name').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Branch Name Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="branch_grade_id">Branch Grade</label>
+                    <select id="branch_grade_id" class="form-control"
+                    formControlName="branch_grade_id"
+                    [class.is-invalid]="!branchForm.get('branch_grade_id').valid && (branchForm.get('branch_grade_id').touched || submitted)">
+                        <option></option>
+                        <option *ngFor="let grade of branchGrades" [value]="grade.id">{{grade.name}} ({{grade.percentage}}%)</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <span>Branch Grade Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="operation_date">Operation Date</label>
+                    <div class="input-group">
+                        <input class="form-control datepicker" id="operation_date" placeholder="yyyy-mm-dd" formControlName="operation_date"
+                               ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="!branchForm.get('operation_date').valid && (branchForm.get('operation_date').touched || submitted)">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                <i class="nc-icon nc-calendar-60"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="invalid-feedback">
+                        <span>Operation Date Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="business_name">Business Name</label>
+                    <input type="text" id="business_name" class="form-control" formControlName="business_name"
+                    [class.is-invalid]="!branchForm.get('business_name').valid && (branchForm.get('business_name').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Business Name Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="business_reg_no">Business Registration No.</label>
+                    <input type="text" id="business_reg_no" class="form-control" formControlName="business_reg_no"
+                    [class.is-invalid]="!branchForm.get('business_reg_no').valid && (branchForm.get('business_reg_no').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Business Registration No. Required</span>
+                    </div>
+                </div>
+
+                <fieldset formGroupName="address">
+                    <legend>Address</legend>
+                    <div class="form-group">
+                        <label for="address_line_1">Address Line 1</label>
+                        <input type="text" class="form-control" id="address_line_1" formControlName="address_line_1"
+                        [class.is-invalid]="!branchForm.get('address.address_line_1').valid && (branchForm.get('address.address_line_1').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Address Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address_line_2">Address Line 2</label>
+                        <input type="text" class="form-control" id="address_line_2" formControlName="address_line_2"
+                        [class.is-invalid]="!branchForm.get('address.address_line_2').valid && (branchForm.get('address.address_line_2').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Address Line 2 Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address_line_1">Address Line 3</label>
+                        <input type="text" class="form-control" id="address_line_3" formControlName="address_line_3"
+                        [class.is-invalid]="!branchForm.get('address.address_line_3').valid && (branchForm.get('address.address_line_3').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Address Line 3 Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address_city">City</label>
+                        <input type="text" class="form-control" id="address_city" formControlName="city"
+                        [class.is-invalid]="!branchForm.get('address.city').valid && (branchForm.get('address.city').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>City Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address_postcode">Postcode</label>
+                        <input type="text" class="form-control" id="address_postcode" formControlName="postcode"
+                        [class.is-invalid]="!branchForm.get('address.postcode').valid && (branchForm.get('address.postcode').touched || submitted)">
+                        <div class="invalid-feedback">
+                            <span>Postcode Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address_state">State</label>
+                        <select id="address_state" class="form-control" formControlName="state"
+                        [class.is-invalid]="!branchForm.get('address.state').valid && (branchForm.get('address.state').touched || submitted)">
+                            <option></option>
+                            <option *ngFor="let state of states" [value]="state">{{state}}</option>
+                        </select>
+
+                        <div class="invalid-feedback">
+                            <span>State Required</span>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+
+
+                <div class="button-container" fxLayoutAlign="center center">
+                    <button class="btn btn-success" type="submit">{{action}}</button>
+                </div>
+
+            </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ownership_type: new FormControl('', Validators.required),
+principal_id: new FormControl('', Validators.required),
+branch_name: new FormControl('', Validators.required),
+operation_date: new FormControl('', Validators.required),
+address: new FormGroup({
+  address_line_1: new FormControl('', Validators.required),
+  address_line_2: new FormControl(''),
+  address_line_3: new FormControl(''),
+  city: new FormControl('', Validators.required),
+  postcode: new FormControl('', Validators.required),
+  state: new FormControl('', Validators.required),
+}) -->

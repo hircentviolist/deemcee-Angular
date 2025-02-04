@@ -1,0 +1,108 @@
+<div>
+	<div style="display: flex; flex: 1; flex-direction: row">
+		<!-- <div style="display: flex; flex-direction: column; padding-right: 50px">
+			<p *ngIf="studentName">
+				Name: <strong>{{ studentName }}</strong>
+			</p>
+			<p *ngIf="studentGrade">
+				Grade: <strong>{{ studentGrade }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Total class: <strong>{{ classDetailsCount?.total_class_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Remaining class: <strong>{{ classDetailsCount?.remaining_class_count }}</strong>
+			</p>
+		</div>
+		<div style="display: flex; flex-direction: column">
+			<p *ngIf="classDetailsCount">
+				Attended: <strong>{{ classDetailsCount?.total_attended_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Rescheduled: <strong>{{ classDetailsCount?.total_rescheduled_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Absent: <strong>{{ classDetailsCount?.total_absent_count }}</strong>
+			</p>
+			<p *ngIf="classDetailsCount">
+				Freezed class: <strong>{{ classDetailsCount?.freezed_class_count }}</strong>
+			</p>
+		</div> -->
+		<div fxLayout fxLayoutAlign="flex-end flex-start" style="flex: 1">
+			<div
+				*ngIf="role !== 'teacher'"
+				class="btn-group"
+				ngbDropdown
+				placement="left-top"
+				role="group"
+				aria-label="Button group with nested dropdown"
+			>
+				<button class="btn btn-light" ngbDropdownToggle>
+					<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+				</button>
+				<div class="dropdown-menu" ngbDropdownMenu>
+					<button ngbDropdownItem (click)="onFreeze()">Freeze</button>
+					<button ngbDropdownItem (click)="onUnfreeze()">Unfreeze</button>
+					<button ngbDropdownItem (click)="onChangeClass()">Change Class</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="header1">
+	<span class="no" fxFlex="10%">No.</span>
+	<span class="theme" fxFlex="15%">Theme</span>
+	<span class="lesson" fxFlex="25%">Lessons</span>
+	<span class="attendance" fxFlex="25%">Attendance</span>
+</div>
+<div class="body1" *ngFor="let themeLesson of latestThemeLessons; let i = index">
+	<div class="title1">
+		<span class="no" fxFlex="10%">{{ i + 1 }}</span>
+		<span class="theme" fxFlex="15%">{{ capitalise(themeLesson.theme_name) }}</span>
+		<span class="lesson" fxFlex="25%">{{ themeLesson.lessons.length }}</span>
+		<span class="attendance" fxFlex="25%">{{ themeLesson.has_attended }}/{{ themeLesson.lessons.length }}</span>
+		<span class="arrow" fxFlex="25%">
+			<i class="nc-icon nc-minimal-up" (click)="onSelectTheme(i)" [fxHide]="selectedTheme !== i"></i>
+			<i class="nc-icon nc-minimal-down" (click)="onSelectTheme(i)" [fxHide]="selectedTheme === i"> </i>
+		</span>
+	</div>
+	<div class="card" [fxHide]="selectedTheme !== i">
+		<div fxFlex="10%"></div>
+		<div fxFlex="90%">
+			<div class="lesson-details-title">Lesson Details</div>
+		</div>
+		<div *ngFor="let lesson of themeLesson.lessons; let j = index" class="lesson-detail">
+			<div fxFlex="10%"></div>
+			<div fxFlex="15%">{{ lesson.display_name }}</div>
+			<div fxFlex="15%">
+				{{ lesson.date }}
+			</div>
+			<div fxFlex="15%">{{ lesson.start_datetime }} - {{ lesson.end_datetime }}</div>
+			<div
+				fxFlex="25%"
+                style="text-align: center"
+				[class.absent]="lesson.status !== 'FREEZED' && lesson.class_lesson_status === 'COMPLETED' && lesson.has_attended === 0"
+				[class.attended]="lesson.has_attended === 1"
+				[class.pending]="lesson.class_lesson_status === 'PENDING'"
+			>
+				{{ lesson.status === 'FREEZED'
+					? 'FREEZED'
+					: lesson.class_lesson_status === 'PENDING'
+							? lesson.status
+									? lesson.status === 'reschedule'
+											? 'RESCHEDULED'
+											: lesson.status.toUpperCase()
+									: '-'
+							: lesson.has_attended
+									? 'ATTENDED'
+									: 'ABSENT'
+				}}
+			</div>
+            <div fxFlex='15%' style="text-align: right">
+                <a (click)="editExtend(lesson, i, j)" href="javascript:;" style="font-weight: bold;">
+                    {{ lesson.extend_started ? 'Edit Date' : ''}}
+                </a> 
+            </div>
+		</div>
+	</div>
+</div>

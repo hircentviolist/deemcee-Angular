@@ -1,0 +1,60 @@
+<div class="main-container">
+  <div class="button-container" fxLayoutAlign="space-between center">
+    <div class="form-group" fxLayout fxLayoutGap="2em">
+      <select id="grade" [(ngModel)]="selectedGrade" class="form-control" (change)="onSelectCategory($event)">
+        <option value="0">Select Category</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{category.name}}
+        </option>
+      </select>
+      <select id="grade" [(ngModel)]="selectedVersion" class="form-control" (change)="onSelectVersion($event)">
+        <option *ngFor="let version of versions" [value]="version?.id">
+          {{version?.name}}
+        </option>
+      </select>
+    </div>
+    <a [queryParams]="queryParams" [routerLink]="['theme', 'new']" queryParamsHandling="preserve">
+      <button class="btn btn-success">Add</button>
+    </a>
+  </div>
+
+  <div fxLayout fxLayoutGap="3em">
+  <table class="table table-hover" fxFlex="60%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Theme Name</th>
+          <th scope="col">Category</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let theme of lessons; let i = index;">
+
+          <td scope="row">{{i + 1}}</td>
+          <td>
+              <span>{{theme?.name}}</span>
+          </td>
+          <td>
+              <span *ngIf="theme">{{theme?.category?.name || ''}}</span>
+          </td>
+          <td fxLayOutGap="1em" fxLayoutAlign="end center">
+            <a [routerLink]="['theme', theme?.id]" queryParamsHandling="preserve">
+              <button class="btn btn-success">Show</button>
+            </a>
+            <button class="btn btn-danger" (click)="onDelete(theme.id)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="!lessons?.length && selectedGrade !== '0' && selectedGrade === '0'">
+          <td class="no-themes-found" colspan="4">No Themes Found For Selected Category</td>
+        </tr>
+        <tr *ngIf="!lessons?.length && selectedVersion !== '0'">
+          <td class="no-themes-found" colspan="4">No Themes Found For Selected Version</td>
+        </tr>
+        <tr *ngIf="selectedGrade === '0' || selectedVersion === '0'">
+          <td class="no-themes-found" colspan="4">Please Select Theme and Version</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+

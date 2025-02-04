@@ -1,0 +1,48 @@
+<form [formGroup]="upgradeForm" (ngSubmit)="onSubmit()">
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Upgrade Category {{categoryDetail?.name}}
+        </h5>
+        <h6>
+            New Version {{nextVersion}}
+        </h6>
+    </div>
+    
+    <div class="modal-body">
+        
+            <fieldset class="start-month" fxFlex="45%">
+                <legend>Start Month</legend>
+                <div fxLayout>
+                    {{startMonth}}
+                </div>
+                
+            </fieldset>
+
+            <fieldset class="end-month" fxFlex="45%" fxLayout>
+                <legend>End Month</legend>
+                <div fxLayout>
+                    <div class="form-group">
+                        <select class="form-control" formControlName="end_month">
+                            <option *ngFor="let month of months" [value]="month.id">{{month.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" formControlName="end_year">
+                            <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="1em">
+        <button class="btn btn-success" type="submit">
+            Yes
+        </button>
+        <button class="btn btn-primary" type="button"  (click)="activeModal.dismiss(false)">
+            No
+        </button>
+    </div>
+    
+</div>
+</form>

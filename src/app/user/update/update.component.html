@@ -1,0 +1,27 @@
+<div class="main-content">
+
+    <div class="button-container" fxLayoutAlign="end">
+        <button class="btn btn-danger" (click)="onDelete()">
+            <span [fxShow]="userType !== 'principal'">Delete</span>
+            <span [fxShow]="userType === 'principal'">Terminate</span>
+        </button>
+    </div>
+
+    <!-- Form Display Here -->
+    <ng-template [ngIf]="userType === 'superadmin' || userType === 'admin'">
+        <app-admin-form [userType]="userType" [action]="'update'"></app-admin-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'principal'">
+        <app-principal-form [userType]="userType" [action]="'update'"></app-principal-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'manager' || userType === 'teacher'">
+        <app-manager-teacher-form [userType]="userType" [action]="'update'"></app-manager-teacher-form>
+    </ng-template>
+
+    <ng-template [ngIf]="userType === 'parent'">
+        <app-parent-student-form [userType]="userType" [action]="'update'"></app-parent-student-form>
+    </ng-template>
+
+</div>

@@ -1,0 +1,11 @@
+.title {
+    display: block;
+}
+
+.form-group.qty input {
+    width: 4em;
+}
+
+.card {
+    margin-top: 30px;
+}

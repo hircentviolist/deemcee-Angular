@@ -1,0 +1,113 @@
+<div class="main-content">
+	<h5>{{ cred.role !== 'superadmin' && cred.role !== 'admin' ? 'Branch Inventory' : 'Inventory' }}</h5>
+
+	<div class="form-group" *ngIf="!branch_id">
+		<label for="branch">Branch</label>
+		<select id="branch" class="form-control" (change)="onSelectBranch($event)">
+			<option value="">Select Branch</option>
+			<option *ngFor="let branch of branch$ | async" [value]="branch.id">
+				{{ branch.name }}
+			</option>
+		</select>
+	</div>
+
+	<div class="container-fluid" style="background-color: white; border-radius: 5px">
+		<div class="row">
+			<div class="col-md-12 col-md-offset-1" style="padding-top: 20px">
+				<div id="table-scroll" class="table-scroll">
+					<div class="table-wrap">
+						<table class="table table-fix-header">
+							<thead>
+								<tr>
+									<th class="photo" style="width: 150px">Image</th>
+									<th class="name">Name</th>
+									<th class="price">
+										{{
+											cred?.role === 'admin' || cred?.role === 'superadmin'
+												? 'Wholesale Price'
+												: 'Cost'
+										}}
+									</th>
+									<th class="price">
+										{{
+											cred?.role === 'admin' || cred?.role === 'superadmin'
+												? 'Retail Price'
+												: 'Selling Price'
+										}}
+									</th>
+									<th class="stock">Stock</th>
+									<th class="buttons">
+										<a
+											[routerLink]="['product', 'addmultiple']"
+											[queryParams]="{ branch_id: branch_id }"
+											*ngIf="cred.role === 'admin' || cred.role === 'superadmin'"
+										>
+											<button class="btn btn-primary" [disabled]="!branch_id">
+												Add Multiple
+											</button>
+										</a>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let product of products?.data">
+									<td class="photo" style="width: 150px">
+										<img
+											[src]="product?.thumbnail?.url"
+											[alt]="product.name"
+											class="product-image"
+											style="width: 150px"
+										/>
+									</td>
+									<td class="name">
+										{{ product.name }}
+									</td>
+									<td class="price">
+										{{ product.price_per_set / product.quantity_per_set | currency: 'MYR' }}
+									</td>
+									<td class="price">
+										{{ product.sale_price || product.regular_price | currency: 'MYR' }}
+									</td>
+									<td class="stock">
+										{{ product.stock }}
+									</td>
+									<td class="buttons">
+										<a
+											[routerLink]="['product', product.id]"
+											[queryParams]="{ branch_id: branch_id }"
+										>
+											<button class="btn btn-success" (click)="onViewDetails()">Details</button>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="pages.length" style="display: flex; justify-content: flex-end; margin-top: 20px">
+		<nav>
+			<ul class="pagination">
+				<li (click)="paginationClicked('prev')" class="page-item">
+					<a class="page-link" href="javascript:;">Previous</a>
+				</li>
+
+				<li
+					*ngFor="let page of pages"
+					(click)="paginationClicked(page)"
+					class="page-item"
+					[class.active]="page.is_active"
+				>
+					<a class="page-link" href="javascript:;">{{ page.number }}</a>
+				</li>
+
+				<li (click)="paginationClicked('next')" class="page-item">
+					<a class="page-link" href="javascript:;">Next</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>

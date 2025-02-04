@@ -1,0 +1,42 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5>Inventory: {{product.name}}</h5>
+        <div fxLayout fxLayoutAlign="center center">
+            <button class="btn btn-primary" (click)="onAdjustInventory()">
+                Adjust Stock
+            </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="branch">Branch</th>
+                    <th class="quantity">Quantity</th>
+                    <th class="buttons"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let inventory of (inventory$ | async)">
+                    <td class="branch">
+                        {{inventory.branch.name}}
+                    </td>
+                    <td class="quantity">
+                        {{inventory.stock}}
+                    </td>
+                    <td class="buttons">
+                        <button class="btn btn-success" (click)="onViewMovement(inventory.branch.id)">
+                            View Movement
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-secondary" (click)="onClose()">
+            Close
+        </button>
+    </div>
+</div>
+

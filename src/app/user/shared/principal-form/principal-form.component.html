@@ -1,0 +1,66 @@
+<div class="card" fxFlex="50%">
+    <div class="card-body">
+        <form [formGroup]="principalForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>{{userType}}</legend>
+
+                <span *ngIf="terminated" style="color: red">Terminated {{terminated}}</span>
+
+                <div class="form-group">
+                    <label for="email">Email*</label>
+                    <input type="email" id="email" class="form-control" formControlName="email"
+                    [attr.disabled]="terminated ? '' : null"
+                    [class.is-invalid]="!principalForm.get('email').valid && (principalForm.get('email').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span *ngIf="principalForm.get('email')?.errors?.required">Email Required</span>
+                        <span *ngIf="principalForm.get('email')?.errors?.email">Valid Email Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="personal_email">Personal Email</label>
+                    <input type="email" id="personal_email" class="form-control" formControlName="personal_email"
+                    [attr.disabled]="terminated ? '' : null">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">Name*</label>
+                    <input type="text" class="form-control" id="first_name" formControlName="first_name"
+                    [attr.disabled]="terminated ? '': null"
+                    [class.is-invalid]="!principalForm.get('first_name').valid && (principalForm.get('first_name').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Name is required</span>
+                    </div>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="last_name">Last Name</label>-->
+<!--                    <input type="text" class="form-control" id="last_name" formControlName="last_name"-->
+<!--                    [attr.disabled]="terminated ? '' : null"-->
+<!--                    [class.is-invalid]="!principalForm.get('last_name').valid && (principalForm.get('last_name').touched || submitted)">-->
+<!--                    <div class="invalid-feedback">-->
+<!--                        <span>Last Name Required</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="form-group">
+                    <label for="phone">Phone*</label>
+                    <input type="tel" class="form-control" id="phone" formControlName="phone"
+                    [attr.disabled]="terminated ? '' : null"
+                    [class.is-invalid]="!principalForm.get('phone').valid && (principalForm.get('phone').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Phone Number Required</span>
+                    </div>
+                </div>
+
+                <div class="button-container" fxLayoutAlign="center">
+                    <button class="btn btn-success" type="submit"
+                    [attr.disabled]="terminated ? '' : null">
+                        {{action}}</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

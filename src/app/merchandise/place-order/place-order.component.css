@@ -1,0 +1,21 @@
+.nc-icon {
+    padding: 1em;
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.nc-icon.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+select#branch {
+    width: auto;
+    margin-bottom: 2em;
+}
+
+textarea#customer-note {
+    margin-top: 5px;
+}

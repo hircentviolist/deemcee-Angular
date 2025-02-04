@@ -1,0 +1,91 @@
+<div class="main-container">
+<!--  <div class="button-container" fxLayoutAlign="end">-->
+<!--      <button class="btn btn-success" (click)="onChangeMain('add')">Add</button>-->
+<!--  </div>-->
+
+  <div fxLayout fxLayoutGap="3em">
+
+  <table class="table table-hover" fxFlex="60%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Grade Name</th>
+          <th scope="col">Category</th>
+          <th scope="col">Price</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let grade of grades; let i = index;"
+        [style.background-color]="(state?.rows[i].state === 'update' && state?.main === 'show') ? 'lightgrey' : 'unset'">
+
+          <th scope="row">{{i + 1}}</th>
+          <td>
+              <span>{{grade?.name}}</span>
+          </td>
+          <td>
+              <span *ngIf="grade">{{getCategory(grade?.category_id) | async}}</span>
+          </td>
+          <td>
+            <span>{{grade?.price.replace(',', '') | currency: 'MYR'}}</span>
+        </td>
+
+          <td fxLayOutGap="1em" fxLayoutAlign="end center">
+              <button class="btn btn-success"
+              (click)="onChangeRows(i, 'update')">Update</button>
+              <button class="btn btn-danger"
+              (click)="onDelete(grade.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card" fxFlex="calc(40% - 3em)" [fxHide]="!isUpdate() && state?.main !== 'add'">
+      <div class="card-body">
+        <div class="card-title"
+        *ngIf="!isUpdate()">Add Grade</div>
+        <div class="card-title"
+        *ngIf="isUpdate()">Update Grade</div>
+        <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="name">Grade Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name"
+            [class.is-invalid]="!gradeForm.get('name').valid && (gradeForm.get('name').touched || submitted)">
+            <div class="invalid-feedback">
+                Grade Name Required
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" formControlName="category_id" id="category"
+            [class.is-invalid]="!gradeForm.get('category_id').valid && (gradeForm.get('category_id').touched || submitted)">
+              <option *ngFor="let category of (categorySelect | async)" [value]="category.id">{{category.name}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Category Required
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="price">Price (MYR)</label>
+            <input type="number" class="form-control" id="price" formControlName="price" min="0"
+            [class.is-invalid]="!gradeForm.get('price').valid && (gradeForm.get('price').touched || submitted)">
+            <div class="invalid-feedback">
+                Price Required
+            </div>
+          </div>
+          <div class="button-container">
+            <button type="submit" class="btn btn-success">
+              <span *ngIf="!isUpdate()">Add</span>
+              <span *ngIf="isUpdate()">Update</span>
+            </button>
+            <button type="button" class="btn btn-primary" (click)="initializeState()">
+              Cancel
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+

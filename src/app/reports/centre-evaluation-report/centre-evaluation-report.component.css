@@ -1,0 +1,10 @@
+
+.btn-create-evaluation, .btn-create-evaluation:active, .btn-create-evaluation:visited {
+    background-color: #1fc718 !important;
+    margin: 0;
+    float: right;
+}
+
+.btn-create-evaluation:hover {
+    opacity: 0.8 !important;
+}

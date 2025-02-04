@@ -1,0 +1,50 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Custom Time Range</h5>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="customTimeRangeForm" (ngSubmit)="apply()">
+            <fieldset>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+                    <div fxFlex="100%" class="form-group">
+                        <label for="start_date">From</label>
+                        <div class="input-group">
+                            <input (ngModelChange)="onDateChange('from')" class="form-control datepicker" [minDate]="startMinDate" [maxDate]="startMaxDate" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                                   ngbDatepicker #d1="ngbDatepicker"  [class.is-invalid]="!customTimeRangeForm.get('start_date').valid &&
+                               (customTimeRangeForm.get('start_date').touched || submitted)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d1.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div fxFlex="100%" class="form-group">
+                        <label for="end_date">To</label>
+                        <div class="input-group">
+                            <input (ngModelChange)="onDateChange('to')" [disabled]="endMinDate ? false : true" [minDate]="endMinDate" [maxDate]="endMaxDate" class="form-control datepicker" id="end_date" placeholder="yyyy-mm-dd" formControlName="end_date"
+                                   ngbDatepicker #d2="ngbDatepicker"  [class.is-invalid]="!customTimeRangeForm.get('end_date').valid &&
+                               (customTimeRangeForm.get('end_date').touched || submitted)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d2.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary my-4" (click)="apply()">Apply</button>
+    </div>
+</div>

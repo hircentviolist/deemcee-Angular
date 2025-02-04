@@ -1,0 +1,16 @@
+.nc-icon {
+    padding: 1em;
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.nc-icon.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+input#quantity {
+    width: 5em;
+}

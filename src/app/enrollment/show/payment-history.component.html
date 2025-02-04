@@ -1,0 +1,88 @@
+<!-- <div style="padding-top: 30px;">
+  <div style="display: flex; flex: 1; flex-direction: row;">
+    <div style="display: flex; flex-direction: column; padding-right: 50px;">
+      <p *ngIf="studentName">
+        Name: <strong>{{studentName}}</strong>
+      </p>
+      <p *ngIf="studentGrade">
+        Grade: <strong>{{studentGrade}}</strong>
+      </p>
+      <p *ngIf="classDetailsCount">
+          Total class: <strong>{{ classDetailsCount?.total_class_count }}</strong>
+      </p>
+      <p *ngIf="classDetailsCount">
+        Remaining class: <strong>{{ classDetailsCount?.remaining_class_count }}</strong>
+      </p>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <p *ngIf="classDetailsCount">
+        Attended: <strong>{{ classDetailsCount?.total_attended_count }}</strong>
+      </p>
+      <p *ngIf="classDetailsCount">
+        Rescheduled: <strong>{{ classDetailsCount?.total_rescheduled_count }}</strong>
+      </p>
+      <p *ngIf="classDetailsCount">
+        Absent: <strong>{{ classDetailsCount?.total_absent_count }}</strong>
+      </p>
+      <p *ngIf="classDetailsCount">
+          Freezed class: <strong>{{ classDetailsCount?.freezed_class_count }}</strong>
+      </p>
+    </div>
+  </div>
+</div> -->
+<div id="table-scroll" class="table-scroll">
+	<div class="table-wrap">
+		<table class="table table-hover main-table">
+			<thead>
+				<tr>
+					<th scope="col">Payment Date</th>
+					<th scope="col">Description</th>
+					<th scope="col" style="text-align: end">Total</th>
+					<th scope="col" style="text-align: end">Outstanding</th>
+					<th scope="col" style="text-align: end">Paid Amount</th>
+					<th scope="col" style="text-align: end">Balance</th>
+					<th scope="col" style="text-align: center">Status</th>
+					<th scope="col" style="text-align: center">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let payment of payment$ | async; let i = index">
+					<td>
+						{{ payment.date }}
+					</td>
+					<td>
+						{{ payment.description + ' (' + payment?.payable?.grade?.display_name + ')' }}
+					</td>
+					<td style="text-align: end">
+						{{ payment.amount | number: '1.2-2' }}
+					</td>
+					<td style="text-align: end">
+						{{ payment.pre_outstanding | number: '1.2-2' }}
+					</td>
+					<td style="text-align: end">
+						{{ payment.paid_amount | number: '1.2-2' }}
+					</td>
+					<td style="text-align: end">
+						{{ payment.post_outstanding | number: '1.2-2' }}
+					</td>
+					<td style="text-align: center">
+						{{ capitalise(payment.status) }}
+					</td>
+					<td style="text-align: end">
+						<a
+							style="margin-right: 5px"
+							*ngIf="payment.status === 'paid'"
+							href="javascript:;"
+							(click)="edit(payment)"
+						>
+							<button class="btn btn-success">Edit</button>
+						</a>
+						<a *ngIf="payment.invoice" href="javascript:;" (click)="viewInvoice(payment.invoice.file_path)">
+							<button class="btn btn-success">View Invoice</button>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

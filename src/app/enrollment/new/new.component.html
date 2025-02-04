@@ -1,0 +1,377 @@
+<div class="main-content">
+
+    <div fxLayout="column">
+        <div class="button-container" fxLayoutAlign="end" fxFlex="100%">
+            <a routerLink="../list">
+                <button class="btn btn-danger">
+                    Cancel
+                </button>
+            </a>
+        </div>
+
+        <h4>Create New Enrollment</h4>
+
+        <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>Student Details</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="firstname">Name</label>
+                        <input type="text" class="form-control" id="firstname" formControlName="first_name"
+                        [class.is-invalid]="!enrollmentForm.get('first_name').valid &&
+                        (enrollmentForm.get('first_name').touched || submitted)">
+                        <div class="invalid-feedback">
+                            First Name Required
+                        </div>
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="gender">Gender</label>
+                        <select id="gender" class="form-control" formControlName="gender"
+                        [class.is-invalid]="!enrollmentForm.get('gender').valid &&
+                        (enrollmentForm.get('gender').touched || submitted)">
+                            <option value=""></option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Gender Required
+                        </div>
+
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="dob">Date of Birth</label>
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="dob" placeholder="yyyy-mm-dd" formControlName="dob"
+                                   ngbDatepicker #d="ngbDatepicker"  [class.is-invalid]="!enrollmentForm.get('dob').valid &&
+                               (enrollmentForm.get('dob').touched || submitted)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            Date of Birth Required
+                        </div>
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="school">School</label>
+                        <input type="text" class="form-control" id="school" formControlName="school"
+                               [class.is-invalid]="!enrollmentForm.get('school').valid &&
+                               (enrollmentForm.get('school').touched || submitted)">
+                        <div class="invalid-feedback">
+                            School Required
+                        </div>
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="commencement-date">Commencement Date</label>
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="commencement-date" placeholder="yyyy-mm-dd" formControlName="commencement_date"
+                                   ngbDatepicker #e="ngbDatepicker" [class.is-invalid]="!enrollmentForm.get('commencement_date').valid &&
+                        (enrollmentForm.get('commencement_date').touched || submitted)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" style="margin: 0" (click)="e.toggle()" type="button"
+                                        fxLayoutAlign="center center">
+                                    <i class="nc-icon nc-calendar-60"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            Commencement Date Required
+                        </div>
+                    </div>
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="grade">Grade</label>
+                        <select id="grade" #grade class="form-control" formControlName="grade_id" (change)="onGradeChanged(grade.value)">
+                            <option value=""></option>
+                            <option *ngFor="let grade of (grade$ | async)" [value]="grade.id">
+                                {{grade.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="voucher">Voucher</label>
+                        <input id="voucher" class="form-control" formControlName="voucher">
+                    </div> -->
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="timeslot">Timeslot</label>
+                        <select id="timeslot" #timeslot class="form-control" formControlName="timeslot" (change)="onSlotChanged(timeslot.value)">
+                            <option *ngIf="!(slot$ | async); else slotAvailable" value="">Please select Commencement Date & Grade first</option>
+                            <ng-template #slotAvailable>
+                                <option *ngFor="let slot of (slot$ | async)" [value]="slot.id">
+                                    {{slot.name}}
+                                </option>
+                            </ng-template>
+                        </select>
+                    </div>
+
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="starter-kit">Starter Kit</label>
+                        <ng-multiselect-dropdown
+                            [settings]="dropdownSettings"
+                            id="starterKits"
+                            [placeholder]="'Select Starter Kit'"
+                            [data]="starterKits"
+                            [(ngModel)]="selectedStarterKits"
+                            (onSelect)="dropdownChanged()"
+                            (onSelectAll)="dropdownChanged()"
+                            (onDeSelect)="dropdownChanged()"
+                            (onDeSelectAll)="dropdownChanged()"
+                            [ngModelOptions]="{standalone: true}"
+                        >
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+            </fieldset>
+
+            <hr>
+
+            <fieldset formGroupName="parent">
+                <legend>Parent Details</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div class="form-group" fxFlex.gt-xs="48%">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" formControlName="email"
+                        [class.is-invalid]="!enrollmentForm.get('parent.email').valid &&
+                        (enrollmentForm.get('parent.email').touched || submitted)">
+                        <div class="invalid-feedback">
+                            Email Required
+                        </div>
+                    </div>
+                    <div fxFlex.gt-xs="48%"></div>
+                    <ng-container *ngIf="showParentForm">
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                            <label for="parent-firstname">Name</label>
+                            <input type="text" class="form-control" id="parent-firstname" formControlName="first_name"
+                                   [class.is-invalid]="!enrollmentForm.get('parent.first_name').valid &&
+                            (enrollmentForm.get('parent.first_name').touched || submitted)">
+                            <div class="invalid-feedback">
+                                Parent's Name Required
+                            </div>
+                        </div>
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                        </div>
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                            <label for="parent-gender">Gender</label>
+                            <select id="parent-gender" class="form-control" formControlName="gender">
+                                <option value=""></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                            <label for="parent-dob">Date Of Birth</label>
+                            <div class="input-group">
+                                <input class="form-control datepicker" id="parent-dob" placeholder="yyyy-mm-dd" formControlName="dob"
+                                       ngbDatepicker #f="ngbDatepicker">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" style="margin: 0" (click)="f.toggle()" type="button"
+                                            fxLayoutAlign="center center">
+                                        <i class="nc-icon nc-calendar-60"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                            <label for="occupation">Occupation</label>
+                            <input type="text" class="form-control" id="occupation" formControlName="occupation"
+                                   [class.is-invalid]="!enrollmentForm.get('parent.occupation').valid &&
+                            (enrollmentForm.get('parent.occupation').touched || submitted)">
+                            <div class="invalid-feedback">
+                                Parent's Occupation Required
+                            </div>
+                        </div>
+                        <div *ngIf="!parentObject" class="form-group" fxFlex.gt-xs="48%">
+                            <label for="phone">Phone</label>
+                            <input type="tel" name="" id="phone" class="form-control" formControlName="phone"
+                                   [class.is-invalid]="!enrollmentForm.get('parent.phone').valid &&
+                            (enrollmentForm.get('parent.phone').touched || submitted)">
+                            <div class="invalid-feedback">
+                                Parent's Phone Required
+                            </div>
+                        </div>
+                        <fieldset *ngIf="!parentObject" formGroupName="address" fxFlex.gt-xs="100%">
+                            <div fxFlex.gt-xs="48%">
+                                <div class="form-group">
+                                    <label for="address_1">Address</label>
+                                    <input type="text" class="form-control" id="address_1" placeholder="First Line" formControlName="address_line_1"
+                                           [class.is-invalid]="!enrollmentForm.get('parent.address.address_line_1').valid &&
+                                    (enrollmentForm.get('parent.address.address_line_1').touched || submitted)">
+                                    <div class="invalid-feedback">
+                                        Address Line 1 Required
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="address_2" placeholder="Second Line" formControlName="address_line_2">
+                                </div>
+                            </div>
+                            <div fxFlex="48%" class="form-group">
+                                <label for="postcode">Postcode</label>
+                                <input name="" id="postcode" class="form-control" placeholder="postcode" formControlName="postcode"
+                                       [class.is-invalid]="!enrollmentForm.get('parent.address.postcode').valid &&
+                                (enrollmentForm.get('parent.address.postcode').touched || submitted)">
+                                <div class="invalid-feedback">
+                                    Postcode Required
+                                </div>
+                            </div>
+                            <div fxFlex="48%" class="form-group">
+                                <label for="city">City</label>
+                                <input name="" id="city" class="form-control" placeholder="city" formControlName="city"
+                                       [class.is-invalid]="!enrollmentForm.get('parent.address.city').valid &&
+                                (enrollmentForm.get('parent.address.city').touched || submitted)">
+                                <div class="invalid-feedback">
+                                    City Required
+                                </div>
+                            </div>
+                            <div fxFlex="48%" class="form-group">
+                                <label for="state">State</label>
+                                <select name="" id="state" class="form-control" formControlName="state">
+                                    <option value=""></option>
+                                    <option *ngFor="let state of states" [value]="state">
+                                        {{state}}
+                                    </option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </ng-container>
+                </div>
+            </fieldset>
+
+            <hr *ngIf="!parentObject">
+
+            <fieldset *ngIf="!parentObject">
+                <legend>Additional Details (Optional)</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label for="referral_channel_id">Refer Channel</label>
+                        <select id="referral_channel_id" class="form-control" formControlName="referral_channel_id">
+                            <option value="">Select Referral Channel</option>
+                            <option *ngFor="let channel of referralChannels" [value]="channel.id">{{channel.name}}</option>
+                        </select>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="referral">Referred By</label>
+                        <input name="" type="text" id="referral" class="form-control" formControlName="referral">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset *ngIf="!parentObject" formGroupName="parent">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label for="spouse-name">Spouse Name</label>
+                        <input name="" type="text" id="spouse-name" class="form-control" formControlName="spouse_name">
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="spouse-phone">Spouse Phone</label>
+                        <input name="" type="tel" id="spouse-phone" class="form-control" formControlName="spouse_phone">
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="spouse-occupation">Spouse Occupation</label>
+                        <input name="" type="text" id="spouse-occupation" class="form-control" formControlName="spouse_occupation">
+                    </div>
+                </div>
+            </fieldset>
+
+            <hr *ngIf="!parentObject">
+
+            <fieldset *ngIf="parentObject" formGroupName="parent">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label>Name</label>
+                        <p>{{parentObject.first_name + (parentObject.last_name ? ' ' + parentObject.last_name : '')}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Gender</label>
+                        <p>{{parentObject.gender ? parentObject.gender : '-'}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Date Of Birth</label>
+                        <p>{{parentObject.dob ? parentObject.dob : '-'}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Occupation</label>
+                        <p>{{parentObject.occupation ? parentObject.occupation : '-'}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Phone</label>
+                        <p>{{parentObject.phone ? parentObject.phone : '-'}}</p>
+                    </div>
+                    <fieldset formGroupName="address" fxFlex.gt-xs="100%">
+                        <div fxFlex.gt-xs="48%">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <p>{{parentObject.address.address_line_1 ? parentObject.address.address_line_1 : '-'}}</p>
+                            </div>
+                            <div class="form-group">
+                                <p>{{parentObject.address.address_line_2 ? parentObject.address.address_line_2 : '-'}}</p>
+                            </div>
+                        </div>
+                        <div fxFlex="48%" class="form-group">
+                            <label>Postcode</label>
+                            <p>{{parentObject.address.postcode ? parentObject.address.postcode : '-'}}</p>
+                        </div>
+                        <div fxFlex="48%" class="form-group">
+                            <label>City</label>
+                            <p>{{parentObject.address.city ? parentObject.address.city : '-'}}</p>
+                        </div>
+                        <div fxFlex="48%" class="form-group">
+                            <label>State</label>
+                            <p>{{parentObject.address.state ? parentObject.address.state : '-'}}</p>
+                        </div>
+                    </fieldset>
+                </div>
+            </fieldset>
+
+            <hr *ngIf="parentObject">
+
+            <fieldset *ngIf="parentObject">
+                <legend>Additional Details (Optional)</legend>
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label for="referral_channel_id">Refer Channel</label>
+                        <select id="referral_channel_id" class="form-control" formControlName="referral_channel_id">
+                            <option value="">Select Referral Channel</option>
+                            <option *ngFor="let channel of referralChannels" [value]="channel.id">{{channel.name}}</option>
+                        </select>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label for="referral">Referred By</label>
+                        <input name="" type="text" id="referral" class="form-control" formControlName="referral">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset *ngIf="parentObject" formGroupName="parent">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="48%" class="form-group">
+                        <label>Spouse Name</label>
+                        <p>{{parentObject.spouse_name ? parentObject.spouse_name : '-'}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Spouse Phone</label>
+                        <p>{{parentObject.spouse_phone ? parentObject.spouse_phone : '-'}}</p>
+                    </div>
+                    <div fxFlex="48%" class="form-group">
+                        <label>Spouse Occupation</label>
+                        <p>{{parentObject.spouse_occupation ? parentObject.spouse_occupation : '-'}}</p>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="button-container" fxLayoutAlign="center">
+                <button type="submit" class="btn">Enroll</button>
+            </div>
+
+
+        </form>
+    </div>
+
+
+
+ </div>

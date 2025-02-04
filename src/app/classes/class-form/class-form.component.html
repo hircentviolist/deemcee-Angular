@@ -1,0 +1,126 @@
+<div class="main-content">
+    <div class="card" fxFlex="calc(40% - 3em)">
+        <div class="card-body">
+            <div class="card-title" *ngIf="!isUpdate()">Add Class</div>
+            <div class="card-title"
+                 *ngIf="isUpdate()">Update Class</div>
+            <form [formGroup] = "classForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="start">Start Date</label>
+                    <div class="input-group">
+                        <input (change)="populateDataForSelect()" class="form-control datepicker" id="start" placeholder="yyyy-mm-dd" formControlName="commencement_date"
+                               ngbDatepicker #d="ngbDatepicker" [disabled]="isUpdate() ? 'disabled': 'false'">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"
+                                    fxLayoutAlign="center center">
+                                <i class="nc-icon nc-calendar-60"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" class="form-control" formControlName="category_id"
+                                [attr.disabled]="isUpdate() ? 'true' : null">
+                            <option></option>
+                            <option *ngFor="let category of (category$ | async)" [value]="category.id">{{category.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="starting_theme_id">Starting Theme</label>
+                        <select id="starting_theme_id" class="form-control" formControlName="category_id" formControlName="starting_theme_id" [attr.disabled]="isUpdate() ? 'true' : null">
+                            <option></option>
+                            <option *ngFor="let theme of (theme$ | async)" [value]="theme.id">{{theme?.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="class-day">Day Class will be conducted:</label>
+<!--                    <select (change)="updateLabel()" id="class-day" class="form-control" formControlName="day"-->
+                    <select id="class-day" class="form-control" formControlName="day"
+                            [class.is-invalid]="!classForm.get('day').valid && (classForm.get('day').touched || submitted)">
+                        <option></option>
+                        <option *ngFor="let day of days" [value]="day.id">{{day.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start_time">Start Time</label>
+                    <ngb-timepicker [(ngModel)]="startTime" id="start_time" formControlName="start_time"></ngb-timepicker>
+<!--                    <ngb-timepicker (focusout)="updateLabel()" (keydown)="updateLabel()" [(ngModel)]="startTime" id="start_time" formControlName="start_time"></ngb-timepicker>-->
+                </div>
+                <div class="form-group">
+                    <label for="end_time">End Time</label>
+                    <ngb-timepicker [(ngModel)]="endTime" formControlName="end_time" id="end_time"></ngb-timepicker>
+<!--                    <ngb-timepicker (focusout)="updateLabel()" (keydown)="updateLabel()" [(ngModel)]="endTime" formControlName="end_time" id="end-time"></ngb-timepicker>-->
+                </div>
+
+                <div class="form-group" style="max-width: 350px;">
+                    <label for="class-label">Label:</label>
+                    <input id="class-label" class="form-control" formControlName="label"
+                        [class.is-invalid]="!classForm.get('label').valid && (classForm.get('label').touched || submitted)"/>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="btn btn-success">
+                        <span *ngIf="!isUpdate()">Add</span>
+                        <span *ngIf="isUpdate()">Update</span>
+                    </button>
+                    <a [routerLink]="['..']" [queryParams]="{active: active}">
+                        <button type="button" class="btn btn-primary">
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+            <hr>
+            <table class="table" *ngIf="lessons">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Theme</th>
+                    <th>Lesson</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let lesson of lessons; let i = index;">
+                    <td>{{lesson?.number}}</td>
+                    <td>{{lesson?.lesson?.theme?.name}}</td>
+                    <td>{{lesson?.lesson?.name}}</td>
+                    <td>{{lesson?.date}}</td>
+                    <td>{{lesson?.start_datetime | date: 'shortTime'}} - {{lesson.end_datetime | date: 'shortTime'}}</td>
+                    <td>
+                        <a href="javascript:void(0)" (click)="showClassRecord(lesson)">
+                            {{lesson?.past && lesson?.status === 'COMPLETED' ? 'Show' : 'Update'}}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div *ngIf="pages.length" style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <nav>
+                    <ul class="pagination">
+                        <li (click)="paginationClicked('prev')" class="page-item">
+                        <a class="page-link" href="javascript:;">Previous</a>
+                        </li>
+
+                        <li *ngFor="let page of pages" (click)="paginationClicked(page)" class="page-item" [class.active]="page.is_active">
+                        <a class="page-link" href="javascript:;">{{page.number}}</a>
+                        </li>
+
+                        <li (click)="paginationClicked('next')" class="page-item">
+                        <a class="page-link" href="javascript:;">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

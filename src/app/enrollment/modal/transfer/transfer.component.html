@@ -1,0 +1,52 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h5>Transfer</h5>
+    </div>
+    <div class="modal-body">
+        Are you sure you about transferring out {{data.enrolment.name}}?
+        <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" style="margin-top: 20px">
+
+            <div fxLayout fxLayoutAlign="space-between">
+                <div class="form-group">
+                    <label for="from">From Branch</label>
+                    <select formControlName="from_branch_id" id="from" class="form-control" disabled>
+                        <option>
+                            {{mappedBranch[branch_id]?.name}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="to">To Branch</label>
+                    <select formControlName="to_branch_id" id="to" class="form-control">
+                        <option *ngFor="let branch of (toBranchList$ | async)" [value]="branch.id">
+                            {{branch.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="start_date">
+                Start Date
+            </label>
+            <div class="input-group">
+                <input class="form-control datepicker" id="start_date" placeholder="yyyy-mm-dd" formControlName="start_date"
+                       ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="!transferForm.get('start_date').valid &&
+                               (transferForm.get('start_date').touched || submitted)">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                            fxLayoutAlign="center center">
+                        <i class="nc-icon nc-calendar-60"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center">
+        <button class="btn btn-primary" (click)="onSubmit()">Update</button>
+    </div>
+</div>
+

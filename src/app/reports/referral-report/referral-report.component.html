@@ -1,0 +1,71 @@
+<div class="container-fluid" style="background-color: white; border-radius: 5px;">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1" style="padding-top: 20px;">
+            <div class="row">
+                <div class="col-9">
+                    <div style="display: flex; flex-direction: row">
+                        <div>
+                            <select (change)="onYearChange()" [(ngModel)]="selectedYearOption" id="yearOption" class="form-control">
+                                <option *ngFor="let yearOption of yearOptions" [value]="yearOption.value">
+                                    {{yearOption.label}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div style="margin-left: 10px;">
+                            <select (change)="onDateTypeChange()" [(ngModel)]="dateType" id="dateType" class="form-control">
+                                <option *ngFor="let dateType of dateTypeList" [value]="dateType.value">
+                                    {{dateType.label}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngIf="referralChannels" style="margin-left: 10px;">
+                            <ng-multiselect-dropdown
+                                class="custom-multi-select"
+                                [settings]="referralDropdownSettings"
+                                id="referralChannel"
+                                [placeholder]="'Referral Channels'"
+                                [data]="referralChannels"
+                                [(ngModel)]="selectedReferralChannels"
+                                (onSelect)="onChannelSelect()"
+                                (onSelectAll)="onChannelSelect('select_all')"
+                                (onDeSelect)="onChannelSelect()"
+                                (onDeSelectAll)="onChannelSelect('deselect_all')"
+                            >
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-3">
+                    <button (click)="resetFilter()" type="button" [disabled]="mode === 'total'" [ngClass]="mode === 'filter' ? 'btn-reset-filter-active' : 'btn-reset-filter-disabled'" class="btn">Reset Filter</button>
+                </div>
+            </div>
+
+            
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-title">All Channels</h5>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="isLoading" style="padding-top: 6rem;">
+                        <div style="display: block; margin: 0 auto;" class="spinner-border text-secondary my-4" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div [style.visibility]="isLoading ? 'hidden' : 'visible'" id="totalGraphContainer">
+                        <canvas id="graph"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="table-scroll" class="table-scroll">     
+                <div id="tableContainer" class="table-wrap">
+                    <table id="table" class="table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

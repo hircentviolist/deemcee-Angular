@@ -1,0 +1,27 @@
+label {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.upload-btn {
+    color: #00aeef;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.remove-file-btn {
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+}
+.remove-file-btn:hover {
+    font-weight: bold;
+}

@@ -1,0 +1,37 @@
+.order-form {
+	width: 100%;
+}
+
+tr {
+	width: 100%;
+}
+
+.header {
+	padding-bottom: 30px;
+	border-bottom: 1px solid black;
+}
+
+.unit-price,
+.quantity,
+.subtotal,
+.total-label,
+.total-value {
+	text-align: center;
+}
+
+.total-label,
+.total-value {
+	font-weight: bolder;
+}
+
+table {
+	margin-top: 50px;
+}
+
+label {
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1.5;
+	text-align: left;
+	color: #3b3b3b;
+}

@@ -1,0 +1,31 @@
+import {Student} from './student';
+
+export interface ClassRecordDto {
+  'actual_end_datetime': string,
+  'actual_start_datetime': string,
+  'branch_id': number,
+  'class_id': number,
+  'co_teacher': any,
+  'created_at': string,
+  'date': string,
+  'de_class': {
+    id: number,
+    branch_id: number,
+    category_id: number,
+    commencement_date: string,
+    created_at: string,
+    day: string,
+    end_time: string,
+    max_slot: number,
+    start_time: string,
+    starting_theme_id: number,
+    total_enrolled: number,
+    updated_at: string,
+  },
+  'id': number,
+  'lesson_id': number,
+  'status': string,
+  'students': Student[],
+  'teacher': any,
+  'updated_at': string,
+}

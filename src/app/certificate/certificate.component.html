@@ -1,0 +1,20 @@
+<div class="main-content" fxLayout="column">
+
+    <ul ngbNav #nav="ngbNav" (click)="onChangeTab()" [(activeId)]="tabNo" class="nav-tabs mb-3">
+        <li [ngbNavItem]="1">
+            <a ngbNavLink>Ready to Print</a>
+            <ng-template ngbNavContent>
+                <app-ready-to-print></app-ready-to-print>
+            </ng-template>
+        </li>
+
+        <li [ngbNavItem]="2">
+            <a ngbNavLink>Printed</a>
+            <ng-template ngbNavContent>
+                <app-printed></app-printed>
+            </ng-template>
+        </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

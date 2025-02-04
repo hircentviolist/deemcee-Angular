@@ -1,0 +1,41 @@
+<div class="card" fxFlex="50%">
+    <div class="card-body">
+        <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>{{userType}}</legend>
+
+                <div class="form-group">
+                    <label for="email">DeEmcee Email*</label>
+                    <input type="email" id="email" class="form-control" formControlName="email"
+                    [class.is-invalid]="!adminForm.get('email').valid && (adminForm.get('email').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span *ngIf="adminForm.get('email')?.errors?.required">DeEmcee Email Required</span>
+                        <span *ngIf="adminForm.get('email')?.errors?.pattern">Valid DeEmcee Email Required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">Name*</label>
+                    <input type="text" class="form-control" id="first_name" formControlName="first_name"
+                    [class.is-invalid]="!adminForm.get('first_name').valid && (adminForm.get('first_name').touched || submitted)">
+                    <div class="invalid-feedback">
+                        <span>Name is required</span>
+                    </div>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="last_name">Last Name</label>-->
+<!--                    <input type="text" class="form-control" id="last_name" formControlName="last_name"-->
+<!--                    [class.is-invalid]="!adminForm.get('last_name').valid && (adminForm.get('last_name').touched || submitted)">-->
+<!--                    <div class="invalid-feedback">-->
+<!--                        <span>First Name Required</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                -->
+                <div class="button-container" fxLayoutAlign="center">
+                    <button class="btn btn-success" type="submit">{{action}}</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

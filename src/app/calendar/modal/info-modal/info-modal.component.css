@@ -1,0 +1,14 @@
+label {
+    font-weight: bolder;
+}
+
+.event-image-container {
+    height: 200px;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 20px;
+}
+img.event-image {
+    width: auto;
+    height: 100%;
+}

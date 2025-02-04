@@ -1,0 +1,52 @@
+<div class="modal-content" style="width: 800px;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>{{data.submission_date ? 'Update' : 'Submit'}} Video Assignment (Video {{data.video_number}})</h5>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="videoForm" (ngSubmit)="submitAssignment()">
+      <fieldset>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div fxFlex="48%" class="form-group">
+            <label>Student</label>
+            <p>{{data.student_name}}</p>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label>Role</label>
+            <select id="theme_id" #theme class="form-control" formControlName="theme_id" (change)="onThemeChange(theme.value)">
+              <option *ngFor="let theme of themeList" [value]="theme.id">
+                [v{{theme.version.name}}] {{theme.name}}
+              </option>
+            </select>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="video_url">Video URL (Suggested Video Aspect Ratio: 16:9)</label>
+            <input type="text" class="form-control" id="video_url" formControlName="video_url" placeholder="https://youtu.be/hpdlWaV2UIg"
+                   [class.is-invalid]="!videoForm.get('video_url').valid && submitted">
+            <div class="invalid-feedback">
+              Video URL Required
+            </div>
+          </div>
+          <div fxFlex="48%" class="form-group">
+            <label for="submission_date">Submission Date</label>
+            <div class="input-group">
+              <input class="form-control datepicker" id="submission_date" placeholder="yyyy-mm-dd" formControlName="submission_date"
+                     ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="!videoForm.get('submission_date').valid && submitted">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" style="margin: 0" (click)="d.toggle()" type="button"
+                        fxLayoutAlign="center center">
+                  <i class="nc-icon nc-calendar-60"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div class="button-container" fxLayoutAlign="center">
+        <button type="submit" class="btn">{{data.submission_date ? 'Update' : 'Submit'}}</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+    <div class="container">
+        <div class="navbar-wrapper">
+            <div class="navbar-toggle" (click)="sidebarToggle()">
+                <button type="button" class="navbar-toggler">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </button>
+            </div>
+            <a class="navbar-brand">Forgot Password</a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="wrapper wrapper-full-page ">
+    <div class="full-page section-image" filter-color="blue" data-image="./assets/img/bg/fabio-mangione.jpg">
+        <div class="content">
+            <div class="container">
+                <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+                    <form class="form" [formGroup]="resetPasswordForm" (ngSubmit)="submit()">
+                        <div class="card card-login">
+                            <div class="card-header ">
+                                <div class="card-header ">
+                                    <h4 style="margin-top: 0" class="header text-center">Reset password</h4>
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div style="margin-bottom: 0;" class="input-group" [ngClass]="{'input-group-focus':focus===true}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="nc-icon nc-single-02"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Email" (focus)="focus=true" (blur)="focus=false"
+                                        id="email" autocomplete="off" name="email" list="roles" formControlName="email">
+                                    <small [hidden]="resetPasswordForm.get('email').valid || (resetPasswordForm.get('email').pristine)"
+                                    class="text-danger mt-1 ml-1">
+                                        Valid email is required
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary btn-block mb-3" type="submit">
+                                    <span *ngIf="!isLoading">Continue</span>
+                                    <div *ngIf="isLoading" class="spinner-border mx-4" style="width: 1rem; height: 1rem; color: white; padding: 0; margin: 0;" role="status">
+                                        <span style="color: white" class="sr-only">Loading...</span>
+                                    </div>
+                                </button>
+                                <div class="text-center">
+                                    <a routerLink="/auth/login" href="javascript:;">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

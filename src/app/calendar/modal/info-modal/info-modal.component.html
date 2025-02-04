@@ -1,0 +1,73 @@
+<div class="modal-content">
+    <div class="modal-header" fxLayout="column">
+        <!-- <button type="button" class="close" (click)="onClose()">
+            <span aria-hidden="true">&times;</span>
+        </button> -->
+        <h5 class="modal-title">{{data?.title}}</h5>
+
+        <small>
+            <span *ngIf="data?.allDay">
+                {{ startDate?.format("dddd, MMMM D") }}
+
+                <span *ngIf="endDate">
+                    {{ startDate?.format("h:mm A") }} - {{ endDate?.format("dddd, MMMM D h:mm A") }}
+                </span>
+            </span>
+
+            <span *ngIf="!data?.allDay">
+                {{ startDate?.format("dddd, MMMM D h:mm A") }}
+                
+                <span *ngIf="endDate">
+                    - {{ 
+                        startDate?.format('MM D') === endDate?.format('MM D') ?
+                        endDate?.format("h:mm A") :
+                        endDate?.format("dddd, MMMM D h:mm A")
+                    }}
+                </span>
+            </span>
+        </small>
+
+    </div>
+    <div class="modal-body">
+        <ng-container *ngTemplateOutlet="(data?.extendedProps?.type === 'branch_event' || data?.extendedProps?.type === 'hq_event') ? event : null">
+        </ng-container>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="center center" fxLayoutGap="2em">
+        <button type="button" class="btn btn-primary" (click)="onEdit()"
+        *ngIf="(cred?.role === 'admin' || cred?.role === 'superadmin')">Edit</button>
+        <button type="button" class="btn btn-secondary" (click)="onClose()">Close</button>
+    </div>
+</div>
+
+
+<ng-template #holiday>
+
+</ng-template>
+
+<ng-template #event>
+    <div class="container">
+        <div *ngIf="event_?.image_url" class="event-image-container">
+            <img [src]="event_?.image_url" alt="" class="event-image">
+        </div>
+        <label for="description">
+            Description
+        </label>
+        <p>
+            {{event_?.description || 'Not Available'}}
+        </p>
+        <label for="venue">Venue</label>
+        <p>
+            {{event_?.venue || 'Not Available'}}
+        </p>
+        <label for="attendee">Attendee</label>
+        <p>
+            {{event_?.maximum_pax || 'Not Available'}}
+        </p>
+    </div>
+</ng-template>
+
+<ng-template #class>
+
+</ng-template>
+
+

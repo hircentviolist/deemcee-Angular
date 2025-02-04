@@ -1,0 +1,65 @@
+<div class="main-content">
+    <div class="back">
+      <a (click)="location.back()" href="javascript:;">
+        < Back
+      </a>
+    </div>
+    <h3 class="class-lesson-title">Class Record Detail List</h3>
+  
+    <section fxLayout>
+      <div class="left" fxFlex="48%" fxLayout="column">
+        <label>Status</label>
+        <span class="value">{{classRecord?.status}}</span>
+  
+        <label>Program Theme</label>
+        <span class="value">-</span>
+  
+        <label>Class Date</label>
+        <span class="value">{{classRecord?.date}}</span>
+  
+        <label>Teacher's Name</label>
+        <span class="value">{{classRecord?.teacher ? classRecord?.teacher.first_name : '-'}}</span>
+  
+      </div>
+  
+      <div class="right" fxFlex="48%" fxLayout="column">
+        <label>&nbsp;</label>
+        <span class="value">&nbsp;</span>
+  
+        <label>Lesson</label>
+        <span class="value">Lesson</span>
+  
+        <label>Actual Time</label>
+        <span class="value">{{classRecord?.actual_start_datetime ? (classRecord?.actual_start_datetime | date: 'shortTime') : (classRecord?.de_class?.start_time | date: 'shortTime')}} - {{classRecord?.actual_end_datetime ? (classRecord?.actual_end_datetime | date: 'shortTime') : (classRecord?.de_class?.end_time | date: 'shortTime')}}</span>
+  
+        <label>Co-teacher's Name</label>
+        <span class="value">{{classRecord?.co_teacher ? classRecord?.co_teacher.first_name : '-'}}</span>
+      </div>
+    </section>
+    <section fxLayout="column">
+      <label>Student Attendance List ({{classRecord?.students.length}}/{{classRecord?.de_class.max_slot}})</label>
+      <table *ngIf="classRecord?.students.length; else noStudent" class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let student of classRecord?.students">
+          <td>
+            {{student.first_name}} {{student.last_name}}
+          </td>
+          <td>
+            -
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ng-template #noStudent>
+        <span> - </span>
+      </ng-template>
+    </section>
+  </div>
+  
+  
